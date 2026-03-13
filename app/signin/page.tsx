@@ -39,7 +39,7 @@ export default function SignUpPage() {
         e.preventDefault();
         const result = signupSchema.safeParse({name,email,password})
         if(!result.success){
-            return toast.error(result.error.errors[0].message)
+            return toast.error(result.error.issues[0].message)
         }
         setLoading(true);
         console.log("Attempting signup for:", email);
