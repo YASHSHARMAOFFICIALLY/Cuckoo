@@ -15,9 +15,9 @@ const connectionString = process.env.DATABASE_URL;
 if (!globalForPrisma.pool) {
   globalForPrisma.pool = new Pool({ 
     connectionString,
-    connectionTimeoutMillis: 30000, 
-    idleTimeoutMillis: 30000,
-    max: 10, // Recommended for serverless/low-concurrency environments
+    connectionTimeoutMillis: 10000, 
+    idleTimeoutMillis: 20000,
+    max: 5, // Recommended for serverless/low-concurrency environments
   });
 }
 

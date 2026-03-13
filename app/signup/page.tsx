@@ -31,7 +31,7 @@ export default function SignUpPage() {
 
     useEffect(() => {
         if (session) {
-            router.push("/hospitals");
+            router.push("/dashboard");
         }
     }, [session, router]);
 
@@ -49,7 +49,7 @@ export default function SignUpPage() {
                 email,
                 password,
                 name,
-                callbackURL: "/hospitals"
+                callbackURL: "/dashboard"
             });
 
             if (error) {
@@ -58,7 +58,7 @@ export default function SignUpPage() {
             } else {
                 console.log("Signup successful:", data);
                 toast.success("Account created successfully!");
-                router.push("/hospitals");
+                router.push("/dashboard");
             }
         } catch (err) {
             console.error("Unexpected signup error:", err);
@@ -73,7 +73,7 @@ export default function SignUpPage() {
         try {
             await authClient.signIn.social({
                 provider,
-                callbackURL: "/hospitals"
+                callbackURL: "/dashboard"
             });
         } catch (err) {
             toast.error(`Failed to sign up with ${provider}`);

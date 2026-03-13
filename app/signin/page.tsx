@@ -21,7 +21,7 @@ export default function SignInPage() {
 
     useEffect(() => {
         if (session) {
-            router.push("/hospitals");
+            router.push("/dashboard");
         }
     }, [session, router]);
 
@@ -39,7 +39,7 @@ export default function SignInPage() {
                 toast.error(error.message || "Failed to sign in");
             } else {
                 toast.success("Signed in successfully!");
-                router.push("/hospitals");
+                router.push("/dashboard");
             }
         } catch (err) {
             toast.error("An unexpected error occurred");
@@ -53,7 +53,7 @@ export default function SignInPage() {
         try {
             await authClient.signIn.social({
                 provider,
-                callbackURL: "/hospitals"
+                callbackURL: "/dashboard"
             });
         } catch (err) {
             toast.error(`Failed to sign in with ${provider}`);
