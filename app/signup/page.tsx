@@ -33,38 +33,71 @@ export default function SignUpPage() {
         }
     }, [session, router]);
 
+    // const handleSignUp = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     const result = signupSchema.safeParse({name,email,password})
+    //     if(!result.success){
+    //         return toast.error(result.error.issues[0].message)
+    //     }
+    //     setLoading(true);
+    //     console.log("Attempting signup for:", email);
+
+    //     try {
+    //         const { data, error } = await authClient.signUp.email({
+    //             email,
+    //             password,
+    //             name,
+    //             callbackURL: "/dashboard"
+    //         });
+
+    //         if (error) {
+    //             console.error("Signup error details:", error);
+    //             toast.error(error.message || "Failed to create account");
+    //         } else {
+    //             console.log("Signup successful:", data);
+    //             toast.success("Account created successfully!");
+    //             router.push("/dashboard");
+    //         }
+    //     } catch (err) {
+    //         console.error("Unexpected signup error:", err);
+    //         toast.error("An unexpected error occurred during signup");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
     const handleSignUp = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const result = signupSchema.safeParse({name,email,password})
-        if(!result.success){
-            return toast.error(result.error.issues[0].message)
-        }
-        setLoading(true);
-        console.log("Attempting signup for:", email);
+    e.preventDefault();
+    setLoading(true);
 
-        try {
-            const { data, error } = await authClient.signUp.email({
-                email,
-                password,
-                name,
-                callbackURL: "/dashboard"
-            });
+    // 1. Validate
+    const result = signupSchema.safeParse({ name, email, password });
+    if (!result.success) {
+        setLoading(false);
+        return toast.error(result.error.issues[0].message);
+    }
 
-            if (error) {
-                console.error("Signup error details:", error);
-                toast.error(error.message || "Failed to create account");
-            } else {
-                console.log("Signup successful:", data);
-                toast.success("Account created successfully!");
-                router.push("/dashboard");
-            }
-        } catch (err) {
-            console.error("Unexpected signup error:", err);
-            toast.error("An unexpected error occurred during signup");
-        } finally {
-            setLoading(false);
+    // 2. Execute
+    try {
+        const { data, error } = await authClient.signUp.email({
+            email,
+            password,
+            name,
+            callbackURL: "/dashboard" // Note: Some versions of Better Auth redirect automatically
+        });
+
+        if (error) {
+            toast.error(error.message || "Failed to create account");
+        } else {
+            toast.success("Account created! Redirecting...");
+            // Force a hard navigation if router.push feels "stuck"
+            window.location.href = "/dashboard"; 
         }
-    };
+    } catch (err) {
+        toast.error("A network error occurred.");
+    } finally {
+        setLoading(false);
+    }
+};
 
     const handleSocialSignUp = async (provider: "google" | "github") => {
         setLoading(true);
