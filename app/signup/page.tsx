@@ -1,9 +1,7 @@
 'use client'
 import { signupSchema } from "@/lib/validators";
-import { NextResponse } from "next/server";
-import { hashPassword } from "@/lib/password";
-import { generateVerificationToken } from "@/lib/token";
-import { sendVerificationEmail } from "@/lib/email";
+// import { generateVerificationToken } from "@/lib/token";
+// import { sendVerificationEmail } from "@/lib/email";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
