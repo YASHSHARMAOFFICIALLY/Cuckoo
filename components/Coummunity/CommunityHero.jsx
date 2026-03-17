@@ -69,7 +69,7 @@ export default function CommunityHero({onStartDiscussion}){
                             
                                     {/* Right: stats */}
                                     <div className="grid grid-cols-2 gap-3 md:min-w-[260px]">
-                                        {COMMUNITY_STATS.map(({ value, label }) => (
+                                        {COMMUNITY_STAT.map(({ value, label }) => (
                                         <div
                                             key={label}
                                             className="bg-[#FAFAF8] border border-[#EBEBEB] rounded-2xl px-5 py-4 text-center"

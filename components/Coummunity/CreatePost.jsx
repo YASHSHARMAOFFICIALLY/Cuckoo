@@ -36,7 +36,11 @@ function TagPill({ label, onRemove, onClick, selected }) {
             {onRemove && (
                 <button
                     onClick={(e) => { e.stopPropagation(); onRemove(label); }}
-                    className="ml-0.5 hover:opacity-70"
+                    className="ml-0.5  
+                    
+                    
+                    
+                     hover:opacity-70"
                 >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                         <path d="M2.5 2.5L7.5 7.5M7.5 2.5L2.5 7.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
@@ -54,7 +58,7 @@ export default function CreatePost({ onPost }) {
     const [selectedTags, setSelectedTags] = useState([])
     const [showTagPicker, setShowTagPicker] = useState(false);
     const titleRef = useRef(null);
-
+ 
     const handleExpand = () => {
         setExpanded(true)
         setTimeout(() => titleRef.current?.focus(), 50)
