@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -11,7 +11,8 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import Link from "next/link";
 
-export default function SignInClient() {
+// 1. Move all the logic using useSearchParams into this sub-component
+function SignInForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [email, setEmail] = useState("");
@@ -21,7 +22,6 @@ export default function SignInClient() {
     const nextPath = searchParams.get("next");
     const redirectTarget = nextPath?.startsWith("/") ? nextPath : "/dashboard";
     
-    // Check if user is already logged in
     const { data: session, isPending } = authClient.useSession();
 
     useEffect(() => {
@@ -39,7 +39,6 @@ export default function SignInClient() {
                 password,
                 callbackURL: redirectTarget
             });
-
             if (error) {
                 toast.error(error.message || "Failed to sign in");
             } else {
@@ -80,7 +79,7 @@ export default function SignInClient() {
                 <CardHeader className="space-y-2 text-center">
                     <CardTitle className="text-3xl font-semibold tracking-tight">FinVeda</CardTitle>
                     <CardDescription className="text-sm text-gray-500 max-w-xs mx-auto">
-                        Enter your credentials to access your patient dashboard
+                        Enter your credentials to access your dashboard
                     </CardDescription>
                 </CardHeader>
                 
@@ -90,91 +89,66 @@ export default function SignInClient() {
                             <Label htmlFor="email">Email</Label>
                             <Input 
                                 className="h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                                id="email" 
-                                type="email" 
-                                placeholder="name@example.com" 
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required 
+                                id="email" type="email" placeholder="name@example.com" 
+                                value={email} onChange={(e) => setEmail(e.target.value)} required 
                             />
                         </div>
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="password">Password</Label>
-                                <Link 
-                                    href="/forgot-password" 
-                                    className="text-xs text-primary hover:underline"
-                                >
+                                <Link href="/forgot-password" size="sm" className="text-xs text-primary hover:underline">
                                     Forgot password?
                                 </Link>
                             </div>
                             <Input 
                                 className="h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                                id="password" 
-                                type="password" 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required 
+                                id="password" type="password" 
+                                value={password} onChange={(e) => setPassword(e.target.value)} required 
                             />
                         </div>
-                        <Button 
-                            type="submit" 
-                            className="w-full h-11 rounded-lg bg-gradient-to-r from-gray-900 to-gray-700 text-white hover:opacity-90 transition cursor-pointer" 
-                            disabled={loading}
-                        >
+                        <Button type="submit" className="w-full h-11 rounded-lg bg-gray-900 text-white hover:opacity-90 cursor-pointer" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Sign In
                         </Button>
                     </form>
 
                     <div className="relative my-4">
-                        <div className="absolute inset-0 flex items-center">
-                            <span className="w-full border-t" />
-                        </div>
+                        <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
                         <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-white/80 px-2 text-gray-400">
-                                Or continue with
-                            </span>
+                            <span className="bg-white/80 px-2 text-gray-400">Or continue with</span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
-                        <Button
-                            variant="outline"
-                            className="h-10 rounded-lg border-gray-200 hover:bg-gray-50 flex items-center justify-center cursor-pointer"
-                            onClick={() => handleSocialSignIn("google")}
-                            disabled={loading}
-                        >
-                            <img
-                                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                                alt="Google"
-                                className="mr-2 h-5 w-5"
-                            />
+                        <Button variant="outline" className="cursor-pointer" onClick={() => handleSocialSignIn("google")} disabled={loading}>
+                            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" className="mr-2 h-4 w-4" />
                             Google
                         </Button>
-                        <Button
-                            variant="outline"
-                            className="h-10 rounded-lg border-gray-200 hover:bg-gray-50 flex items-center justify-center cursor-pointer"
-                            onClick={() => handleSocialSignIn("github")}
-                            disabled={loading}
-                        >
-                            <img
-                                src="https://www.svgrepo.com/show/512317/github-142.svg"
-                                alt="Github"
-                                className="mr-2 h-5 w-5"
-                            />
+                        <Button variant="outline" className="cursor-pointer" onClick={() => handleSocialSignIn("github")} disabled={loading}>
+                            <img src="https://www.svgrepo.com/show/512317/github-142.svg" alt="Git" className="mr-2 h-4 w-4" />
                             Github
                         </Button>
                     </div>
                 </CardContent>
 
                 <CardFooter className="flex items-center justify-center gap-2 py-4 text-sm text-gray-500">
-                    <span className="text-muted-foreground">Don&apos;t have an account?</span>
-                    <Link href="/signup" className="font-medium text-primary hover:underline">
-                        Create an Account
-                    </Link>
+                    <span>Don&apos;t have an account?</span>
+                    <Link href="/signup" className="font-medium text-primary hover:underline">Create Account</Link>
                 </CardFooter>
             </Card>
         </div>
+    );
+}
+
+// 2. This is the main page component that Next.js sees
+export default function SignInPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center min-h-screen">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        }>
+            <SignInForm />
+        </Suspense>
     );
 }
