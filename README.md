@@ -15,21 +15,21 @@ Most platforms:
 - Teach theory without practical usage.
   
 - Provide tools without explanation.
-- 
+
 - Lack personalized financial guidance.
-- 
+
 
 ## 💡 Solution
 Finance Flow integrates learning, tools, and AI into one platform:
 
 - 📚 Interactive learning (quizzes + articles).
-- 
+ 
 - 🤖 AI-powered chatbot (Gemini).
-- 
+
 - 📊 Financial calculators.
-- 
+
 - 🎯 Goal tracking system.
-- 
+
 ## 🚀 Features
 
 ### 🧠 1. Finance Quiz (Learn by Doing)
