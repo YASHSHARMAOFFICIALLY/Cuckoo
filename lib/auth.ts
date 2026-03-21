@@ -11,7 +11,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:3000",
     "https://finnanceflow.buildwithyash.com",
-    "https://*.vercel.app",
+    
   ],
 
   // Essential for Vercel/Proxy environments
