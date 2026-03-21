@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { auth } from "@/lib/auth";
+import { getSessionCookie } from "better-auth/cookies";
 
 const protectedRoutes = ["/tools", "/learn", "/Quiz", "/dashboard"];
 
@@ -9,18 +9,24 @@ function isProtectedPath(pathname: string) {
   );
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+
+  // CRITICAL: Never intercept auth routes — not even for a millisecond
+  // The state cookie must flow through untouched
+  if (pathname.startsWith("/api/auth")) {
+    return NextResponse.next();
+  }
 
   if (!isProtectedPath(pathname)) {
     return NextResponse.next();
   }
 
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
+  // Use cookie check ONLY — zero DB calls, zero latency
+  // This reads the session cookie header directly
+  const sessionCookie = getSessionCookie(request);
 
-  if (!session) {
+  if (!sessionCookie) {
     const signInUrl = new URL("/signin", request.url);
     signInUrl.searchParams.set("next", `${pathname}${search}`);
     return NextResponse.redirect(signInUrl);
@@ -31,9 +37,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/tools/:path*",
-    "/learn/:path*",
-    "/Quiz/:path*",
-    "/dashboard/:path*",
+    // Explicitly exclude /api/auth/* at the matcher level as well
+    "/((?!api/auth|_next/static|_next/image|favicon.ico).*)",
   ],
 };

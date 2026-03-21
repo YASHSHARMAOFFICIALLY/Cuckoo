@@ -1,57 +1,46 @@
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { db } from "./db";
 
-import { betterAuth } from "better-auth"
-import { prismaAdapter } from "better-auth/adapters/prisma"
-import { db } from "./db"
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
+// Remove runtime exports — they don't belong here
+// export const runtime = "nodejs";  ← DELETE THIS
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL: process.env.BETTER_AUTH_URL!,
+  secret: process.env.BETTER_AUTH_SECRET!,
 
   trustedOrigins: [
     "http://localhost:3000",
     "https://finnanceflow.buildwithyash.com",
-    
   ],
-
-  // Essential for Vercel/Proxy environments
-  advanced: {
-    useSecureCookies: true,
-  },
-
-  // cookies: {
-    
-  //   sessionToken: {
-  //     attributes: {
-  //       secure: true,
-  //       sameSite: "lax",
-  //       path: "/",
-  //       httpOnly:true
-  //     }
-  //   }
-  // },
 
   database: prismaAdapter(db, {
     provider: "postgresql",
   }),
 
-  secret: process.env.BETTER_AUTH_SECRET,
-
   emailAndPassword: {
-    enabled: true
+    enabled: true,
   },
-  
+
+  advanced: {
+    useSecureCookies: true,
+    // Explicitly set cookie attributes for production
+    defaultCookieAttributes: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    },
+  },
 
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-     
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-    }
-  }
-})
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    },
+  },
+});
