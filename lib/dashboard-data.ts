@@ -412,12 +412,11 @@ export async function getDashboardData(user: SessionUser) {
   const now = new Date();
   const firstName = (user.name || "Investor").trim().split(/\s+/)[0] || "Investor";
   const initial = firstName.charAt(0).toUpperCase() || "I";
-
-  const seeded = await ensureDashboardSeed(user);
+  const fallbackSeed = buildSeedData(user);
 
   if (!user.id) {
     return mapDashboardData({
-      ...buildSeedData(user),
+      ...fallbackSeed,
       user,
       now,
       initial,
@@ -425,44 +424,56 @@ export async function getDashboardData(user: SessionUser) {
     });
   }
 
-  const [portfolioPoints, goals, learningModules, quizAttempts, activities] =
-    await Promise.all([
-      db.portfolioSnapshot.findMany({
-        where: { userId: user.id },
-        orderBy: [{ rangeKey: "asc" }, { createdAt: "asc" }],
-      }),
-      db.dashboardGoal.findMany({
-        where: { userId: user.id },
-        orderBy: [{ achieved: "asc" }, { createdAt: "asc" }],
-      }),
-      db.learningModuleProgress.findMany({
-        where: { userId: user.id },
-        orderBy: { sortOrder: "asc" },
-      }),
-      db.quizAttempt.findMany({
-        where: { userId: user.id },
-        orderBy: { attemptedAt: "desc" },
-        take: 10,
-      }),
-      db.dashboardActivity.findMany({
-        where: { userId: user.id },
-        orderBy: { occurredAt: "desc" },
-        take: 12,
-      }),
-    ]);
+  try {
+    const seeded = await ensureDashboardSeed(user);
 
-  return mapDashboardData({
-    user,
-    now,
-    initial,
-    firstName,
-    portfolioPoints,
-    goals,
-    learningModules,
-    quizAttempts,
-    activities,
-    seeded,
-  });
+    const [portfolioPoints, goals, learningModules, quizAttempts, activities] =
+      await Promise.all([
+        db.portfolioSnapshot.findMany({
+          where: { userId: user.id },
+          orderBy: [{ rangeKey: "asc" }, { createdAt: "asc" }],
+        }),
+        db.dashboardGoal.findMany({
+          where: { userId: user.id },
+          orderBy: [{ achieved: "asc" }, { createdAt: "asc" }],
+        }),
+        db.learningModuleProgress.findMany({
+          where: { userId: user.id },
+          orderBy: { sortOrder: "asc" },
+        }),
+        db.quizAttempt.findMany({
+          where: { userId: user.id },
+          orderBy: { attemptedAt: "desc" },
+          take: 10,
+        }),
+        db.dashboardActivity.findMany({
+          where: { userId: user.id },
+          orderBy: { occurredAt: "desc" },
+          take: 12,
+        }),
+      ]);
+
+    return mapDashboardData({
+      user,
+      now,
+      initial,
+      firstName,
+      portfolioPoints,
+      goals,
+      learningModules,
+      quizAttempts,
+      activities,
+      seeded,
+    });
+  } catch {
+    return mapDashboardData({
+      ...fallbackSeed,
+      user,
+      now,
+      initial,
+      firstName,
+    });
+  }
 }
 
 function mapDashboardData(input: {
@@ -477,7 +488,7 @@ function mapDashboardData(input: {
     invested: number;
   }>;
   goals?: Array<{
-    id: string;
+    id?: string;
     name: string;
     emoji: string;
     targetAmount: number;
@@ -488,7 +499,7 @@ function mapDashboardData(input: {
     achieved: boolean;
   }>;
   learningModules?: Array<{
-    id: string;
+    id?: string;
     title: string;
     icon: string;
     lessons: number;
@@ -558,7 +569,7 @@ function mapDashboardData(input: {
   const totalReturnPct = Number(((totalReturn / investedValue) * 100).toFixed(1));
 
   const goals = (input.goals ?? []).map((goal) => ({
-    id: goal.id,
+    id: goal.id || goal.name.toLowerCase().replace(/\s+/g, "-"),
     name: goal.name,
     emoji: goal.emoji,
     target: goal.targetAmount,
@@ -570,7 +581,7 @@ function mapDashboardData(input: {
   }));
 
   const learningModules = (input.learningModules ?? []).map((module) => ({
-    id: module.id,
+    id: module.id || module.title.toLowerCase().replace(/\s+/g, "-"),
     title: module.title,
     lessons: module.lessons,
     completed: module.completedLessons,
