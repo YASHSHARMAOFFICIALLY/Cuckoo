@@ -22,9 +22,9 @@ export default async function DashboardPage() {
   const dashboard: any = await getDashboardData(session.user);
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8]">
+    <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0A0A0A]">
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 h-full w-60 bg-white border-r border-[#EBEBEB] z-40 flex flex-col hidden lg:flex">
+      <aside className="fixed top-0 left-0 h-full w-60 bg-white dark:bg-[#111] border-r border-[#EBEBEB] dark:border-[#2a2a2a] z-40 flex flex-col hidden lg:flex">
         {/* Logo */}
         <div className="h-16 flex items-center px-5 border-b border-[#EBEBEB]">
           <div className="flex items-center gap-2">

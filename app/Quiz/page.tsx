@@ -12,7 +12,7 @@ import QuizPage from "@/components/Quiz/QuizPage"
 function SectionDivider() {
   return (
     <div className="max-w-6xl mx-auto px-6">
-      <div className="h-px bg-[#F0F0F0]" />
+      <div className="h-px bg-[#F0F0F0] dark:bg-[#222]" />
     </div>
   );
 }
