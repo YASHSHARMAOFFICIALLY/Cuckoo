@@ -6,6 +6,9 @@ export default function DashboardHero({
   initial = "I",
   quickStats = [],
   selectedPeriod = "This month",
+  dataSource = "demo",
+  dataStatusLabel = "Demo portfolio data",
+  insight = "",
 }) {
   const ref = useRef(null);
 
@@ -43,6 +46,15 @@ export default function DashboardHero({
               {initial}
             </div>
             <span className="text-[13px] text-[#888] tracking-[-0.01em]">{dateStr}</span>
+            <span
+              className={`text-[10.5px] font-semibold px-2 py-0.5 rounded-full border ${
+                dataSource === "database"
+                  ? "bg-[#F0FBF4] text-[#3A7A5A] border-[#C0E8D0]"
+                  : "bg-[#FFF7E8] text-[#8B7340] border-[#E8DFC0]"
+              }`}
+            >
+              {dataSource === "database" ? "LIVE" : "DEMO"}
+            </span>
           </div>
           <h1
             className="text-[28px] font-semibold tracking-[-0.03em] text-[#0F0F0F] leading-tight"
@@ -51,7 +63,10 @@ export default function DashboardHero({
             {greeting}, {userName} 👋
           </h1>
           <p className="text-[14px] text-[#888] mt-1 tracking-[-0.01em]">
-            Here's your financial progress today.
+            {dataStatusLabel}
+          </p>
+          <p className="text-[12.5px] text-[#555] mt-2 tracking-[-0.01em] max-w-[520px]">
+            {insight}
           </p>
         </div>
 

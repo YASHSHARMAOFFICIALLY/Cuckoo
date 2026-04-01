@@ -129,6 +129,9 @@ export default async function DashboardPage() {
             initial={dashboard.user.initial}
             quickStats={dashboard.hero.quickStats}
             selectedPeriod={dashboard.hero.selectedPeriod}
+            dataSource={dashboard.hero.dataSource}
+            dataStatusLabel={dashboard.hero.dataStatusLabel}
+            insight={dashboard.hero.insight}
           />
 
           {/* Row 1: Health Card + Portfolio Chart */}

@@ -421,6 +421,7 @@ export async function getDashboardData(user: SessionUser) {
       now,
       initial,
       firstName,
+      dataSource: "demo",
     });
   }
 
@@ -464,6 +465,7 @@ export async function getDashboardData(user: SessionUser) {
       quizAttempts,
       activities,
       seeded,
+      dataSource: "database",
     });
   } catch {
     return mapDashboardData({
@@ -472,6 +474,7 @@ export async function getDashboardData(user: SessionUser) {
       now,
       initial,
       firstName,
+      dataSource: "demo",
     });
   }
 }
@@ -533,6 +536,7 @@ function mapDashboardData(input: {
     occurredAt: Date;
   }>;
   seeded?: ReturnType<typeof buildSeedData> | null;
+  dataSource?: "database" | "demo";
 }) {
   const portfolioGroups = (input.portfolioPoints ?? []).reduce<Record<string, Array<{ date: string; value: number; invested: number }>>>(
     (accumulator, point) => {
@@ -653,6 +657,13 @@ function mapDashboardData(input: {
       plan: onTrackGoals >= 3 ? "Growth Plan" : "Pro Plan",
     },
     hero: {
+      dataSource: input.dataSource ?? "demo",
+      dataStatusLabel:
+        input.dataSource === "database" ? "Live portfolio data" : "Demo portfolio data",
+      insight:
+        onTrackGoals >= 3
+          ? "You are tracking well across investing, goals, and learning."
+          : "A few goals need attention. Prioritise one action this week.",
       selectedPeriod: input.now.toLocaleDateString("en-IN", {
         month: "short",
         year: "numeric",
