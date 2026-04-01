@@ -21,7 +21,7 @@ function CustomTooltip({ active, payload, label }) {
   const pct = ((gain / inv) * 100).toFixed(1);
 
   return (
-    <div className="bg-white border border-[#E8E8E8] rounded-xl p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.1)] min-w-[160px]">
+    <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-xl p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.35)] min-w-[160px]">
       <div className="text-[11.5px] text-[#888] mb-2 font-medium">{label}</div>
       <div className="text-[16px] font-bold text-[#0F0F0F] tracking-[-0.03em]">
         ₹{val?.toLocaleString("en-IN")}
@@ -52,11 +52,11 @@ export default function PortfolioChart({ portfolio }) {
   const isPositive = gain >= 0;
 
   return (
-    <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+    <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
       {/* Header */}
       <div className="flex items-start justify-between mb-5 flex-wrap gap-3">
         <div>
-          <div className="text-[11.5px] font-semibold text-[#888] uppercase tracking-[0.08em] mb-1">
+          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#777] uppercase tracking-[0.08em] mb-1">
             Portfolio Value
           </div>
           <div className="flex items-baseline gap-2.5">
@@ -89,8 +89,8 @@ export default function PortfolioChart({ portfolio }) {
               onClick={() => setRange(r)}
               className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-150 ${
                 range === r
-                  ? "bg-white text-[#0F0F0F] shadow-sm"
-                  : "text-[#888] hover:text-[#555]"
+                  ? "bg-white dark:bg-[#1A1A1A] text-[#0F0F0F] dark:text-white shadow-sm"
+                  : "text-[#888] dark:text-[#888] hover:text-[#555] dark:hover:text-white"
               }`}
             >
               {r}
@@ -153,7 +153,7 @@ export default function PortfolioChart({ portfolio }) {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-5 mt-4 pt-4 border-t border-[#F5F5F5] text-[12px] text-[#888]">
+      <div className="flex items-center gap-5 mt-4 pt-4 border-t border-[#F5F5F5] dark:border-[#222] text-[12px] text-[#888] dark:text-[#777]">
         <span className="flex items-center gap-1.5">
           <span className="w-5 h-0.5 bg-[#0F0F0F] rounded inline-block" />
           Portfolio value

@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import CommunityHero from "./CommunityHero";
 import CreatePost from "./CreatePost";
 import Categories from "./Categories";
@@ -8,16 +9,16 @@ import CommunitySidebar from "./Communitysidebar";
 
 function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-[#EBEBEB] flex items-center">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-white dark:bg-[#0F0F0F] border-b border-[#EBEBEB] dark:border-[#222] flex items-center">
       <div className="max-w-6xl mx-auto px-6 w-full flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] dark:bg-white flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2 10L7 4L12 10" stroke="#C9A84C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               <circle cx="7" cy="11" r="1.2" fill="#C9A84C" />
             </svg>
           </div>
-          <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F]">FinanceFlow</span>
+          <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F] dark:text-white">FinanceFlow</span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">
@@ -31,7 +32,9 @@ function Navbar() {
               key={label}
               href={href}
               className={`text-[13.5px] tracking-[-0.01em] transition-colors ${
-                active ? "text-[#0F0F0F] font-medium" : "text-[#555] hover:text-[#0F0F0F]"
+                active
+                  ? "text-[#0F0F0F] dark:text-white font-medium"
+                  : "text-[#555] dark:text-[#AAA] hover:text-[#0F0F0F] dark:hover:text-white"
               }`}
             >
               {label}
@@ -40,15 +43,16 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <a
             href="/login"
-            className="hidden sm:block text-[13.5px] px-4 py-2 rounded-lg border border-[#E0E0E0] text-[#333] hover:border-[#0F0F0F] hover:text-[#0F0F0F] transition-all tracking-[-0.01em]"
+            className="hidden sm:block text-[13.5px] px-4 py-2 rounded-lg border border-[#E0E0E0] dark:border-[#333] text-[#333] dark:text-[#CCC] hover:border-[#0F0F0F] dark:hover:border-white hover:text-[#0F0F0F] dark:hover:text-white transition-all tracking-[-0.01em]"
           >
             Log In
           </a>
           <a
             href="/signup"
-            className="text-[13.5px] px-4 py-2 rounded-lg bg-[#0F0F0F] text-white hover:bg-[#2a2a2a] transition-all tracking-[-0.01em] shadow-sm"
+            className="text-[13.5px] px-4 py-2 rounded-lg bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] hover:bg-[#2a2a2a] dark:hover:bg-[#E0E0E0] transition-all tracking-[-0.01em] shadow-sm"
           >
             Create Account
           </a>
@@ -74,7 +78,7 @@ function Navbar() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] font-sans antialiased">
+    <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#111] font-sans antialiased">
       <Navbar />
 
       <div className="pt-16">

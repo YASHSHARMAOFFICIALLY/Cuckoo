@@ -9,6 +9,7 @@ import QuickTools from "@/components/dashboard/Quiztools";
 import RecentActivity from "@/components/dashboard/QuizActivity";
 import { auth } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({
@@ -26,15 +27,15 @@ export default async function DashboardPage() {
       {/* Sidebar */}
       <aside className="fixed top-0 left-0 h-full w-60 bg-white dark:bg-[#111] border-r border-[#EBEBEB] dark:border-[#2a2a2a] z-40 flex flex-col hidden lg:flex">
         {/* Logo */}
-        <div className="h-16 flex items-center px-5 border-b border-[#EBEBEB]">
+        <div className="h-16 flex items-center px-5 border-b border-[#EBEBEB] dark:border-[#2a2a2a]">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] dark:bg-white flex items-center justify-center">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M2 10L7 4L12 10" stroke="#C9A84C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 <circle cx="7" cy="11" r="1.2" fill="#C9A84C" />
               </svg>
             </div>
-            <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F]">
+            <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F] dark:text-white">
               FinanceFlow
             </span>
           </div>
@@ -42,7 +43,7 @@ export default async function DashboardPage() {
 
         {/* Nav items */}
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
-          <div className="text-[10.5px] font-bold text-[#BBB] uppercase tracking-[0.1em] px-3 mb-2">
+          <div className="text-[10.5px] font-bold text-[#BBB] dark:text-[#666] uppercase tracking-[0.1em] px-3 mb-2">
             Main
           </div>
           {[
@@ -59,7 +60,7 @@ export default async function DashboardPage() {
               className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13.5px] font-medium mb-0.5 transition-all duration-150 ${
                 item.active
                   ? "bg-[#0F0F0F] text-white"
-                  : "text-[#555] hover:bg-[#F5F5F3] hover:text-[#0F0F0F]"
+                  : "text-[#555] dark:text-[#AAA] hover:bg-[#F5F5F3] dark:hover:bg-[#1A1A1A] hover:text-[#0F0F0F] dark:hover:text-white"
               }`}
             >
               <span>{item.icon}</span>
@@ -67,7 +68,7 @@ export default async function DashboardPage() {
             </a>
           ))}
 
-          <div className="text-[10.5px] font-bold text-[#BBB] uppercase tracking-[0.1em] px-3 mb-2 mt-5">
+          <div className="text-[10.5px] font-bold text-[#BBB] dark:text-[#666] uppercase tracking-[0.1em] px-3 mb-2 mt-5">
             Account
           </div>
           {[
@@ -77,7 +78,7 @@ export default async function DashboardPage() {
             <a
               key={item.label}
               href="#"
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-[#555] hover:bg-[#F5F5F3] hover:text-[#0F0F0F] mb-0.5 transition-all duration-150"
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-[#555] dark:text-[#AAA] hover:bg-[#F5F5F3] dark:hover:bg-[#1A1A1A] hover:text-[#0F0F0F] dark:hover:text-white mb-0.5 transition-all duration-150"
             >
               <span>{item.icon}</span>
               {item.label}
@@ -86,16 +87,16 @@ export default async function DashboardPage() {
         </nav>
 
         {/* User profile */}
-        <div className="px-3 py-4 border-t border-[#EBEBEB]">
-          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F5F5F3] cursor-pointer transition-colors">
+        <div className="px-3 py-4 border-t border-[#EBEBEB] dark:border-[#2a2a2a]">
+          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F5F5F3] dark:hover:bg-[#1A1A1A] cursor-pointer transition-colors">
             <div className="w-8 h-8 rounded-full bg-[#0F0F0F] flex items-center justify-center text-[13px] font-bold text-[#C9A84C] flex-shrink-0">
               {dashboard.user.initial}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[13px] font-semibold text-[#0F0F0F] tracking-[-0.01em] truncate">
+              <div className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em] truncate">
                 {dashboard.user.fullName}
               </div>
-              <div className="text-[11.5px] text-[#888] truncate">{dashboard.user.plan}</div>
+              <div className="text-[11.5px] text-[#888] dark:text-[#777] truncate">{dashboard.user.plan}</div>
             </div>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M5 4L8 7L5 10" stroke="#BBB" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
@@ -105,24 +106,30 @@ export default async function DashboardPage() {
       </aside>
 
       {/* Mobile top nav */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-white border-b border-[#EBEBEB] flex items-center justify-between px-5">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-white dark:bg-[#111] border-b border-[#EBEBEB] dark:border-[#2a2a2a] flex items-center justify-between px-5">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] dark:bg-white flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2 10L7 4L12 10" stroke="#C9A84C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               <circle cx="7" cy="11" r="1.2" fill="#C9A84C" />
             </svg>
           </div>
-          <span className="text-[15px] font-semibold tracking-[-0.02em]">FinanceFlow</span>
+          <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F] dark:text-white">FinanceFlow</span>
         </div>
-        <div className="w-8 h-8 rounded-full bg-[#0F0F0F] flex items-center justify-center text-[13px] font-bold text-[#C9A84C]">
-          {dashboard.user.initial}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <div className="w-8 h-8 rounded-full bg-[#0F0F0F] dark:bg-white flex items-center justify-center text-[13px] font-bold text-[#C9A84C]">
+            {dashboard.user.initial}
+          </div>
         </div>
       </header>
 
       {/* Main content */}
       <main className="lg:ml-60 pt-14 lg:pt-0">
         <div className="max-w-[1200px] mx-auto px-5 lg:px-8 py-8">
+          <div className="hidden lg:flex justify-end mb-4">
+            <ThemeToggle />
+          </div>
           {/* Hero */}
           <DashboardHero
             userName={dashboard.user.firstName}

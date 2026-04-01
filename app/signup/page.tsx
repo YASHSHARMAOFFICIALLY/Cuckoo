@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { toast } from "sonner";
 import Link from "next/link";
 import z from "zod";
@@ -88,11 +89,14 @@ export default function SignUpPage() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-b from-sky-200 via-sky-100 to-white">
-            <Card className="w-full max-w-sm p-8 rounded-2xl bg-white/80 backdrop-blur-xl shadow-2xl border border-white/50">
+        <div className="relative flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-b from-sky-200 via-sky-100 to-white dark:from-[#111827] dark:via-[#0F172A] dark:to-[#020617]">
+            <div className="absolute top-5 right-5">
+                <ThemeToggle />
+            </div>
+            <Card className="w-full max-w-sm p-8 rounded-2xl bg-white/80 dark:bg-[#111111]/90 backdrop-blur-xl shadow-2xl border border-white/50 dark:border-[#262626] text-[#0F0F0F] dark:text-white">
                 <CardHeader className="space-y-2 text-center">
                     <CardTitle className="text-2xl font-semibold tracking-tight">Create an Account</CardTitle>
-                    <CardDescription className="text-sm text-gray-500 max-w-xs mx-auto">
+                    <CardDescription className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
                         Join Finveda to manage your medical records and find healthcare
                     </CardDescription>
                 </CardHeader>
@@ -106,7 +110,7 @@ export default function SignUpPage() {
                                     id="name" 
                                     type="text" 
                                     placeholder="John Doe" 
-                                    className="pl-10 h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                                    className="pl-10 h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required 
@@ -121,7 +125,7 @@ export default function SignUpPage() {
                                     id="email" 
                                     type="email" 
                                     placeholder="name@example.com" 
-                                    className="pl-10 h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                                    className="pl-10 h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required 
@@ -136,7 +140,7 @@ export default function SignUpPage() {
                                     id="password" 
                                     type="password" 
                                     placeholder="••••••••"
-                                    className="pl-10 h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                                    className="pl-10 h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required 
@@ -158,7 +162,7 @@ export default function SignUpPage() {
                             <span className="w-full border-t" />
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-white px-4 text-xs uppercase tracking-wider text-gray-400">
+                            <span className="bg-white dark:bg-[#111111]/90 px-4 text-xs uppercase tracking-wider text-gray-400">
                                 Or sign up with
                             </span>
                         </div>
@@ -167,7 +171,7 @@ export default function SignUpPage() {
                     <div className="grid grid-cols-2 gap-3">
                         <Button
                             variant="outline"
-                            className="h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center gap-2 cursor-pointer"
+                            className="h-10 rounded-lg border border-gray-200 dark:border-[#303030] bg-white dark:bg-[#1A1A1A] hover:bg-gray-50 dark:hover:bg-[#222] flex items-center justify-center gap-2 cursor-pointer"
                             onClick={() => handleSocialSignUp("google")}
                             disabled={loading}
                             >
@@ -179,7 +183,7 @@ export default function SignUpPage() {
                         </Button>
                         <Button
                             variant="outline"
-                            className="h-10 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center gap-2 cursor-pointer"
+                            className="h-10 rounded-lg border border-gray-200 dark:border-[#303030] bg-white dark:bg-[#1A1A1A] hover:bg-gray-50 dark:hover:bg-[#222] flex items-center justify-center gap-2 cursor-pointer"
                             onClick={() => handleSocialSignUp("github")}
                             disabled={loading}
                             >
@@ -191,7 +195,7 @@ export default function SignUpPage() {
                         </Button>
                     </div>
                 </CardContent>
-                <CardFooter className="flex items-center justify-center gap-2 pt-4 text-sm text-gray-500">
+                <CardFooter className="flex items-center justify-center gap-2 pt-4 text-sm text-gray-500 dark:text-gray-400">
                     <span className="text-muted-foreground">Already have an account?</span>
                     <Link href="/signin" className="font-medium text-primary hover:underline">
                         Sign In

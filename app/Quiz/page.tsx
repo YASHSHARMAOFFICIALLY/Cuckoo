@@ -18,7 +18,7 @@ function SectionDivider() {
 }
 export default function LearnPage() {
   return (
-    <div className="bg-white min-h-screen font-sans antialiased" >
+    <div className="bg-white dark:bg-[#0A0A0A] min-h-screen font-sans antialiased" >
       <Navbar />
       <main className="mt-40">
        <QuizPage/>

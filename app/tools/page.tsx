@@ -12,13 +12,13 @@ import SipCalculator from "@/components/tools/sipcalculatortools"
 
 export default function Tools() {
   return (
-    <div className="bg-white min-h-screen font-sans antialiased">
+    <div className="bg-white dark:bg-[#0A0A0A] min-h-screen font-sans antialiased">
       <Navbar />
       <main>
        <ToolsHero/>
         {/* Divider */}
         <div className="max-w-6xl mx-auto px-6">
-          <div className="h-px bg-[#F0F0F0]" />
+          <div className="h-px bg-[#F0F0F0] dark:bg-[#222]" />
         </div>
         <ToolsGrid/>
         <StockMarketTool/>

@@ -174,17 +174,17 @@ function IndicatorBar({ item, delay }) {
 
 export default function FinancialHealthCard({ health }) {
   return (
-    <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] h-full">
+    <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] h-full">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <div className="text-[11.5px] font-semibold text-[#888] uppercase tracking-[0.08em] mb-0.5">
+          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#777] uppercase tracking-[0.08em] mb-0.5">
             Financial Health
           </div>
-          <div className="text-[15px] font-semibold text-[#0F0F0F] tracking-[-0.02em]">
+          <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.02em]">
             Your overall score
           </div>
         </div>
-        <button className="text-[12px] text-[#888] hover:text-[#0F0F0F] transition-colors px-3 py-1.5 rounded-lg border border-[#F0F0F0] hover:border-[#D0D0D0]">
+        <button className="text-[12px] text-[#888] dark:text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#262626] hover:border-[#D0D0D0] dark:hover:border-[#3A3A3A]">
           Details →
         </button>
       </div>
@@ -201,8 +201,8 @@ export default function FinancialHealthCard({ health }) {
         </div>
       </div>
 
-      <div className="mt-5 pt-5 border-t border-[#F5F5F5]">
-        <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F1E8] border border-[#E8DFC0]">
+      <div className="mt-5 pt-5 border-t border-[#F5F5F5] dark:border-[#222]">
+        <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F1E8] dark:bg-[#241E12] border border-[#E8DFC0] dark:border-[#4A3F28]">
           <span className="text-lg">💡</span>
           <div>
             <div className="text-[12px] font-semibold text-[#8B7340] mb-0.5">

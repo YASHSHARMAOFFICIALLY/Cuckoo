@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -74,11 +75,14 @@ function SignInForm() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-b from-sky-200 via-sky-100 to-white">
-            <Card className="w-full max-w-sm p-8 rounded-2xl bg-white/80 backdrop-blur-xl shadow-2xl border border-white/50">
+        <div className="relative flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-b from-sky-200 via-sky-100 to-white dark:from-[#111827] dark:via-[#0F172A] dark:to-[#020617]">
+            <div className="absolute top-5 right-5">
+                <ThemeToggle />
+            </div>
+            <Card className="w-full max-w-sm p-8 rounded-2xl bg-white/80 dark:bg-[#111111]/90 backdrop-blur-xl shadow-2xl border border-white/50 dark:border-[#262626] text-[#0F0F0F] dark:text-white">
                 <CardHeader className="space-y-2 text-center">
                     <CardTitle className="text-3xl font-semibold tracking-tight">FinVeda</CardTitle>
-                    <CardDescription className="text-sm text-gray-500 max-w-xs mx-auto">
+                    <CardDescription className="text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
                         Enter your credentials to access your dashboard
                     </CardDescription>
                 </CardHeader>
@@ -88,7 +92,7 @@ function SignInForm() {
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <Input 
-                                className="h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                                className="h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
                                 id="email" type="email" placeholder="name@example.com" 
                                 value={email} onChange={(e) => setEmail(e.target.value)} required 
                             />
@@ -101,7 +105,7 @@ function SignInForm() {
                                 </Link>
                             </div>
                             <Input 
-                                className="h-11 rounded-lg bg-gray-100 border-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                                className="h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
                                 id="password" type="password" 
                                 value={password} onChange={(e) => setPassword(e.target.value)} required 
                             />
@@ -115,7 +119,7 @@ function SignInForm() {
                     <div className="relative my-4">
                         <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
                         <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-white/80 px-2 text-gray-400">Or continue with</span>
+                            <span className="bg-white/80 dark:bg-[#111111]/90 px-2 text-gray-400">Or continue with</span>
                         </div>
                     </div>
 
@@ -131,7 +135,7 @@ function SignInForm() {
                     </div>
                 </CardContent>
 
-                <CardFooter className="flex items-center justify-center gap-2 py-4 text-sm text-gray-500">
+                <CardFooter className="flex items-center justify-center gap-2 py-4 text-sm text-gray-500 dark:text-gray-400">
                     <span>Don&apos;t have an account?</span>
                     <Link href="/signup" className="font-medium text-primary hover:underline">Create Account</Link>
                 </CardFooter>
