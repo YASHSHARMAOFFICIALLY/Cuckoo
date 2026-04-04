@@ -23,3 +23,19 @@ export const dashboardGoalUpdateSchema = dashboardGoalSchema.partial().refine(
     (value) => Object.keys(value).length > 0,
     "At least one field must be provided"
 )
+
+export const portfolioContributionSchema = z.object({
+    amountInvested: z.coerce.number().int().positive("Investment amount must be positive"),
+    currentValue: z.coerce.number().int().positive("Current portfolio value must be positive"),
+})
+
+export const quizAttemptSchema = z.object({
+    topic: z.string().trim().min(2, "Quiz topic is required"),
+    score: z.coerce.number().int().min(0, "Score cannot be negative"),
+    total: z.coerce.number().int().positive("Total questions must be positive"),
+    xpEarned: z.coerce.number().int().min(0).optional(),
+})
+
+export const learningProgressUpdateSchema = z.object({
+    action: z.enum(["complete_lesson"]),
+})

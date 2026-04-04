@@ -41,7 +41,7 @@ export default function Newsletter() {
               <circle cx="9" cy="9" r="8" fill="#3A7A5A"/>
               <path d="M5.5 9L7.5 11L12.5 6.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            You're in! Check your inbox for a welcome note.
+            You&apos;re in! Check your inbox for a welcome note.
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">

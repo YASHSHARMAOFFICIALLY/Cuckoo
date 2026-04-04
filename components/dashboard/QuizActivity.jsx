@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 function ActivityItem({ activity }) {
@@ -64,9 +65,9 @@ export default function RecentActivity({ activities = [] }) {
             Recent transactions
           </div>
         </div>
-        <button className="text-[12px] font-medium text-[#555] dark:text-[#AAA] hover:text-[#0F0F0F] dark:hover:text-white transition-colors">
+        <Link href="/dashboard" className="text-[12px] font-medium text-[#555] dark:text-[#AAA] hover:text-[#0F0F0F] dark:hover:text-white transition-colors">
           View all →
-        </button>
+        </Link>
       </div>
 
       {/* Filter tabs */}
@@ -86,11 +87,17 @@ export default function RecentActivity({ activities = [] }) {
         ))}
       </div>
 
-      <div className="flex flex-col divide-y divide-[#F5F5F5] dark:divide-[#222]">
-        {filteredActivities.map((activity) => (
-          <ActivityItem key={activity.id} activity={activity} />
-        ))}
-      </div>
+      {filteredActivities.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2A2A2A] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#777]">
+          No activity in this category yet.
+        </div>
+      ) : (
+        <div className="flex flex-col divide-y divide-[#F5F5F5] dark:divide-[#222]">
+          {filteredActivities.map((activity) => (
+            <ActivityItem key={activity.id} activity={activity} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

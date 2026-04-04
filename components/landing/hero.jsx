@@ -155,7 +155,7 @@ export default function Hero() {
               <div className="mb-3">{bentoCards[0].icon}</div>
               <div className="text-[15px] font-semibold tracking-[-0.02em] mb-1">{bentoCards[0].title}</div>
               <div className="text-[12.5px] text-white/50 dark:text-[#0F0F0F]/50">{bentoCards[0].desc}</div>
-              <div className="mt-4 text-[11px] font-medium text-[#C9A84C] tracking-wide uppercase">Today's quiz →</div>
+              <div className="mt-4 text-[11px] font-medium text-[#C9A84C] tracking-wide uppercase">Today&apos;s quiz →</div>
             </div>
 
             {/* SIP Tracker */}

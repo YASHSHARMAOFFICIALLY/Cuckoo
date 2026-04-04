@@ -1,5 +1,5 @@
 "use client"
-import { useScrollReveal } from "@/hooks/useScroeRevel";
+import { useScrollReveal } from "@/hooks/useScrollRevel";
 import { useRef, useEffect } from "react";
 
 const CONCEPTS = [

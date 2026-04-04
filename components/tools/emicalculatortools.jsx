@@ -117,7 +117,7 @@ export default function EmiCalculator() {
             </div>
 
             <div className="bg-[#F5F1E8] border border-[#E8DFC0] rounded-xl px-5 py-4 text-[13px] text-[#8B7340] leading-relaxed">
-              💡 You'll pay <strong>{interestPct}%</strong> of your total payment as interest over {tenure} years.
+              💡 You&apos;ll pay <strong>{interestPct}%</strong> of your total payment as interest over {tenure} years.
             </div>
           </div>
         </div>

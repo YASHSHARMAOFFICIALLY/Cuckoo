@@ -71,12 +71,15 @@ function CalculationTable({ label, rows }) {
 }
 
 function StreamingText({ text, onDone }) {
-  const [displayed, setDisplayed] = useState("");
-  const idx = useRef(0);
+  const [displayed, setDisplayed] = useState(() => (text ? text.slice(0, 1) : ""));
+  const idx = useRef(text ? 1 : 0);
 
   useEffect(() => {
-    idx.current = 0;
-    setDisplayed("");
+    if (!text) {
+      onDone?.();
+      return;
+    }
+
     const interval = setInterval(() => {
       if (idx.current < text.length) {
         setDisplayed(text.slice(0, idx.current + 1));
@@ -87,7 +90,7 @@ function StreamingText({ text, onDone }) {
       }
     }, 10);
     return () => clearInterval(interval);
-  }, [text]);
+  }, [onDone, text]);
 
   return <span>{displayed}</span>;
 }
@@ -109,7 +112,7 @@ function AIMessageContent({ content, streaming, onStreamDone }) {
           return (
             <p key={i} className="text-[14px] text-[#333] leading-relaxed tracking-[-0.01em] mb-1">
               {streaming && i === streamedBlock ? (
-                <StreamingText text={block.value} onDone={() => { handleBlockDone(); if (i === content.length - 1) onStreamDone?.(); }} />
+                <StreamingText key={block.value} text={block.value} onDone={() => { handleBlockDone(); if (i === content.length - 1) onStreamDone?.(); }} />
               ) : block.value}
             </p>
           );

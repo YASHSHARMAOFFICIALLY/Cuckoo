@@ -1,72 +1,136 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-function ModuleRow({ mod, delay }) {
+function mapModuleFromApi(module) {
+  return {
+    id: module.id,
+    title: module.title,
+    lessons: module.lessons,
+    completed: module.completedLessons,
+    icon: module.icon,
+    color: module.color,
+    bg: module.bgColor,
+    border: module.borderColor,
+    badge: module.badge,
+    current: module.isCurrent,
+  };
+}
+
+function ModuleRow({ mod, delay, onCompleteLesson, busy }) {
   const pct = Math.round((mod.completed / mod.lessons) * 100);
   const [barWidth, setBarWidth] = useState(0);
 
   useEffect(() => {
     const t = setTimeout(() => setBarWidth(pct), 400 + delay);
     return () => clearTimeout(t);
-  }, []);
+  }, [delay, pct]);
 
   return (
     <div
-      className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-150 ${
+      className={`p-3 rounded-xl transition-all duration-150 ${
         mod.current
           ? "bg-[#FAFAF8] dark:bg-[#181818] border border-[#EBEBEB] dark:border-[#2A2A2A]"
           : "hover:bg-[#FAFAF8] dark:hover:bg-[#181818]"
-      } ${mod.locked ? "opacity-50" : "cursor-pointer"}`}
+      } ${mod.locked ? "opacity-50" : ""}`}
     >
-      <div
-        className="w-9 h-9 rounded-xl flex items-center justify-center text-base flex-shrink-0"
-        style={{ background: mod.bg, border: `1px solid ${mod.border}` }}
-      >
-        {mod.locked ? "🔒" : mod.icon}
-      </div>
+      <div className="flex items-center gap-3">
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center text-base flex-shrink-0"
+          style={{ background: mod.bg, border: `1px solid ${mod.border}` }}
+        >
+          {mod.locked ? "🔒" : mod.icon}
+        </div>
 
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em] truncate">
-            {mod.title}
-          </span>
-          {mod.current && (
-            <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F5F1E8] text-[#8B7340] border border-[#E8DFC0] flex-shrink-0">
-              CURRENT
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em] truncate">
+              {mod.title}
             </span>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="flex-1 h-1 bg-[#EBEBEB] dark:bg-[#2A2A2A] rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-[width] duration-700 ease-out"
-              style={{ width: `${barWidth}%`, background: mod.color }}
-            />
+            {mod.current && (
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F5F1E8] text-[#8B7340] border border-[#E8DFC0] flex-shrink-0">
+                CURRENT
+              </span>
+            )}
           </div>
-          <span className="text-[11px] text-[#888] dark:text-[#777] flex-shrink-0">
-            {mod.completed}/{mod.lessons}
-          </span>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1 bg-[#EBEBEB] dark:bg-[#2A2A2A] rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-[width] duration-700 ease-out"
+                style={{ width: `${barWidth}%`, background: mod.color }}
+              />
+            </div>
+            <span className="text-[11px] text-[#888] dark:text-[#777] flex-shrink-0">
+              {mod.completed}/{mod.lessons}
+            </span>
+          </div>
         </div>
+
+        <span
+          className="text-[10.5px] font-medium px-2 py-0.5 rounded-full flex-shrink-0"
+          style={{
+            background: mod.bg,
+            color: mod.color,
+            border: `1px solid ${mod.border}`,
+          }}
+        >
+          {mod.badge}
+        </span>
       </div>
 
-      <span
-        className="text-[10.5px] font-medium px-2 py-0.5 rounded-full flex-shrink-0"
-        style={{
-          background: mod.bg,
-          color: mod.color,
-          border: `1px solid ${mod.border}`,
-        }}
-      >
-        {mod.badge}
-      </span>
+      {mod.current && mod.completed < mod.lessons && (
+        <div className="mt-3 flex justify-end">
+          <button
+            type="button"
+            onClick={() => onCompleteLesson(mod.id)}
+            disabled={busy}
+            className="text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#D0E0FF] text-[#4A6FA5] bg-[#F0F5FF] disabled:opacity-50"
+          >
+            {busy ? "Saving..." : "Complete lesson"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function LearningProgress({ learning }) {
-  const totalLessons = learning.modules.reduce((a, m) => a + m.lessons, 0);
-  const completedLessons = learning.modules.reduce((a, m) => a + m.completed, 0);
-  const overallPct = Math.round((completedLessons / totalLessons) * 100);
+  const [modules, setModules] = useState(() => learning.modules);
+  const [error, setError] = useState("");
+  const [busyModuleId, setBusyModuleId] = useState(null);
+
+  useEffect(() => {
+    setModules(learning.modules);
+  }, [learning]);
+
+  const totalLessons = modules.reduce((a, m) => a + m.lessons, 0);
+  const completedLessons = modules.reduce((a, m) => a + m.completed, 0);
+  const overallPct = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+  const handleCompleteLesson = async (moduleId) => {
+    setBusyModuleId(moduleId);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/dashboard/learning/${moduleId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ action: "complete_lesson" }),
+      });
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(payload?.error || "Failed to update learning progress");
+      }
+
+      setModules(payload.modules.map(mapModuleFromApi));
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setBusyModuleId(null);
+    }
+  };
 
   return (
     <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
@@ -87,7 +151,6 @@ export default function LearningProgress({ learning }) {
         </a>
       </div>
 
-      {/* Overall progress */}
       <div className="flex items-center gap-4 p-4 rounded-xl bg-[#FAFAF8] dark:bg-[#181818] border border-[#EBEBEB] dark:border-[#2A2A2A] mb-4">
         <div className="flex-1">
           <div className="flex justify-between items-center mb-1.5 text-[12px]">
@@ -112,14 +175,30 @@ export default function LearningProgress({ learning }) {
         </div>
       </div>
 
-      {/* Modules */}
+      {error && (
+        <div className="mb-4 rounded-xl border border-[#F3D1D1] bg-[#FFF3F3] px-3 py-2 text-[12px] text-[#A04A4A]">
+          {error}
+        </div>
+      )}
+
+      {modules.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2A2A2A] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#777]">
+          No learning modules available yet.
+        </div>
+      ) : (
       <div className="flex flex-col gap-1">
-        {learning.modules.map((mod, i) => (
-          <ModuleRow key={mod.id} mod={mod} delay={i * 70} />
+        {modules.map((mod, i) => (
+          <ModuleRow
+            key={mod.id}
+            mod={mod}
+            delay={i * 70}
+            onCompleteLesson={handleCompleteLesson}
+            busy={busyModuleId === mod.id}
+          />
         ))}
       </div>
+      )}
 
-      {/* Latest quiz result */}
       <div className="mt-4 pt-4 border-t border-[#F5F5F5] dark:border-[#222]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">

@@ -1,5 +1,5 @@
 "use client"
-import { useScrollReveal } from "@/hooks/useScroeRevel";
+import { useScrollReveal } from "@/hooks/useScrollRevel";
 import { useRef, useEffect } from "react";
 
 const STEPS = [
@@ -181,7 +181,7 @@ export default function LearningPath() {
               Your path to financial mastery
             </h2>
             <p className="text-[15px] text-[#666] leading-relaxed tracking-[-0.01em] mb-6">
-              A structured roadmap designed for beginners. Follow these five steps in order and you'll go from confused to confident in your money decisions.
+              A structured roadmap designed for beginners. Follow these five steps in order and you&apos;ll go from confused to confident in your money decisions.
             </p>
 
             <div className="p-5 rounded-2xl bg-white border border-[#E8E8E8]">

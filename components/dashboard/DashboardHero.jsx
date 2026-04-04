@@ -1,5 +1,10 @@
 "use client"
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardHero({
   userName = "Investor",
@@ -9,8 +14,15 @@ export default function DashboardHero({
   dataSource = "demo",
   dataStatusLabel = "Demo portfolio data",
   insight = "",
+  currentValue = 0,
 }) {
   const ref = useRef(null);
+  const router = useRouter();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [amountInvested, setAmountInvested] = useState("");
+  const [portfolioValue, setPortfolioValue] = useState(String(currentValue));
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const el = ref.current;
@@ -35,6 +47,42 @@ export default function DashboardHero({
     month: "long",
     year: "numeric",
   });
+
+  useEffect(() => {
+    setPortfolioValue(String(currentValue));
+  }, [currentValue]);
+
+  const handleAddInvestment = async (event) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/dashboard/portfolio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amountInvested: Number(amountInvested),
+          currentValue: Number(portfolioValue),
+        }),
+      });
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(payload?.error || "Failed to add investment");
+      }
+
+      setDialogOpen(false);
+      setAmountInvested("");
+      router.refresh();
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div ref={ref}>
@@ -79,7 +127,11 @@ export default function DashboardHero({
             </svg>
             {selectedPeriod}
           </button>
-          <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] text-[13px] font-medium hover:bg-[#2a2a2a] dark:hover:bg-[#E0E0E0] transition-all duration-150">
+          <button
+            type="button"
+            onClick={() => setDialogOpen(true)}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] text-[13px] font-medium hover:bg-[#2a2a2a] dark:hover:bg-[#E0E0E0] transition-all duration-150"
+          >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 2V12M2 7H12" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
@@ -130,6 +182,58 @@ export default function DashboardHero({
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Investment</DialogTitle>
+            <DialogDescription>
+              Record a new contribution and update the latest portfolio snapshot.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form className="grid gap-3" onSubmit={handleAddInvestment}>
+            <div className="grid gap-1.5">
+              <Label htmlFor="amount-invested">New amount invested</Label>
+              <Input
+                id="amount-invested"
+                type="number"
+                min="1"
+                value={amountInvested}
+                onChange={(event) => setAmountInvested(event.target.value)}
+                placeholder="5000"
+              />
+            </div>
+
+            <div className="grid gap-1.5">
+              <Label htmlFor="portfolio-value">Current portfolio value</Label>
+              <Input
+                id="portfolio-value"
+                type="number"
+                min="1"
+                value={portfolioValue}
+                onChange={(event) => setPortfolioValue(event.target.value)}
+                placeholder="250000"
+              />
+            </div>
+
+            {error && (
+              <div className="rounded-xl border border-[#F3D1D1] bg-[#FFF3F3] px-3 py-2 text-[12px] text-[#A04A4A]">
+                {error}
+              </div>
+            )}
+
+            <DialogFooter className="mt-2">
+              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={submitting}>
+                {submitting ? "Saving..." : "Save Snapshot"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -15,10 +15,10 @@ const RANGES = ["1M", "3M", "6M", "1Y", "All"];
 
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
-  const val = payload[0]?.value;
-  const inv = payload[1]?.value;
+  const val = Number(payload[0]?.value ?? 0);
+  const inv = Number(payload[1]?.value ?? 0);
   const gain = val - inv;
-  const pct = ((gain / inv) * 100).toFixed(1);
+  const pct = inv > 0 ? ((gain / inv) * 100).toFixed(1) : "0.0";
 
   return (
     <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-xl p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.35)] min-w-[160px]">
@@ -48,7 +48,7 @@ export default function PortfolioChart({ portfolio }) {
     invested: portfolio.investedValue,
   };
   const gain = fallback.value - fallback.invested;
-  const gainPct = ((gain / fallback.invested) * 100).toFixed(1);
+  const gainPct = fallback.invested > 0 ? ((gain / fallback.invested) * 100).toFixed(1) : "0.0";
   const isPositive = gain >= 0;
 
   return (
@@ -100,6 +100,11 @@ export default function PortfolioChart({ portfolio }) {
       </div>
 
       {/* Chart */}
+      {data.length === 0 ? (
+        <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2A2A2A] text-[12.5px] text-[#888] dark:text-[#777]">
+          No portfolio data available for this range yet.
+        </div>
+      ) : (
       <div style={{ height: 220 }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
@@ -151,6 +156,7 @@ export default function PortfolioChart({ portfolio }) {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      )}
 
       {/* Legend */}
       <div className="flex items-center gap-5 mt-4 pt-4 border-t border-[#F5F5F5] dark:border-[#222] text-[12px] text-[#888] dark:text-[#777]">

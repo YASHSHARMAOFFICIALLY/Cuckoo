@@ -31,7 +31,7 @@ const CAPABILITY_PILLS = [
   { icon: "💡", label: "Savings strategies" },
 ];
 
-export default function AssistantHero({ onStartChat }) {
+export default function AssistantHero() {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function AssistantHero({ onStartChat }) {
       </h1>
 
       <p className="text-[15.5px] leading-[1.7] text-[#555] mb-8 tracking-[-0.01em]">
-        Ask anything about investing, savings, or financial planning. I'll give you clear, jargon-free guidance tailored to your situation.
+        Ask anything about investing, savings, or financial planning. I&apos;ll give you clear, jargon-free guidance tailored to your situation.
       </p>
 
       {/* Capability pills */}

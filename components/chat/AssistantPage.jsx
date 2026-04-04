@@ -1,5 +1,6 @@
 'use client'
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import ChatLayout from "./chatlayout";
 import ChatInput from "./chatinput";
 import AssistantSidebar from "./AssiantSideBar";
@@ -17,7 +18,7 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-[#EBEBEB] flex items-center">
       <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
-        <a href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2 10L7 4L12 10" stroke="#C9A84C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -25,7 +26,7 @@ function Navbar() {
             </svg>
           </div>
           <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F]">FinanceFlow</span>
-        </a>
+        </Link>
 
         {/* Page title */}
         <div className="flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
@@ -46,7 +47,7 @@ function Navbar() {
             { label: "Community", href: "/community" },
             { label: "Dashboard", href: "/dashboard", active: true },
           ].map(({ label, href, active }) => (
-            <a
+            <Link
               key={label}
               href={href}
               className={`text-[13.5px] tracking-[-0.01em] transition-colors ${
@@ -54,7 +55,7 @@ function Navbar() {
               }`}
             >
               {label}
-            </a>
+            </Link>
           ))}
         </div>
       </div>

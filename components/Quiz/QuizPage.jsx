@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import QuizHero from "./Quizhero";
 import ProgressBar from "./Progressbar";
 import QuizCard from "./QuizCard";
@@ -32,7 +32,7 @@ function playSound(type) {
       osc.start();
       osc.stop(ctx.currentTime + 0.4);
     }
-  } catch (e) {}
+  } catch {}
 }
 
 // ── Streak badge ───────────────────────────────────────────
@@ -90,8 +90,30 @@ export default function QuizPage() {
   const [isCorrect, setIsCorrect]  = useState(false);
   const [streak, setStreak]        = useState(0);
   const [cardKey, setCardKey]      = useState(0);
+  const savedResultRef = useRef(false);
 
   const currentQuestion = QUESTIONS[qIndex];
+
+  useEffect(() => {
+    if (phase !== "result" || savedResultRef.current) {
+      return;
+    }
+
+    savedResultRef.current = true;
+
+    void fetch("/api/dashboard/quiz-attempts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        topic: "Finance Fundamentals",
+        score,
+        total: QUESTIONS.length,
+        xpEarned: score * 10,
+      }),
+    }).catch(() => null);
+  }, [phase, score]);
 
   const handleStart = () => {
     setPhase("quiz");
@@ -102,6 +124,7 @@ export default function QuizPage() {
     setIsCorrect(false);
     setStreak(0);
     setCardKey((k) => k + 1);
+    savedResultRef.current = false;
   };
 
   const handleAnswer = (idx) => {
@@ -135,7 +158,7 @@ export default function QuizPage() {
         className="text-center text-[32px] font-semibold tracking-[-0.03em] text-[#0F0F0F] mb-6 px-6"
         style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
       >
-        Here's How You Did
+        Here&apos;s How You Did
       </h1>
       <QuizResult score={score} total={QUESTIONS.length} onRetry={handleStart} />
     </>

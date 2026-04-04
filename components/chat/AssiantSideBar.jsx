@@ -14,6 +14,8 @@ const FINANCE_TIPS = [
   "The best time to start was yesterday. The next best is now.",
 ];
 
+const DAILY_TIP = FINANCE_TIPS[new Date().getDate() % FINANCE_TIPS.length];
+
 function RecentChats({ conversations }) {
   return (
     <div className="bg-white border border-[#E8E8E8] rounded-2xl p-4 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
@@ -73,7 +75,6 @@ function QuickTools() {
 }
 
 function FinanceTip() {
-  const tip = FINANCE_TIPS[Math.floor(Math.random() * FINANCE_TIPS.length)];
   return (
     <div className="bg-[#0F0F0F] rounded-2xl p-4">
       <div className="flex items-center gap-2 mb-2.5">
@@ -83,7 +84,7 @@ function FinanceTip() {
         </span>
       </div>
       <p className="text-[13px] text-white/70 leading-relaxed italic">
-        "{tip}"
+        &ldquo;{DAILY_TIP}&rdquo;
       </p>
     </div>
   );

@@ -1,7 +1,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import DashboardHero from "@/components/dashboard/DashboardHero"
-import FinancialHealthCard from "@/components/dashboard/Financialhealthcard ";
+import FinancialHealthCard from "@/components/dashboard/FinancialHealthCard";
 import PortfolioChart from "@/components/dashboard/PortfolioChart";
 import GoalProgress from "@/components/dashboard/GoalProgress";
 import LearningProgress from "@/components/dashboard/Learningprogress";
@@ -22,6 +23,14 @@ export default async function DashboardPage() {
   }
 
   const dashboard: DashboardData = await getDashboardData(session.user);
+  const mainNavItems = [
+    { label: "Dashboard", icon: "◉", href: "/dashboard", active: true },
+    { label: "Portfolio", icon: "📈", href: "/dashboard#portfolio" },
+    { label: "Goals", icon: "🎯", href: "/dashboard#goals" },
+    { label: "Tools", icon: "🔧", href: "/tools" },
+    { label: "Learn", icon: "📚", href: "/learn" },
+    { label: "Quiz", icon: "🧠", href: "/Quiz" },
+  ];
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0A0A0A]">
@@ -47,15 +56,8 @@ export default async function DashboardPage() {
           <div className="text-[10.5px] font-bold text-[#BBB] dark:text-[#666] uppercase tracking-[0.1em] px-3 mb-2">
             Main
           </div>
-          {[
-            { label: "Dashboard", icon: "◉", active: true },
-            { label: "Portfolio", icon: "📈" },
-            { label: "Goals", icon: "🎯", href:"/goals" },
-            { label: "Tools", icon: "🔧" ,href:"/tools" },
-            { label: "Learn", icon: "📚" ,href:"/learn" },
-            { label: "Quiz", icon: "🧠",href:"/Quiz" },
-          ].map((item) => (
-            <a
+          {mainNavItems.map((item) => (
+            <Link
               key={item.label}
               href={item.href}
               className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13.5px] font-medium mb-0.5 transition-all duration-150 ${
@@ -66,24 +68,23 @@ export default async function DashboardPage() {
             >
               <span>{item.icon}</span>
               {item.label}
-            </a>
+            </Link>
           ))}
 
           <div className="text-[10.5px] font-bold text-[#BBB] dark:text-[#666] uppercase tracking-[0.1em] px-3 mb-2 mt-5">
             Account
           </div>
           {[
-            { label: "Settings", icon: "⚙️" },
-            { label: "Help", icon: "💬" },
+            { label: "Theme", icon: "⚙️" },
+            { label: "Support", icon: "💬" },
           ].map((item) => (
-            <a
+            <div
               key={item.label}
-              href="#"
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-[#555] dark:text-[#AAA] hover:bg-[#F5F5F3] dark:hover:bg-[#1A1A1A] hover:text-[#0F0F0F] dark:hover:text-white mb-0.5 transition-all duration-150"
             >
               <span>{item.icon}</span>
               {item.label}
-            </a>
+            </div>
           ))}
         </nav>
 
@@ -140,16 +141,17 @@ export default async function DashboardPage() {
             dataSource={dashboard.hero.dataSource}
             dataStatusLabel={dashboard.hero.dataStatusLabel}
             insight={dashboard.hero.insight}
+            currentValue={dashboard.portfolio.currentValue}
           />
 
           {/* Row 1: Health Card + Portfolio Chart */}
-          <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-5 mt-6">
+          <div id="portfolio" className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-5 mt-6 scroll-mt-20">
             <FinancialHealthCard health={dashboard.financialHealth} />
             <PortfolioChart portfolio={dashboard.portfolio} />
           </div>
 
           {/* Row 2: Goals + Learning */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+          <div id="goals" className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5 scroll-mt-20">
             <GoalProgress goals={dashboard.goals} />
             <LearningProgress learning={dashboard.learning} />
           </div>

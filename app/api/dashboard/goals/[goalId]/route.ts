@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { buildDashboardActivity } from "@/lib/dashboard-activity";
 import { getServerSession } from "@/lib/session";
 import { dashboardGoalUpdateSchema } from "@/lib/validators";
 
@@ -64,16 +65,39 @@ export async function PATCH(
   const currentAmount = parsed.data.currentAmount ?? existingGoal.currentAmount;
   const achieved = parsed.data.achieved ?? currentAmount >= targetAmount;
 
-  const goal = await db.dashboardGoal.update({
-    where: { id: existingGoal.id },
-    data: {
-      ...parsed.data,
-      targetDate,
-      targetAmount,
-      currentAmount,
-      achieved,
-      monthlyNeeded: calculateMonthlyNeeded(targetAmount, currentAmount, targetDate),
-    },
+  const goal = await db.$transaction(async (tx) => {
+    const updatedGoal = await tx.dashboardGoal.update({
+      where: { id: existingGoal.id },
+      data: {
+        ...parsed.data,
+        targetDate,
+        targetAmount,
+        currentAmount,
+        achieved,
+        monthlyNeeded: calculateMonthlyNeeded(targetAmount, currentAmount, targetDate),
+      },
+    });
+
+    await tx.dashboardActivity.create({
+      data: {
+        userId: session.user.id,
+        ...buildDashboardActivity({
+          category: "Goals",
+          title: updatedGoal.achieved ? "Goal Achieved" : "Goal Updated",
+          description: `${updatedGoal.name} is at ${Math.round((updatedGoal.currentAmount / updatedGoal.targetAmount) * 100)}%`,
+          icon: updatedGoal.emoji,
+          iconBg: "#F0FBF4",
+          iconBorder: "#C0E8D0",
+          amountLabel: `Saved ${updatedGoal.currentAmount.toLocaleString("en-IN")}`,
+          amountColor: "#3A7A5A",
+          tag: "Goals",
+          tagBg: "#F0FBF4",
+          tagColor: "#3A7A5A",
+        }),
+      },
+    });
+
+    return updatedGoal;
   });
 
   return NextResponse.json({ goal });
@@ -96,8 +120,29 @@ export async function DELETE(
     return NextResponse.json({ error: "Goal not found" }, { status: 404 });
   }
 
-  await db.dashboardGoal.delete({
-    where: { id: existingGoal.id },
+  await db.$transaction(async (tx) => {
+    await tx.dashboardGoal.delete({
+      where: { id: existingGoal.id },
+    });
+
+    await tx.dashboardActivity.create({
+      data: {
+        userId: session.user.id,
+        ...buildDashboardActivity({
+          category: "Goals",
+          title: "Goal Removed",
+          description: `${existingGoal.name} was deleted`,
+          icon: existingGoal.emoji,
+          iconBg: "#FFF3F3",
+          iconBorder: "#F3D1D1",
+          amountLabel: "Removed",
+          amountColor: "#A04A4A",
+          tag: "Goals",
+          tagBg: "#FFF3F3",
+          tagColor: "#A04A4A",
+        }),
+      },
+    });
   });
 
   return NextResponse.json({ success: true });

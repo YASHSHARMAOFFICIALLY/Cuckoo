@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef } from "react";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import CommunityHero from "./CommunityHero";
 import CreatePost from "./CreatePost";
@@ -11,7 +12,7 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-white dark:bg-[#0F0F0F] border-b border-[#EBEBEB] dark:border-[#222] flex items-center">
       <div className="max-w-6xl mx-auto px-6 w-full flex items-center justify-between">
-        <a href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-[#0F0F0F] dark:bg-white flex items-center justify-center">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2 10L7 4L12 10" stroke="#C9A84C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -19,7 +20,7 @@ function Navbar() {
             </svg>
           </div>
           <span className="text-[15px] font-semibold tracking-[-0.02em] text-[#0F0F0F] dark:text-white">FinanceFlow</span>
-        </a>
+        </Link>
 
         <div className="hidden md:flex items-center gap-8">
           {[
@@ -28,7 +29,7 @@ function Navbar() {
             { label: "Community", href: "/community", active: true },
             { label: "Pricing",   href: "/pricing" },
           ].map(({ label, href, active }) => (
-            <a
+            <Link
               key={label}
               href={href}
               className={`text-[13.5px] tracking-[-0.01em] transition-colors ${
@@ -38,24 +39,24 @@ function Navbar() {
               }`}
             >
               {label}
-            </a>
+            </Link>
           ))}
         </div>
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <a
-            href="/login"
+          <Link
+            href="/signin"
             className="hidden sm:block text-[13.5px] px-4 py-2 rounded-lg border border-[#E0E0E0] dark:border-[#333] text-[#333] dark:text-[#CCC] hover:border-[#0F0F0F] dark:hover:border-white hover:text-[#0F0F0F] dark:hover:text-white transition-all tracking-[-0.01em]"
           >
             Log In
-          </a>
-          <a
+          </Link>
+          <Link
             href="/signup"
             className="text-[13.5px] px-4 py-2 rounded-lg bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] hover:bg-[#2a2a2a] dark:hover:bg-[#E0E0E0] transition-all tracking-[-0.01em] shadow-sm"
           >
             Create Account
-          </a>
+          </Link>
         </div>
       </div>
     </nav>

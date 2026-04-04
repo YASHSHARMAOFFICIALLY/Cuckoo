@@ -165,7 +165,7 @@
 
 "use client"
 import { useRef, useEffect } from "react";
-import { useScrollReveal } from "@/hooks/useScroeRevel";
+import { useScrollReveal } from "@/hooks/useScrollRevel";
 
 const BLOGS = [
   {

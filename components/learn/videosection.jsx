@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { useScrollReveal } from "@/hooks/useScroeRevel";
+import { useScrollReveal } from "@/hooks/useScrollRevel";// 
 
 const VIDEOS = [
   {
@@ -166,3 +166,132 @@ export default function VideoSection() {
     </section>
   );
 }
+
+
+
+// "use client"
+// import { useState } from "react";
+// import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+// const VIDEOS = [
+//   {
+//     id: "v1",
+//     title: "Basics of Investing — A Beginner's Complete Guide",
+//     description:
+//       "Start from zero. Covers stocks, bonds, mutual funds, and how to begin investing.",
+//     duration: "18 min",
+//     views: "2.4L views",
+//     channel: "FinanceFlow Academy",
+//     thumbBg: "#0F0F0F",
+//     videoUrl: "https://www.youtube.com/embed/your_video_id_1",
+//   },
+//   {
+//     id: "v2",
+//     title: "How Mutual Funds Work",
+//     description:
+//       "Understand NAV, fund managers, equity vs debt funds, and selection strategy.",
+//     duration: "15 min",
+//     views: "1.8L views",
+//     channel: "FinanceFlow Academy",
+//     thumbBg: "#1A2A4A",
+//     videoUrl: "https://www.youtube.com/embed/your_video_id_2",
+//   },
+// ];
+
+// function PlayButton() {
+//   return (
+//     <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all duration-200 cursor-pointer">
+//       ▶
+//     </div>
+//   );
+// }
+
+// function VideoCard({ video, delay, onPlay }) {
+//   const ref = useScrollReveal(delay);
+
+//   return (
+//     <div
+//       ref={ref}
+//       className="group bg-white dark:bg-[#0a0a0a] border border-[#E8E8E8] dark:border-[#222] rounded-2xl overflow-hidden hover:-translate-y-1 transition cursor-pointer"
+//     >
+//       {/* Thumbnail */}
+//       <div
+//         className="relative h-48 flex items-center justify-center"
+//         style={{ background: video.thumbBg }}
+//         onClick={() => onPlay(video.videoUrl)}
+//       >
+//         <PlayButton />
+
+//         <div className="absolute bottom-3 right-3 text-xs bg-black/60 text-white px-2 py-1 rounded">
+//           {video.duration}
+//         </div>
+//       </div>
+
+//       {/* Content */}
+//       <div className="p-5">
+//         <p className="text-sm text-gray-400">{video.channel} • {video.views}</p>
+
+//         <h3 className="font-semibold text-black dark:text-white mt-1">
+//           {video.title}
+//         </h3>
+
+//         <p className="text-sm text-gray-500 mt-1">
+//           {video.description}
+//         </p>
+//       </div>
+//     </div>
+//   );
+// }
+
+// function VideoModal({ url, onClose }) {
+//   if (!url) return null;
+
+//   return (
+//     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+//       <div className="relative w-[90%] md:w-[700px] aspect-video">
+//         <iframe
+//           src={url}
+//           className="w-full h-full rounded-lg"
+//           allowFullScreen
+//         />
+//         <button
+//           onClick={onClose}
+//           className="absolute -top-10 right-0 text-white text-xl"
+//         >
+//           ✕
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default function VideoSection() {
+//   const headerRef = useScrollReveal();
+//   const [activeVideo, setActiveVideo] = useState(null);
+
+//   return (
+//     <section className="py-20 px-6 bg-white dark:bg-black">
+//       <div className="max-w-6xl mx-auto">
+//         <div ref={headerRef} className="mb-10">
+//           <h2 className="text-3xl font-semibold text-black dark:text-white">
+//             Watch & Learn
+//           </h2>
+//         </div>
+
+//         <div className="grid md:grid-cols-2 gap-5">
+//           {VIDEOS.map((v, i) => (
+//             <VideoCard
+//               key={v.id}
+//               video={v}
+//               delay={i * 100}
+//               onPlay={setActiveVideo}
+//             />
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Modal */}
+//       <VideoModal url={activeVideo} onClose={() => setActiveVideo(null)} />
+//     </section>
+//   );
+// }

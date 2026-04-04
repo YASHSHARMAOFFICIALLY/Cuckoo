@@ -56,6 +56,10 @@ function mapGoalFromApi(goal) {
   };
 }
 
+function buildGoalSummary(items) {
+  return items.filter((goal) => goal.achieved).length;
+}
+
 async function parseApiResponse(response) {
   const payload = await response.json().catch(() => null);
 
@@ -125,14 +129,16 @@ function GoalCard({ goal, delay, onBoost, onToggleAchieved, onDelete, busy }) {
             Add ₹5,000
           </button>
         )}
-        <button
-          type="button"
-          onClick={onToggleAchieved}
-          disabled={busy}
-          className="text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#E8DFC0] text-[#8B7340] bg-[#F5F1E8] disabled:opacity-50"
-        >
-          {goal.achieved ? "Reopen" : "Mark done"}
-        </button>
+        {!goal.achieved && (
+          <button
+            type="button"
+            onClick={onToggleAchieved}
+            disabled={busy}
+            className="text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#E8DFC0] text-[#8B7340] bg-[#F5F1E8] disabled:opacity-50"
+          >
+            Mark done
+          </button>
+        )}
         <button
           type="button"
           onClick={onDelete}
@@ -167,7 +173,7 @@ export default function GoalProgress({ goals = { achieved: 0, items: [] } }) {
     setItems(goals.items.map(normalizeGoal));
   }, [goals]);
 
-  const achieved = items.filter((goal) => goal.achieved).length;
+  const achieved = buildGoalSummary(items);
 
   const updateGoal = async (goalId, payload) => {
     setBusyGoalId(goalId);
@@ -273,6 +279,11 @@ export default function GoalProgress({ goals = { achieved: 0, items: [] } }) {
         </div>
       )}
 
+      {items.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2A2A2A] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#777]">
+          No goals yet. Create one to start tracking progress.
+        </div>
+      ) : (
       <div className="flex flex-col gap-3">
         {items.map((goal, i) => (
           <GoalCard
@@ -285,16 +296,20 @@ export default function GoalProgress({ goals = { achieved: 0, items: [] } }) {
                 currentAmount: Math.min(goal.target, goal.saved + 5000),
               })
             }
-            onToggleAchieved={() =>
-              updateGoal(goal.id, {
-                achieved: !goal.achieved,
-                currentAmount: goal.achieved ? goal.saved : goal.target,
-              })
+            onToggleAchieved={
+              goal.achieved
+                ? undefined
+                : () =>
+                    updateGoal(goal.id, {
+                      achieved: true,
+                      currentAmount: goal.target,
+                    })
             }
             onDelete={() => deleteGoal(goal.id)}
           />
         ))}
       </div>
+      )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-md">
