@@ -6,6 +6,18 @@ type SessionUser = {
   email?: string | null;
 };
 
+const globalForDashboardSeed = globalThis as typeof globalThis & {
+  dashboardSeededUsers?: Set<string>;
+};
+
+function getSeededUserCache() {
+  if (!globalForDashboardSeed.dashboardSeededUsers) {
+    globalForDashboardSeed.dashboardSeededUsers = new Set<string>();
+  }
+
+  return globalForDashboardSeed.dashboardSeededUsers;
+}
+
 function hashString(value: string) {
   let hash = 0;
   for (let index = 0; index < value.length; index += 1) {
@@ -348,6 +360,12 @@ async function ensureDashboardSeed(user: SessionUser) {
     return buildSeedData(user);
   }
 
+  const seededUserCache = getSeededUserCache();
+
+  if (seededUserCache.has(user.id)) {
+    return null;
+  }
+
   const existingData = await db.user.findUnique({
     where: { id: user.id },
     select: {
@@ -366,6 +384,7 @@ async function ensureDashboardSeed(user: SessionUser) {
     existingData.quizAttempts.length &&
     existingData.activityFeed.length
   ) {
+    seededUserCache.add(user.id);
     return null;
   }
 
@@ -435,6 +454,8 @@ async function ensureDashboardSeed(user: SessionUser) {
     }
   });
 
+  seededUserCache.add(user.id);
+
   return seedData;
 }
 
@@ -457,43 +478,94 @@ export async function getDashboardData(user: SessionUser) {
 
   try {
     const seeded = await ensureDashboardSeed(user);
-
-    const [portfolioPoints, goals, learningModules, quizAttempts, activities] =
-      await Promise.all([
-        db.portfolioSnapshot.findMany({
-          where: { userId: user.id },
+    const dashboardRecord = await db.user.findUnique({
+      where: { id: user.id },
+      select: {
+        portfolioPoints: {
+          select: {
+            label: true,
+            rangeKey: true,
+            value: true,
+            invested: true,
+          },
           orderBy: [{ rangeKey: "asc" }, { recordedAt: "asc" }],
-        }),
-        db.dashboardGoal.findMany({
-          where: { userId: user.id },
+        },
+        dashboardGoals: {
+          select: {
+            id: true,
+            name: true,
+            emoji: true,
+            targetAmount: true,
+            currentAmount: true,
+            monthlyNeeded: true,
+            targetDate: true,
+            color: true,
+            achieved: true,
+          },
           orderBy: [{ achieved: "asc" }, { createdAt: "asc" }],
-        }),
-        db.learningModuleProgress.findMany({
-          where: { userId: user.id },
+        },
+        learningModules: {
+          select: {
+            id: true,
+            title: true,
+            icon: true,
+            lessons: true,
+            completedLessons: true,
+            color: true,
+            bgColor: true,
+            borderColor: true,
+            badge: true,
+            isCurrent: true,
+          },
           orderBy: { sortOrder: "asc" },
-        }),
-        db.quizAttempt.findMany({
-          where: { userId: user.id },
+        },
+        quizAttempts: {
+          select: {
+            topic: true,
+            score: true,
+            total: true,
+            xpEarned: true,
+            attemptedAt: true,
+          },
           orderBy: { attemptedAt: "desc" },
           take: 10,
-        }),
-        db.dashboardActivity.findMany({
-          where: { userId: user.id },
+        },
+        activityFeed: {
+          select: {
+            id: true,
+            category: true,
+            title: true,
+            description: true,
+            icon: true,
+            iconBg: true,
+            iconBorder: true,
+            amountLabel: true,
+            amountColor: true,
+            tag: true,
+            tagBg: true,
+            tagColor: true,
+            occurredAt: true,
+          },
           orderBy: { occurredAt: "desc" },
           take: 12,
-        }),
-      ]);
+        },
+      },
+    });
+
+    if (!dashboardRecord) {
+      throw new Error("Dashboard user record not found");
+    }
 
     return mapDashboardData({
       user,
       now,
       initial,
       firstName,
-      portfolioPoints,
-      goals,
-      learningModules,
-      quizAttempts,
-      activities,
+      portfolioPoints: dashboardRecord.portfolioPoints,
+      goals: dashboardRecord.dashboardGoals,
+      learningModules: dashboardRecord.learningModules,
+      quizAttempts: dashboardRecord.quizAttempts,
+      activities: dashboardRecord.activityFeed,
       seeded,
       dataSource: "database",
     });

@@ -19,6 +19,16 @@ function allTimeLabel(date: Date) {
   return `${date.getFullYear()} Now`;
 }
 
+function buildSnapshotLabels(date: Date) {
+  return [
+    { rangeKey: "1M", label: longDateLabel(date) },
+    { rangeKey: "3M", label: monthLabel(date) },
+    { rangeKey: "6M", label: monthLabel(date) },
+    { rangeKey: "1Y", label: monthLabel(date) },
+    { rangeKey: "All", label: allTimeLabel(date) },
+  ];
+}
+
 export async function POST(request: Request) {
   const session = await getServerSession().catch(() => null);
 
@@ -55,21 +65,8 @@ export async function POST(request: Request) {
 
   const now = new Date();
   const nextInvested = latestPoint.invested + parsed.data.amountInvested;
-
-  if (parsed.data.currentValue < nextInvested) {
-    return NextResponse.json(
-      { error: "Current portfolio value cannot be lower than total invested amount" },
-      { status: 400 }
-    );
-  }
-
-  const snapshotData = [
-    { rangeKey: "1M", label: longDateLabel(now) },
-    { rangeKey: "3M", label: monthLabel(now) },
-    { rangeKey: "6M", label: monthLabel(now) },
-    { rangeKey: "1Y", label: monthLabel(now) },
-    { rangeKey: "All", label: allTimeLabel(now) },
-  ];
+  const nextCurrentValue = latestPoint.value + parsed.data.amountInvested;
+  const snapshotData = buildSnapshotLabels(now);
 
   await db.$transaction(async (tx) => {
     await tx.portfolioSnapshot.createMany({
@@ -79,7 +76,7 @@ export async function POST(request: Request) {
         label: entry.label,
         recordedAt: now,
         invested: nextInvested,
-        value: parsed.data.currentValue,
+        value: nextCurrentValue,
       })),
     });
 
@@ -89,7 +86,7 @@ export async function POST(request: Request) {
         ...buildDashboardActivity({
           category: "Investing",
           title: "Investment Added",
-          description: `Portfolio updated to ${parsed.data.currentValue.toLocaleString("en-IN")}`,
+          description: `Portfolio updated to ${nextCurrentValue.toLocaleString("en-IN")}`,
           icon: "📈",
           iconBg: "#F0F5FF",
           iconBorder: "#D0E0FF",
@@ -108,8 +105,61 @@ export async function POST(request: Request) {
     success: true,
     portfolio: {
       investedValue: nextInvested,
-      currentValue: parsed.data.currentValue,
-      totalReturn: parsed.data.currentValue - nextInvested,
+      currentValue: nextCurrentValue,
+      totalReturn: nextCurrentValue - nextInvested,
+    },
+  });
+}
+
+export async function DELETE() {
+  const session = await getServerSession().catch(() => null);
+
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const now = new Date();
+  const snapshotData = buildSnapshotLabels(now);
+
+  await db.$transaction(async (tx) => {
+    await tx.portfolioSnapshot.createMany({
+      data: snapshotData.map((entry) => ({
+        userId: session.user.id,
+        rangeKey: entry.rangeKey,
+        label: entry.label,
+        recordedAt: now,
+        invested: 0,
+        value: 0,
+      })),
+    });
+
+    await tx.dashboardActivity.create({
+      data: {
+        userId: session.user.id,
+        ...buildDashboardActivity({
+          category: "Investing",
+          title: "Portfolio Reset",
+          description: "Portfolio value and invested amount were reset to zero",
+          icon: "↺",
+          iconBg: "#FFF3F3",
+          iconBorder: "#F3D1D1",
+          amountLabel: "₹0",
+          amountColor: "#A04A4A",
+          tag: "Investing",
+          tagBg: "#FFF3F3",
+          tagColor: "#A04A4A",
+          occurredAt: now,
+        }),
+      },
+    });
+  });
+
+  return NextResponse.json({
+    success: true,
+    portfolio: {
+      investedValue: 0,
+      currentValue: 0,
+      totalReturn: 0,
     },
   });
 }

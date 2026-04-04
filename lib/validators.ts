@@ -26,7 +26,6 @@ export const dashboardGoalUpdateSchema = dashboardGoalSchema.partial().refine(
 
 export const portfolioContributionSchema = z.object({
     amountInvested: z.coerce.number().int().positive("Investment amount must be positive"),
-    currentValue: z.coerce.number().int().positive("Current portfolio value must be positive"),
 })
 
 export const quizAttemptSchema = z.object({

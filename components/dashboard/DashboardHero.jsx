@@ -20,8 +20,8 @@ export default function DashboardHero({
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [amountInvested, setAmountInvested] = useState("");
-  const [portfolioValue, setPortfolioValue] = useState(String(currentValue));
   const [submitting, setSubmitting] = useState(false);
+  const [resetting, setResetting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -48,10 +48,6 @@ export default function DashboardHero({
     year: "numeric",
   });
 
-  useEffect(() => {
-    setPortfolioValue(String(currentValue));
-  }, [currentValue]);
-
   const handleAddInvestment = async (event) => {
     event.preventDefault();
     setSubmitting(true);
@@ -65,7 +61,6 @@ export default function DashboardHero({
         },
         body: JSON.stringify({
           amountInvested: Number(amountInvested),
-          currentValue: Number(portfolioValue),
         }),
       });
       const payload = await response.json().catch(() => null);
@@ -81,6 +76,30 @@ export default function DashboardHero({
       setError(requestError.message);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleResetPortfolio = async () => {
+    setResetting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/dashboard/portfolio", {
+        method: "DELETE",
+      });
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(payload?.error || "Failed to reset portfolio");
+      }
+
+      setDialogOpen(false);
+      setAmountInvested("");
+      router.refresh();
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -188,7 +207,7 @@ export default function DashboardHero({
           <DialogHeader>
             <DialogTitle>Add Investment</DialogTitle>
             <DialogDescription>
-              Record a new contribution and update the latest portfolio snapshot.
+              Add a new contribution. The dashboard will automatically build on your latest stored portfolio value.
             </DialogDescription>
           </DialogHeader>
 
@@ -205,16 +224,8 @@ export default function DashboardHero({
               />
             </div>
 
-            <div className="grid gap-1.5">
-              <Label htmlFor="portfolio-value">Current portfolio value</Label>
-              <Input
-                id="portfolio-value"
-                type="number"
-                min="1"
-                value={portfolioValue}
-                onChange={(event) => setPortfolioValue(event.target.value)}
-                placeholder="250000"
-              />
+            <div className="rounded-xl border border-[#E8E8E8] bg-[#FAFAF8] px-3 py-2 text-[12px] text-[#666] dark:border-[#2A2A2A] dark:bg-[#181818] dark:text-[#AAA]">
+              Current portfolio value: ₹{currentValue.toLocaleString("en-IN")}
             </div>
 
             {error && (
@@ -224,10 +235,18 @@ export default function DashboardHero({
             )}
 
             <DialogFooter className="mt-2">
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleResetPortfolio}
+                disabled={resetting || submitting}
+              >
+                {resetting ? "Resetting..." : "Reset to Zero"}
+              </Button>
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={submitting}>
+              <Button type="submit" disabled={submitting || resetting}>
                 {submitting ? "Saving..." : "Save Snapshot"}
               </Button>
             </DialogFooter>
