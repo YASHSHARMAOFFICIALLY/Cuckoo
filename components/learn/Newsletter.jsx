@@ -17,7 +17,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-24 px-6 bg-white">
+    <section className="py-24 px-6 bg-white dark:bg-black">
       <div className="max-w-2xl mx-auto text-center" ref={ref}>
         {/* Deco */}
         <div className="flex items-center justify-center mb-10">
@@ -37,7 +37,7 @@ export default function Newsletter() {
         </div>
 
         <h2
-          className="text-[36px] font-semibold tracking-[-0.035em] text-[#0F0F0F] mb-4 leading-tight"
+          className="text-[36px] font-semibold tracking-[-0.035em] text-[#0F0F0F]  dark:text-white mb-4 leading-tight"
           style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
         >
           Get Smarter About Money Every Week

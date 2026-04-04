@@ -28,7 +28,7 @@ export default function Newsletter() {
           <span className="text-[12px] text-[#666] font-medium tracking-wide">Weekly Newsletter</span>
         </div>
 
-        <h2 className="text-[36px] font-semibold tracking-[-0.035em] text-[#0F0F0F] mb-4 leading-tight" style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}>
+        <h2 className="text-[36px] font-semibold tracking-[-0.035em] text-[#0F0F0F] dark:text-white mb-4 leading-tight" style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}>
           Stay Updated With Smart Financial Insights
         </h2>
         <p className="text-[15.5px] text-[#666] leading-relaxed mb-10 tracking-[-0.01em]">

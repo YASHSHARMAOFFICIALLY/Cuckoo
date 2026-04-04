@@ -8,14 +8,14 @@ export default function ToolsHero() {
         </div>
 
         <h1
-          className="text-[48px] leading-[1.1] font-semibold tracking-[-0.035em] text-[#0F0F0F] mb-5"
+          className="text-[48px] leading-[1.1] font-semibold tracking-[-0.035em] text-[#0F0F0F] mb-5 dark:text-white"
           style={{ fontFamily: "'DM Serif Display', Georgia, serif", animationDelay: "0.05s", animation: "fadeUp 0.6s ease both" }}
         >
           Powerful Tools for <span className="text-[#C9A84C]">Smarter</span> Financial Decisions
         </h1>
 
         <p
-          className="text-[16.5px] leading-[1.7] text-[#555] mb-9 tracking-[-0.01em]"
+          className="text-[16.5px] leading-[1.7] text-[#555] dark:text-neutral-400 mb-9 tracking-[-0.01em]"
           style={{ animation: "fadeUp 0.6s ease 0.15s both" }}
         >
           Calculate investments, track goals, and make confident money decisions
@@ -32,7 +32,7 @@ export default function ToolsHero() {
               <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </a>
-          <a href="#" className="text-[14px] text-[#888] hover:text-[#0F0F0F] transition-colors duration-200 tracking-[-0.01em]">
+          <a href="#" className="text-[14px] text-[#888] hover:text-[#0F0F0F] dark:text-neutral-400 transition-colors duration-200 tracking-[-0.01em]">
             View all calculators →
           </a>
         </div>

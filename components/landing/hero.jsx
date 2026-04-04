@@ -113,13 +113,13 @@ export default function Hero() {
               href="#"
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] text-[14px] rounded-xl font-medium hover:bg-[#2a2a2a] dark:hover:bg-[#e0e0e0] transition-all duration-200 shadow-sm tracking-[-0.01em]"
             >
-              Start Learning Finance
+             Chat with Arthsathi 
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
             <a
-              href="#"
+              href="/tools"
               className="inline-flex items-center gap-1.5 text-[14px] text-[#555] dark:text-[#aaa] hover:text-[#0F0F0F] dark:hover:text-white transition-colors duration-200 tracking-[-0.01em] group"
             >
               Explore Tools

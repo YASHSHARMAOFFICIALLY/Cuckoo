@@ -12,7 +12,7 @@ import SipCalculator from "@/components/tools/sipcalculatortools"
 
 export default function Tools() {
   return (
-    <div className="bg-white dark:bg-[#0A0A0A] min-h-screen font-sans antialiased">
+    <div className="bg-white dark:bg-[#0a0a0a] min-h-screen font-sans antialiased">
       <Navbar />
       <main>
        <ToolsHero/>
@@ -22,7 +22,7 @@ export default function Tools() {
         </div>
         <ToolsGrid/>
         <StockMarketTool/>
-        <SipCalculator/>
+        <SipCalculator />
         <EmiCalculator/>
         <GoalTracker/>  
        <Newsletter/>
