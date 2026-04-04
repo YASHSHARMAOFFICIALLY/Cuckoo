@@ -13,6 +13,9 @@ import { getDashboardData } from "@/lib/dashboard-data";
 import type { DashboardData } from "@/lib/dashboard-data";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+
+
+
 export default async function DashboardPage() {
   const session = await auth.api.getSession({
     headers: await headers(),

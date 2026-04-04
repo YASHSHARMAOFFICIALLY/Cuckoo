@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { QuickStat } from "@/types/dashboard";
 
 type SessionUser = {
   id?: string | null;
@@ -755,6 +756,33 @@ function mapDashboardData(input: {
     healthIndicators.reduce((sum, indicator) => sum + indicator.value, 0) / healthIndicators.length
   );
 
+  const quickStats: QuickStat[] = [
+    {
+      label: "Portfolio Value",
+      value: formatCurrency(currentValue),
+      delta: `${previousPortfolioPoint.value < currentValue ? "+" : ""}${formatCurrency(currentValue - previousPortfolioPoint.value)}`,
+      deltaDir: previousPortfolioPoint.value < currentValue ? "up" : "neutral",
+    },
+    {
+      label: "Active SIPs",
+      value: String(activeSips),
+      delta: `${formatCurrency(Math.round(investedValue / 28))} / mo`,
+      deltaDir: "neutral",
+    },
+    {
+      label: "Goals On Track",
+      value: `${onTrackGoals} / ${goals.length}`,
+      delta: `${Math.round((onTrackGoals / Math.max(1, goals.length)) * 100)}% progress`,
+      deltaDir: "up",
+    },
+    {
+      label: "Quiz Streak",
+      value: `${streak} days`,
+      delta: latestQuiz.score >= 8 ? "Strong momentum" : "Keep going",
+      deltaDir: "neutral",
+    },
+  ];
+
   return {
     user: {
       firstName: input.firstName,
@@ -775,32 +803,7 @@ function mapDashboardData(input: {
         month: "short",
         year: "numeric",
       }),
-      quickStats: [
-        {
-          label: "Portfolio Value",
-          value: formatCurrency(currentValue),
-          delta: `${previousPortfolioPoint.value < currentValue ? "+" : ""}${formatCurrency(currentValue - previousPortfolioPoint.value)}`,
-          deltaDir: previousPortfolioPoint.value < currentValue ? "up" : "neutral",
-        },
-        {
-          label: "Active SIPs",
-          value: String(activeSips),
-          delta: `${formatCurrency(Math.round(investedValue / 28))} / mo`,
-          deltaDir: "neutral",
-        },
-        {
-          label: "Goals On Track",
-          value: `${onTrackGoals} / ${goals.length}`,
-          delta: `${Math.round((onTrackGoals / Math.max(1, goals.length)) * 100)}% progress`,
-          deltaDir: "up",
-        },
-        {
-          label: "Quiz Streak",
-          value: `${streak} days`,
-          delta: latestQuiz.score >= 8 ? "Strong momentum" : "Keep going",
-          deltaDir: "neutral",
-        },
-      ],
+      quickStats,
     },
     financialHealth: {
       score: healthScore,

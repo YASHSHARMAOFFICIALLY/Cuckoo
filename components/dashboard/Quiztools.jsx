@@ -1,5 +1,12 @@
 import Link from "next/link";
 
+/**
+ * @typedef {import("@/types/dashboard").DashboardTool} DashboardTool
+ */
+
+/**
+ * @param {{ tools?: DashboardTool[] }} props
+ */
 export default function QuickTools({ tools = [] }) {
   return (
     <div className="bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(10,16,21,0.99)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_14px_34px_rgba(0,0,0,0.34)]">

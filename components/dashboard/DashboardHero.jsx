@@ -6,6 +6,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+/**
+ * @typedef {import("@/types/dashboard").QuickStat} QuickStat
+ */
+
+/**
+ * @param {{
+ *   userName?: string
+ *   initial?: string
+ *   quickStats?: QuickStat[]
+ *   selectedPeriod?: string
+ *   dataSource?: string
+ *   dataStatusLabel?: string
+ *   insight?: string
+ *   currentValue?: number
+ * }} props
+ */
 export default function DashboardHero({
   userName = "Investor",
   initial = "I",
@@ -23,6 +39,9 @@ export default function DashboardHero({
   const [submitting, setSubmitting] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [error, setError] = useState("");
+
+  
+
 
   useEffect(() => {
     const el = ref.current;

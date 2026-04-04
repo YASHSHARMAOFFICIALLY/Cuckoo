@@ -3,6 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+/**
+ * @typedef {import("@/types/dashboard").DashboardActivity} DashboardActivity
+ */
+
 function ActivityItem({ activity }) {
   return (
     <div className="flex items-start gap-3 py-3 group hover:bg-[#FAFAF8] dark:hover:bg-[#10181d] -mx-2 px-2 rounded-xl transition-colors duration-150 cursor-pointer">
@@ -47,6 +51,9 @@ function ActivityItem({ activity }) {
   );
 }
 
+/**
+ * @param {{ activities?: DashboardActivity[] }} props
+ */
 export default function RecentActivity({ activities = [] }) {
   const [filter, setFilter] = useState("All");
   const filteredActivities = useMemo(() => {

@@ -6,6 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+/**
+ * @typedef {import("@/types/dashboard").GoalProgressData} GoalProgressData
+ */
+
 function toINR(n) {
   if (n >= 10000000) return `₹${(n / 10000000).toFixed(1)}Cr`;
   if (n >= 100000) return `₹${(n / 100000).toFixed(1)}L`;
@@ -161,6 +165,9 @@ const initialForm = {
   targetDate: "",
 };
 
+/**
+ * @param {{ goals?: GoalProgressData }} props
+ */
 export default function GoalProgress({ goals = { achieved: 0, items: [] } }) {
   const [items, setItems] = useState(() => goals.items.map(normalizeGoal));
   const [dialogOpen, setDialogOpen] = useState(false);
