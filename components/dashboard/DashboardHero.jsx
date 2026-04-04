@@ -109,15 +109,15 @@ export default function DashboardHero({
       <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
         <div>
           <div className="flex items-center gap-2.5 mb-1.5">
-            <div className="w-8 h-8 rounded-full bg-[#0F0F0F] dark:bg-white flex items-center justify-center text-[13px] font-bold text-[#C9A84C]">
+            <div className="w-8 h-8 rounded-full bg-[#0F0F0F] dark:bg-[#142028] flex items-center justify-center text-[13px] font-bold text-[#C9A84C] border border-transparent dark:border-[#2d4451]">
               {initial}
             </div>
-            <span className="text-[13px] text-[#888] dark:text-[#777] tracking-[-0.01em]">{dateStr}</span>
+            <span className="text-[13px] text-[#888] dark:text-[#7e97a6] tracking-[-0.01em]">{dateStr}</span>
             <span
               className={`text-[10.5px] font-semibold px-2 py-0.5 rounded-full border ${
                 dataSource === "database"
-                  ? "bg-[#F0FBF4] text-[#3A7A5A] border-[#C0E8D0]"
-                  : "bg-[#FFF7E8] text-[#8B7340] border-[#E8DFC0]"
+                  ? "bg-[#F0FBF4] text-[#3A7A5A] border-[#C0E8D0] dark:bg-[#11251d] dark:text-[#86c5a4] dark:border-[#284c3d]"
+                  : "bg-[#FFF7E8] text-[#8B7340] border-[#E8DFC0] dark:bg-[#241d12] dark:text-[#dfbf75] dark:border-[#4b3d23]"
               }`}
             >
               {dataSource === "database" ? "LIVE" : "DEMO"}
@@ -132,13 +132,13 @@ export default function DashboardHero({
           <p className="text-[14px] text-[#888] dark:text-[#888] mt-1 tracking-[-0.01em]">
             {dataStatusLabel}
           </p>
-          <p className="text-[12.5px] text-[#555] dark:text-[#AAA] mt-2 tracking-[-0.01em] max-w-[520px]">
+          <p className="text-[12.5px] text-[#555] dark:text-[#9fb0ba] mt-2 tracking-[-0.01em] max-w-[520px]">
             {insight}
           </p>
         </div>
 
         <div className="flex items-center gap-2.5">
-          <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#E8E8E8] dark:border-[#2A2A2A] bg-white dark:bg-[#111111] text-[13px] text-[#555] dark:text-[#AAA] font-medium hover:border-[#0F0F0F] dark:hover:border-white hover:text-[#0F0F0F] dark:hover:text-white transition-all duration-150">
+          <button className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[#E8E8E8] dark:border-[#243842] bg-white dark:bg-[#121c22] text-[13px] text-[#555] dark:text-[#a7bac6] font-medium hover:border-[#0F0F0F] dark:hover:border-[#4b6674] hover:text-[#0F0F0F] dark:hover:text-white transition-all duration-150">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <rect x="1.5" y="2" width="11" height="10" rx="2" stroke="currentColor" strokeWidth="1.2" />
               <path d="M5 1.5V2.5M9 1.5V2.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
@@ -149,10 +149,10 @@ export default function DashboardHero({
           <button
             type="button"
             onClick={() => setDialogOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] text-[13px] font-medium hover:bg-[#2a2a2a] dark:hover:bg-[#E0E0E0] transition-all duration-150"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0F0F0F] dark:bg-[#f3efe3] text-white dark:text-[#091116] text-[13px] font-medium hover:bg-[#2a2a2a] dark:hover:bg-[#fff7e8] transition-all duration-150 shadow-[0_12px_28px_rgba(0,0,0,0.1)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.32)]"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M7 2V12M2 7H12" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+              <path d="M7 2V12M2 7H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             Add Investment
           </button>
@@ -164,14 +164,14 @@ export default function DashboardHero({
         {quickStats.map((stat, i) => (
           <div
             key={stat.label}
-            className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl px-5 py-4 hover:border-[#D0D0D0] dark:hover:border-[#3A3A3A] hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-200"
+            className="bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(11,17,22,0.98)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl px-5 py-4 hover:border-[#D0D0D0] dark:hover:border-[#39515d] hover:shadow-[0_4px_20px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_12px_30px_rgba(0,0,0,0.34)] transition-all duration-200"
             style={{
               opacity: 0,
               transform: "translateY(12px)",
               animation: `fadeUp 0.5s ease ${0.1 + i * 0.07}s both`,
             }}
           >
-            <div className="text-[11.5px] text-[#888] dark:text-[#777] font-medium mb-2 tracking-[-0.01em]">
+            <div className="text-[11.5px] text-[#888] dark:text-[#89a0ad] font-medium mb-2 tracking-[-0.01em]">
               {stat.label}
             </div>
             <div className="text-[22px] font-bold text-[#0F0F0F] dark:text-white tracking-[-0.03em] leading-none mb-1.5">
@@ -181,7 +181,7 @@ export default function DashboardHero({
               className={`text-[12px] font-medium flex items-center gap-1 ${
                 stat.deltaDir === "up"
                   ? "text-[#3A7A5A]"
-                  : "text-[#888] dark:text-[#888]"
+                  : "text-[#888] dark:text-[#89a0ad]"
               }`}
             >
               {stat.deltaDir === "up" && (
@@ -203,7 +203,7 @@ export default function DashboardHero({
       `}</style>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md border-[#e8e8e8] bg-white dark:border-[#243842] dark:bg-[#0f171d] dark:text-white">
           <DialogHeader>
             <DialogTitle>Add Investment</DialogTitle>
             <DialogDescription>
@@ -224,12 +224,12 @@ export default function DashboardHero({
               />
             </div>
 
-            <div className="rounded-xl border border-[#E8E8E8] bg-[#FAFAF8] px-3 py-2 text-[12px] text-[#666] dark:border-[#2A2A2A] dark:bg-[#181818] dark:text-[#AAA]">
+            <div className="rounded-xl border border-[#E8E8E8] bg-[#FAFAF8] px-3 py-2 text-[12px] text-[#666] dark:border-[#243842] dark:bg-[#142028] dark:text-[#a7bac6]">
               Current portfolio value: ₹{currentValue.toLocaleString("en-IN")}
             </div>
 
             {error && (
-              <div className="rounded-xl border border-[#F3D1D1] bg-[#FFF3F3] px-3 py-2 text-[12px] text-[#A04A4A]">
+              <div className="rounded-xl border border-[#F3D1D1] bg-[#FFF3F3] px-3 py-2 text-[12px] text-[#A04A4A] dark:border-[#5a2d34] dark:bg-[#2a171b] dark:text-[#ef9ca8]">
                 {error}
               </div>
             )}

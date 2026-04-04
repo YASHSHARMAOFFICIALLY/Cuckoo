@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 
 function ActivityItem({ activity }) {
   return (
-    <div className="flex items-start gap-3 py-3 group hover:bg-[#FAFAF8] dark:hover:bg-[#181818] -mx-2 px-2 rounded-xl transition-colors duration-150 cursor-pointer">
+    <div className="flex items-start gap-3 py-3 group hover:bg-[#FAFAF8] dark:hover:bg-[#10181d] -mx-2 px-2 rounded-xl transition-colors duration-150 cursor-pointer">
       {/* Icon */}
       <div
         className="w-9 h-9 rounded-xl flex items-center justify-center text-base flex-shrink-0 mt-0.5"
@@ -30,8 +30,8 @@ function ActivityItem({ activity }) {
             {activity.tag}
           </span>
         </div>
-        <div className="text-[12.5px] text-[#888] dark:text-[#888] tracking-[-0.01em]">{activity.desc}</div>
-        <div className="text-[11px] text-[#BBB] dark:text-[#666] mt-0.5">{activity.time}</div>
+        <div className="text-[12.5px] text-[#888] dark:text-[#89a0ad] tracking-[-0.01em]">{activity.desc}</div>
+        <div className="text-[11px] text-[#BBB] dark:text-[#708692] mt-0.5">{activity.time}</div>
       </div>
 
       {/* Amount */}
@@ -55,17 +55,17 @@ export default function RecentActivity({ activities = [] }) {
   }, [activities, filter]);
 
   return (
-    <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
+    <div className="bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(10,16,21,0.99)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_14px_34px_rgba(0,0,0,0.34)]">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#777] uppercase tracking-[0.08em] mb-0.5">
+          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#89a0ad] uppercase tracking-[0.08em] mb-0.5">
             Activity
           </div>
           <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.02em]">
             Recent transactions
           </div>
         </div>
-        <Link href="/dashboard" className="text-[12px] font-medium text-[#555] dark:text-[#AAA] hover:text-[#0F0F0F] dark:hover:text-white transition-colors">
+        <Link href="/dashboard" className="text-[12px] font-medium text-[#555] dark:text-[#a7bac6] hover:text-[#0F0F0F] dark:hover:text-white transition-colors">
           View all →
         </Link>
       </div>
@@ -78,8 +78,8 @@ export default function RecentActivity({ activities = [] }) {
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-150 ${
               filter === f
-                ? "bg-[#0F0F0F] text-white"
-                : "text-[#888] dark:text-[#888] hover:text-[#555] dark:hover:text-white border border-[#F0F0F0] dark:border-[#262626]"
+                ? "bg-[#0F0F0F] text-white dark:bg-[#f3efe3] dark:text-[#091116]"
+                : "text-[#888] dark:text-[#89a0ad] hover:text-[#555] dark:hover:text-white border border-[#F0F0F0] dark:border-[#243842]"
             }`}
           >
             {f}
@@ -88,11 +88,11 @@ export default function RecentActivity({ activities = [] }) {
       </div>
 
       {filteredActivities.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2A2A2A] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#777]">
+        <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2d434f] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#89a0ad] bg-transparent dark:bg-[#10181d]/70">
           No activity in this category yet.
         </div>
       ) : (
-        <div className="flex flex-col divide-y divide-[#F5F5F5] dark:divide-[#222]">
+        <div className="flex flex-col divide-y divide-[#F5F5F5] dark:divide-[#22343d]">
           {filteredActivities.map((activity) => (
             <ActivityItem key={activity.id} activity={activity} />
           ))}

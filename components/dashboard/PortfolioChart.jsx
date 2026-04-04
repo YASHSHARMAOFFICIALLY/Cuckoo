@@ -52,11 +52,11 @@ export default function PortfolioChart({ portfolio }) {
   const isPositive = gain >= 0;
 
   return (
-    <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
+    <div className="bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(10,16,21,0.99)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_14px_34px_rgba(0,0,0,0.34)]">
       {/* Header */}
       <div className="flex items-start justify-between mb-5 flex-wrap gap-3">
         <div>
-          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#777] uppercase tracking-[0.08em] mb-1">
+          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#89a0ad] uppercase tracking-[0.08em] mb-1">
             Portfolio Value
           </div>
           <div className="flex items-baseline gap-2.5">
@@ -69,28 +69,28 @@ export default function PortfolioChart({ portfolio }) {
             <span
               className={`text-[13px] font-semibold px-2 py-0.5 rounded-full ${
                 isPositive
-                  ? "text-[#3A7A5A] bg-[#F0FBF4]"
-                  : "text-[#D97070] bg-[#FDF3F3]"
+                  ? "text-[#3A7A5A] bg-[#F0FBF4] dark:text-[#86c5a4] dark:bg-[#11251d]"
+                  : "text-[#D97070] bg-[#FDF3F3] dark:text-[#ef9ca8] dark:bg-[#2a171b]"
               }`}
             >
               {isPositive ? "+" : ""}{gainPct}%
             </span>
           </div>
-          <div className="text-[12.5px] text-[#888] mt-1">
+          <div className="text-[12.5px] text-[#888] dark:text-[#8ea1ac] mt-1">
             {isPositive ? "+" : ""}₹{Math.abs(portfolio.totalReturn).toLocaleString("en-IN")} total returns
           </div>
         </div>
 
         {/* Range selector */}
-        <div className="flex items-center gap-1 bg-[#F5F5F3] rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-[#F5F5F3] dark:bg-[#121c22] rounded-xl p-1 border border-transparent dark:border-[#243842]">
           {RANGES.map((r) => (
             <button
               key={r}
               onClick={() => setRange(r)}
               className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-all duration-150 ${
                 range === r
-                  ? "bg-white dark:bg-[#1A1A1A] text-[#0F0F0F] dark:text-white shadow-sm"
-                  : "text-[#888] dark:text-[#888] hover:text-[#555] dark:hover:text-white"
+                  ? "bg-white dark:bg-[#1b2a33] text-[#0F0F0F] dark:text-white shadow-sm"
+                  : "text-[#888] dark:text-[#89a0ad] hover:text-[#555] dark:hover:text-white"
               }`}
             >
               {r}
@@ -101,7 +101,7 @@ export default function PortfolioChart({ portfolio }) {
 
       {/* Chart */}
       {data.length === 0 ? (
-        <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2A2A2A] text-[12.5px] text-[#888] dark:text-[#777]">
+        <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2d434f] text-[12.5px] text-[#888] dark:text-[#89a0ad] bg-transparent dark:bg-[#10181d]/70">
           No portfolio data available for this range yet.
         </div>
       ) : (
@@ -110,7 +110,7 @@ export default function PortfolioChart({ portfolio }) {
           <AreaChart data={data} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="portfolioGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#0F0F0F" stopOpacity={0.1} />
+                <stop offset="0%" stopColor="#c7d3da" stopOpacity={0.2} />
                 <stop offset="100%" stopColor="#0F0F0F" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="investedGrad" x1="0" y1="0" x2="0" y2="1">
@@ -118,15 +118,15 @@ export default function PortfolioChart({ portfolio }) {
                 <stop offset="100%" stopColor="#C9A84C" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F5F5F3" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#20313a" vertical={false} />
             <XAxis
               dataKey="date"
-              tick={{ fontSize: 11, fill: "#BBB", fontFamily: "'DM Sans', sans-serif" }}
+              tick={{ fontSize: 11, fill: "#8ea1ac", fontFamily: "'DM Sans', sans-serif" }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "#BBB", fontFamily: "'DM Sans', sans-serif" }}
+              tick={{ fontSize: 11, fill: "#8ea1ac", fontFamily: "'DM Sans', sans-serif" }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v) =>
@@ -147,11 +147,11 @@ export default function PortfolioChart({ portfolio }) {
             <Area
               type="monotone"
               dataKey="value"
-              stroke="#0F0F0F"
+              stroke="#dce6eb"
               strokeWidth={2}
               fill="url(#portfolioGrad)"
               dot={false}
-              activeDot={{ r: 4, fill: "#0F0F0F", strokeWidth: 0 }}
+              activeDot={{ r: 4, fill: "#dce6eb", strokeWidth: 0 }}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -159,16 +159,16 @@ export default function PortfolioChart({ portfolio }) {
       )}
 
       {/* Legend */}
-      <div className="flex items-center gap-5 mt-4 pt-4 border-t border-[#F5F5F5] dark:border-[#222] text-[12px] text-[#888] dark:text-[#777]">
+      <div className="flex items-center gap-5 mt-4 pt-4 border-t border-[#F5F5F5] dark:border-[#22343d] text-[12px] text-[#888] dark:text-[#89a0ad]">
         <span className="flex items-center gap-1.5">
-          <span className="w-5 h-0.5 bg-[#0F0F0F] rounded inline-block" />
+          <span className="w-5 h-0.5 bg-[#0F0F0F] dark:bg-[#dce6eb] rounded inline-block" />
           Portfolio value
         </span>
         <span className="flex items-center gap-1.5">
           <span className="w-5 h-0.5 bg-[#C9A84C] rounded inline-block border-dashed border-b border-[#C9A84C]" />
           Amount invested
         </span>
-        <span className="ml-auto text-[11px] text-[#AAA]">All returns are unrealised</span>
+        <span className="ml-auto text-[11px] text-[#AAA] dark:text-[#708692]">All returns are unrealised</span>
       </div>
     </div>
   );

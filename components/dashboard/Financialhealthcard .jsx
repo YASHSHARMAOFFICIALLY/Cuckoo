@@ -51,7 +51,7 @@ function ScoreRing({ score }) {
 
   return (
     <svg width="140" height="140" viewBox="0 0 140 140">
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#F0F0F0" strokeWidth={sw} />
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(143,166,179,0.18)" strokeWidth={sw} />
       {Array.from({ length: 20 }).map((_, index) => {
         const angle = (index / 20) * 360 - 90;
         const rad = (angle * Math.PI) / 180;
@@ -67,7 +67,7 @@ function ScoreRing({ score }) {
             y1={y1}
             x2={x2}
             y2={y2}
-            stroke="#E8E8E8"
+            stroke="rgba(143,166,179,0.24)"
             strokeWidth="1"
           />
         );
@@ -91,7 +91,7 @@ function ScoreRing({ score }) {
         textAnchor="middle"
         fontSize="28"
         fontWeight="700"
-        fill="#0F0F0F"
+        fill="currentColor"
         fontFamily="'DM Serif Display', Georgia, serif"
       >
         {score}
@@ -101,7 +101,7 @@ function ScoreRing({ score }) {
         y={cy + 10}
         textAnchor="middle"
         fontSize="11"
-        fill="#BBB"
+        fill="#89a0ad"
         fontFamily="'DM Sans', sans-serif"
       >
         out of 100
@@ -139,7 +139,7 @@ function IndicatorBar({ item, delay }) {
           >
             {ICONS[item.key]}
           </div>
-          <span className="text-[12.5px] text-[#444] font-medium tracking-[-0.01em] truncate">
+          <span className="text-[12.5px] text-[#444] dark:text-[#d5dee4] font-medium tracking-[-0.01em] truncate">
             {item.label}
           </span>
         </div>
@@ -153,12 +153,12 @@ function IndicatorBar({ item, delay }) {
           >
             {item.status}
           </span>
-          <span className="text-[12.5px] font-bold text-[#0F0F0F]">
+          <span className="text-[12.5px] font-bold text-[#0F0F0F] dark:text-white">
             {item.value}
           </span>
         </div>
       </div>
-      <div className="h-1.5 bg-[#F0F0F0] rounded-full overflow-hidden">
+      <div className="h-1.5 bg-[#F0F0F0] dark:bg-[#1d2a31] rounded-full overflow-hidden">
         <div
           className="h-full rounded-full"
           style={{
@@ -174,17 +174,17 @@ function IndicatorBar({ item, delay }) {
 
 export default function FinancialHealthCard({ health }) {
   return (
-    <div className="bg-white dark:bg-[#111111] border border-[#E8E8E8] dark:border-[#232323] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] h-full">
+    <div className="bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(10,16,21,0.99)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_14px_34px_rgba(0,0,0,0.34)] h-full text-[#0F0F0F] dark:text-white">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#777] uppercase tracking-[0.08em] mb-0.5">
+          <div className="text-[11.5px] font-semibold text-[#888] dark:text-[#89a0ad] uppercase tracking-[0.08em] mb-0.5">
             Financial Health
           </div>
           <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.02em]">
             Your overall score
           </div>
         </div>
-        <button className="text-[12px] text-[#888] dark:text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#262626] hover:border-[#D0D0D0] dark:hover:border-[#3A3A3A]">
+        <button className="text-[12px] text-[#888] dark:text-[#a7bac6] hover:text-[#0F0F0F] dark:hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#243842] hover:border-[#D0D0D0] dark:hover:border-[#39515d]">
           Details →
         </button>
       </div>
@@ -201,14 +201,14 @@ export default function FinancialHealthCard({ health }) {
         </div>
       </div>
 
-      <div className="mt-5 pt-5 border-t border-[#F5F5F5] dark:border-[#222]">
+      <div className="mt-5 pt-5 border-t border-[#F5F5F5] dark:border-[#22343d]">
         <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F1E8] dark:bg-[#241E12] border border-[#E8DFC0] dark:border-[#4A3F28]">
           <span className="text-lg">💡</span>
           <div>
-            <div className="text-[12px] font-semibold text-[#8B7340] mb-0.5">
+            <div className="text-[12px] font-semibold text-[#8B7340] dark:text-[#dfbf75] mb-0.5">
               {health.tip.title}
             </div>
-            <div className="text-[12px] text-[#8B7340] leading-relaxed">
+            <div className="text-[12px] text-[#8B7340] dark:text-[#d8be87] leading-relaxed">
               {health.tip.description}
             </div>
           </div>
