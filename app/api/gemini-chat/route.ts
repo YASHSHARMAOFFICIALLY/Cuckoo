@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.0-flash-lite",
       systemInstruction: SYSTEM_PROMPT,
     });
 
@@ -69,10 +69,17 @@ export async function POST(req: NextRequest) {
   } catch (error: unknown) {
     console.error("Gemini API error:", error);
 
-    const errorMessage =
-      error instanceof Error && error.message.includes("API_KEY")
-        ? "Invalid API key. Please check your GEMINI_API_KEY configuration."
-        : "Something went wrong while connecting to the AI. Please try again in a moment.";
+    let errorMessage = "Something went wrong while connecting to the AI. Please try again in a moment.";
+
+    if (error instanceof Error) {
+      if (error.message.includes("API_KEY") || error.message.includes("API key")) {
+        errorMessage = "Invalid API key. Please check your GEMINI_API_KEY configuration.";
+      } else if (error.message.includes("429") || error.message.includes("quota") || error.message.includes("Too Many Requests")) {
+        errorMessage = "The AI is receiving too many requests right now. Please wait a few seconds and try again.";
+      } else if (error.message.includes("404") || error.message.includes("not found")) {
+        errorMessage = "The AI model is currently unavailable. Please try again shortly.";
+      }
+    }
 
     return NextResponse.json({
       content: [{ type: "text", value: errorMessage }],
