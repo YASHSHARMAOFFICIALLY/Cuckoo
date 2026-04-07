@@ -158,7 +158,7 @@ export function TypingIndicator() {
   );
 }
 
-export default function ChatMessage({ message, isStreaming, onStreamDone }) {
+export default function ChatMessage({ message, isStreaming, onStreamDone, botName = "FinanceFlow AI" }) {
   const isUser = message.role === "user";
 
   if (isUser) {
@@ -192,7 +192,7 @@ export default function ChatMessage({ message, isStreaming, onStreamDone }) {
         {/* AI label */}
         <div className="flex items-center gap-2 mb-3">
           <span className="text-[11px] font-bold text-[#888] uppercase tracking-[0.08em]">
-            FinanceFlow AI
+            {botName}
           </span>
           <span className="w-1 h-1 rounded-full bg-[#DDD]" />
           <span className="text-[11px] text-[#BBB]">{message.time}</span>

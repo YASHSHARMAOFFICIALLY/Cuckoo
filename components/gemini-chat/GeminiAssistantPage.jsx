@@ -36,7 +36,7 @@ function Navbar({ onNewChat }) {
               <path d="M7 10L9 12L13 8" stroke="#C9A84C" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <span className="text-[14px] font-semibold text-[#0F0F0F] tracking-[-0.01em]">Gemini Finance AI</span>
+          <span className="text-[14px] font-semibold text-[#0F0F0F] tracking-[-0.01em]">ArthSathi</span>
           <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#EEF2FF] border border-[#C7D2FE] text-[#4338CA] font-medium">
             Gemini
           </span>
@@ -106,7 +106,7 @@ function GeminiHero() {
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF2FF] border border-[#C7D2FE] mb-5">
         <span className="w-1.5 h-1.5 rounded-full bg-[#6366F1] animate-pulse" />
         <span className="text-[12px] text-[#4338CA] font-medium tracking-wide">
-          Powered by Google Gemini
+          ArthSathi · Powered by Google Gemini
         </span>
       </div>
 
@@ -114,11 +114,11 @@ function GeminiHero() {
         className="text-[34px] leading-[1.1] font-semibold tracking-[-0.03em] text-[#0F0F0F] mb-4"
         style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
       >
-        Ask About Latest <span className="text-[#C9A84C]">Finance</span> Trends
+        Meet <span className="text-[#C9A84C]">ArthSathi</span> — Your Finance AI
       </h1>
 
       <p className="text-[15.5px] leading-[1.7] text-[#555] mb-8 tracking-[-0.01em]">
-        Get real-time insights on market trends, stocks, crypto, and global finance — powered by Google Gemini AI.
+        Ask ArthSathi anything about markets, investments, crypto, tax, or personal finance. Powered by Google Gemini.
       </p>
 
       {/* Capability pills */}
@@ -197,6 +197,7 @@ function GeminiChatLayout({ messages, isTyping, isStreaming, streamingId, onSugg
                 message={msg}
                 isStreaming={isStreaming && msg.id === streamingId}
                 onStreamDone={onStreamDone}
+                botName="ArthSathi"
               />
             ))}
             {isTyping && <TypingIndicator />}
@@ -424,11 +425,11 @@ export default function GeminiAssistantPage() {
               </div>
               <div>
                 <div className="text-[13px] font-semibold text-[#0F0F0F] tracking-[-0.01em]">
-                  Gemini Finance AI
+                  ArthSathi
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#3A7A5A]" />
-                  <span className="text-[11px] text-[#888]">Online · Powered by Gemini</span>
+                  <span className="text-[11px] text-[#888]">Online · Your Finance Assistant</span>
                 </div>
               </div>
             </div>
