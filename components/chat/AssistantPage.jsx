@@ -56,11 +56,11 @@ function Navbar() {
             </Link>
           ))}
           <Link
-            href="/gemini-chat"
+            href="/arthsathi"
             className="flex items-center gap-1.5 text-[13.5px] tracking-[-0.01em] text-[#4338CA] font-medium hover:text-[#3730A3] transition-colors"
           >
             <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-[#EEF2FF] border border-[#C7D2FE] text-[#4338CA] font-semibold">Gemini</span>
-            Try Gemini AI
+            Try ArthSathi
           </Link>
         </div>
       </div>
