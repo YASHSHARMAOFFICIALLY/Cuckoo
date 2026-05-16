@@ -1,5 +1,5 @@
 
-# Finnace Flow 
+# Finance Flow 
 
 ### 🚀 Learn Finance. Track Goals. Make Smarter Decisions.
 AI-powered personal finance platform combining education, planning, and intelligent assistance.

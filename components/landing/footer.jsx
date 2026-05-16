@@ -104,9 +104,9 @@ export default function Footer() {
               </a>
             ))} */}
             {[
-            { name: "Twitter", url: "https://twitter.com" },
-            { name: "LinkedIn", url: "https://linkedin.com" },
-            { name: "GitHub", url: "https://github.com" },
+            { name: "Twitter", url: "https://x.com/buildwithyash" },
+            { name: "LinkedIn", url: "https://www.linkedin.com/in/buildwithyash/" },
+            { name: "GitHub", url: "https://github.com/YASHSHARMAOFFICIALLY" },
           ].map((s) => (
             <a
               key={s.name}
