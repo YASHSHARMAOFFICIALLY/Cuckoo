@@ -50,7 +50,7 @@ export default function GoalTracker() {
   const milestones = [25, 50, 75, 100];
 
   return (
-    <section className="py-20 px-6 bg-[#FAFAF8] dark:bg-black">
+    <section id = "goal-tracker"className="py-20 px-6 bg-[#FAFAF8] dark:bg-black">
       <div className="max-w-6xl mx-auto">
 
         <SectionLabel number="04" label="Financial Goal Tracker" />
