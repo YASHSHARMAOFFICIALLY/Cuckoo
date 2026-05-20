@@ -24,7 +24,7 @@ export default async function DashboardPage() {
 
   // TEMP: bypass auth for local preview
   const mockUser = { id: null, name: "Preview User", email: "preview@test.com" };
-  const dashboard: DashboardData = await getDashboardData((session?.user ?? mockUser) as any);
+  const dashboard: DashboardData = await getDashboardData(session?.user ?? mockUser);
   const mainNavItems = [
     { label: "Dashboard", icon: "◉", href: "/dashboard", active: true },
     { label: "Portfolio", icon: "📈", href: "/dashboard#portfolio" },
