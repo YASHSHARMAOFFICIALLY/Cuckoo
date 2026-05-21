@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const ICONS = {
   savings: (
@@ -55,10 +55,10 @@ function ScoreRing({ score }) {
       {Array.from({ length: 20 }).map((_, index) => {
         const angle = (index / 20) * 360 - 90;
         const rad = (angle * Math.PI) / 180;
-        const x1 = cx + (r + 5) * Math.cos(rad);
-        const y1 = cy + (r + 5) * Math.sin(rad);
-        const x2 = cx + (r + 8) * Math.cos(rad);
-        const y2 = cy + (r + 8) * Math.sin(rad);
+        const x1 = Math.round((cx + (r + 5) * Math.cos(rad)) * 1e6) / 1e6;
+        const y1 = Math.round((cy + (r + 5) * Math.sin(rad)) * 1e6) / 1e6;
+        const x2 = Math.round((cx + (r + 8) * Math.cos(rad)) * 1e6) / 1e6;
+        const y2 = Math.round((cy + (r + 8) * Math.sin(rad)) * 1e6) / 1e6;
 
         return (
           <line
@@ -173,6 +173,14 @@ function IndicatorBar({ item, delay }) {
 }
 
 export default function FinancialHealthCard({ health }) {
+  const [showModal, setShowModal] = useState(false);
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    if (showModal) dialogRef.current?.showModal();
+    else dialogRef.current?.close();
+  }, [showModal]);
+
   return (
     <div className="overflow-hidden bg-white dark:bg-[linear-gradient(180deg,_rgba(18,28,34,0.96)_0%,_rgba(10,16,21,0.99)_100%)] border border-[#E8E8E8] dark:border-[#243842] rounded-2xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] dark:shadow-[0_14px_34px_rgba(0,0,0,0.34)] h-full text-[#0F0F0F] dark:text-white">
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
@@ -184,10 +192,57 @@ export default function FinancialHealthCard({ health }) {
             Your overall score
           </div>
         </div>
-        <button className="max-w-full flex-shrink-0 text-[12px] text-[#888] dark:text-[#a7bac6] hover:text-[#0F0F0F] dark:hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#243842] hover:border-[#D0D0D0] dark:hover:border-[#39515d]">
-          Details →
+        <button
+          onClick={() => setShowModal(true)}
+          className="max-w-full flex-shrink-0 text-[12px] text-[#888] dark:text-[#a7bac6] hover:text-[#0F0F0F] dark:hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#243842] hover:border-[#D0D0D0] dark:hover:border-[#39515d]"
+        >
+          Details &rarr;
         </button>
       </div>
+
+      {/* Details modal */}
+      <dialog
+        ref={dialogRef}
+        onClose={() => setShowModal(false)}
+        onClick={(e) => e.target === dialogRef.current && setShowModal(false)}
+        className="w-full max-w-md rounded-2xl border border-[#E8E8E8] dark:border-[#243842] bg-white dark:bg-[#0d151b] p-6 shadow-2xl backdrop:bg-black/40 text-[#0F0F0F] dark:text-white"
+      >
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <div className="text-[11px] font-semibold text-[#888] dark:text-[#89a0ad] uppercase tracking-[0.08em] mb-0.5">
+              Financial Health
+            </div>
+            <div className="text-[16px] font-semibold tracking-[-0.02em]">Score Breakdown</div>
+          </div>
+          <button
+            onClick={() => setShowModal(false)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg border border-[#E8E8E8] dark:border-[#243842] text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors text-lg"
+          >
+            &times;
+          </button>
+        </div>
+        <div className="flex justify-center mb-5">
+          <ScoreRing score={health.score} />
+        </div>
+        <div className="space-y-4">
+          {health.indicators.map((item, index) => (
+            <IndicatorBar key={item.label} item={item} delay={index * 80} />
+          ))}
+        </div>
+        {health.tip && (
+          <div className="mt-5 flex items-start gap-3 rounded-xl border border-[#E8DFC0] bg-[#F5F1E8] p-3.5 dark:border-[#4A3F28] dark:bg-[#241E12]">
+            <span className="text-lg">&#128161;</span>
+            <div>
+              <div className="text-[12px] font-semibold text-[#8B7340] dark:text-[#dfbf75] mb-0.5">
+                {health.tip.title}
+              </div>
+              <div className="text-[12px] leading-relaxed text-[#8B7340] dark:text-[#d8be87]">
+                {health.tip.description}
+              </div>
+            </div>
+          </div>
+        )}
+      </dialog>
 
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center">
         <div className="flex-shrink-0">
@@ -203,7 +258,7 @@ export default function FinancialHealthCard({ health }) {
 
       <div className="mt-5 pt-5 border-t border-[#F5F5F5] dark:border-[#22343d]">
         <div className="flex items-start gap-3 rounded-xl border border-[#E8DFC0] bg-[#F5F1E8] p-3.5 dark:border-[#4A3F28] dark:bg-[#241E12]">
-          <span className="text-lg">💡</span>
+          <span className="text-lg">&#128161;</span>
           <div className="min-w-0">
             <div className="text-[12px] font-semibold text-[#8B7340] dark:text-[#dfbf75] mb-0.5">
               {health.tip.title}

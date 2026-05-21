@@ -243,8 +243,28 @@ export default function SipCalculator() {
     return { invested, estReturns: Math.round(fv - invested), total: Math.round(fv) };
   }, [monthly, rate, years]);
 
-  const growth = ((estReturns / invested) * 100).toFixed(1);
+  const growth = invested > 0 ? ((estReturns / invested) * 100).toFixed(1) : "0.0";
+const [copied, setCopied] = useState(false);
+const handleCopy = async () => {
+  const resultText = `
+Invested Amount: ${fmt(invested)}
+Estimated Returns: ${fmt(estReturns)}
+Total Value: ${fmt(total)}
+  `;
 
+  try {
+    await
+     navigator.clipboard.writeText(resultText);
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  } catch (error) {
+    console.error("Copy failed", error);
+  }
+};
   return (
     <section id="sip-calc" className="py-20 px-6 bg-[#FAFAF8] dark:bg-black">
       <div className="max-w-6xl mx-auto">
@@ -280,7 +300,14 @@ export default function SipCalculator() {
             </div>
 
             <div className="flex gap-4">
-
+<div className="mt-4 flex justify-center">
+  <button
+    onClick={handleCopy}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
+  >
+    {copied ? "Copied!" : "Copy Result"}
+  </button>
+</div>
               {/* Donut */}
               <div className="bg-white dark:bg-[#0F0F0F] border border-[#E8E8E8] dark:border-[#2A2A2A] rounded-2xl p-5 flex flex-col items-center flex-1">
                 <MiniDonut invested={invested} returns={estReturns} />
@@ -300,6 +327,7 @@ export default function SipCalculator() {
                 {[
                   { label: "Invested Amount", value: fmt(invested), color: "#C9A84C" },
                   { label: "Estimated Returns", value: fmt(estReturns), color: "#0F0F0F" },
+                  { label: "Total Value", value: fmt(total), color: "#0F0F0F" },
                 ].map((item) => (
                   <div key={item.label} className="bg-white dark:bg-[#0F0F0F] border border-[#E8E8E8] dark:border-[#2A2A2A] rounded-xl p-4">
                     <div className="w-5 h-0.5 mb-3" style={{ background: item.color }} />

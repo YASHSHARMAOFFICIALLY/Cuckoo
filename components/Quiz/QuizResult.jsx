@@ -248,6 +248,7 @@
 
 "use client"
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // ── Confetti launcher (unchanged) ──
 const CONFETTI_COLORS = [
@@ -367,6 +368,7 @@ function getResultContent(pct) {
 
 // ── Main ──
 export default function QuizResult({ score, total, onRetry }) {
+  const router = useRouter();
   const pct = score / total;
   const content = getResultContent(pct);
 
@@ -427,6 +429,7 @@ export default function QuizResult({ score, total, onRetry }) {
           </button>
 
           <button
+            onClick={() => router.push("/tools")}
             className="flex-1 py-3 rounded bg-white dark:bg-[#1A1A1A] text-[#0F0F0F] dark:text-white border border-[#EBEBEB] dark:border-[#2A2A2A] hover:border-[#0F0F0F]"
           >
             Explore →

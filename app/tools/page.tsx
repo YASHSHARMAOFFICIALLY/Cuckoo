@@ -1,11 +1,12 @@
 import EmiCalculator from "@/components/tools/emicalculatortools"
-import ToolGrid from "@/components/tools/toolsgrid"
+// import ToolGrid from "@/components/tools/toolsgrid"
 import StockMarketTool from "@/components/tools/stockmarkettools"
 import ToolsHero from "@/components/tools/toolshero"
 import GoalTracker from "@/components/tools/goaltrackertools"
 import Newsletter from "@/components/tools/Newsletter"
 import Navbar from "@/components/landing/navbar";
 import Footer from "@/components/landing/footer";
+import ToolsPage from "@/components/tools/tools-page";
 import ToolsGrid from "@/components/tools/toolsgrid"
 import SipCalculator from "@/components/tools/sipcalculatortools"
 

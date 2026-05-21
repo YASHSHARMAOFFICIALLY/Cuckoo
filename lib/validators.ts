@@ -32,7 +32,6 @@ export const quizAttemptSchema = z.object({
     topic: z.string().trim().min(2, "Quiz topic is required"),
     score: z.coerce.number().int().min(0, "Score cannot be negative"),
     total: z.coerce.number().int().positive("Total questions must be positive"),
-    xpEarned: z.coerce.number().int().min(0).optional(),
 })
 
 export const learningProgressUpdateSchema = z.object({

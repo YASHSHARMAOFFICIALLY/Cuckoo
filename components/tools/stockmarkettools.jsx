@@ -40,17 +40,44 @@ function MiniChart({ positive }) {
 }
 
 export default function StockMarketTool() {
+
+  const [copied, setCopied] = useState(false);
+
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState("RELIANCE");
-  const [focused, setFocused] = useState(false);
 
   const filtered = SUGGESTIONS.filter(s =>
-    s.includes(query.toUpperCase()) || STOCKS[s].name.toLowerCase().includes(query.toLowerCase())
+    s.includes(query.toUpperCase()) ||
+    STOCKS[s].name.toLowerCase().includes(query.toLowerCase())
   );
 
   const stock = STOCKS[selected];
+
   const positive = stock.change >= 0;
 
+  const handleCopy = async () => {
+    const resultText = `
+Day High: ₹${stock.high}
+Day Low: ₹${stock.low}
+Volume: ${stock.vol}
+Market Cap: ${stock.cap}
+52W High: ₹${Math.round(stock.price * 1.18)}
+52W Low: ₹${Math.round(stock.price * 0.74)}
+    `;
+
+    try {
+      await navigator.clipboard.writeText(resultText);
+
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+
+    } catch (error) {
+      console.error("Copy failed", error);
+    }
+  };
   return (
     <section id="stock-tool" className="py-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -60,60 +87,46 @@ export default function StockMarketTool() {
           <div className="flex-1 max-w-lg">
             {/* Search */}
             <div className="relative mb-6">
-              <div className={`flex items-center gap-3 px-4 py-3 rounded-xl border bg-white transition-all duration-200 ${focused ? "border-[#0F0F0F] shadow-[0_0_0_3px_rgba(15,15,15,0.06)]" : "border-[#E0E0E0]"}`}>
+             <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E0E0E0] dark:border-[#262626] bg-white dark:bg-[#111111] transition-all duration-200">
+              
+    
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <circle cx="7" cy="7" r="5" stroke="#999" strokeWidth="1.4"/>
                   <path d="M11 11L14 14" stroke="#999" strokeWidth="1.4" strokeLinecap="round"/>
                 </svg>
                 <input
-                  className="flex-1 text-[14px] text-[#0F0F0F] placeholder-[#BBB] outline-none tracking-[-0.01em] bg-transparent"
+                  className="flex-1 text-[14px] text-[#0F0F0F] dark:text-white placeholder-[#BBB] dark:placeholder-[#555] outline-none tracking-[-0.01em] bg-transparent"
                   placeholder="Search stock (e.g. TCS, Reliance)"
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setTimeout(() => setFocused(false), 150)}
+              
                 />
                 {query && (
-                  <button onClick={() => setQuery("")} className="text-[#BBB] hover:text-[#666] transition-colors">
+                  <button onClick={() => setQuery("")} className="text-[#BBB] hover:text-[#666] dark:hover:text-[#AAA] transition-colors">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                   </button>
                 )}
               </div>
-              {focused && (
-                <div className="absolute top-full left-0 right-0 mt-1.5 bg-white border border-[#E8E8E8] rounded-xl shadow-[0_8px_32px_rgba(0,0,0,0.1)] z-10 overflow-hidden">
-                  {filtered.map(sym => (
-                    <button
-                      key={sym}
-                      onMouseDown={() => { setSelected(sym); setQuery(""); }}
-                      className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#FAFAF8] transition-colors text-left"
-                    >
-                      <div>
-                        <span className="text-[13.5px] font-semibold text-[#0F0F0F]">{sym}</span>
-                        <span className="text-[12px] text-[#888] ml-2">{STOCKS[sym].name}</span>
-                      </div>
-                      <span className={`text-[12px] font-medium ${STOCKS[sym].change >= 0 ? "text-green-600" : "text-red-500"}`}>
-                        {STOCKS[sym].change >= 0 ? "+" : ""}{STOCKS[sym].change}%
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              )}
+            
+ 
+              
+           
             </div>
 
             {/* Stock card */}
-            <div className="rounded-2xl border border-[#E8E8E8] bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.05)]">
+            <div className="rounded-2xl border border-[#E8E8E8] dark:border-[#262626] bg-white dark:bg-[#111111] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
               <div className="flex items-start justify-between mb-1">
                 <div>
-                  <div className="text-[11px] font-semibold text-[#888] tracking-wide uppercase mb-1">{selected} · NSE</div>
-                  <div className="text-[15px] font-semibold text-[#0F0F0F] tracking-[-0.01em]">{stock.name}</div>
+                  <div className="text-[11px] font-semibold text-[#888] dark:text-[#666] tracking-wide uppercase mb-1">{selected} · NSE</div>
+                  <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{stock.name}</div>
                 </div>
-                <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${positive ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"}`}>
+                <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${positive ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400" : "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"}`}>
                   {positive ? "▲" : "▼"} {Math.abs(stock.change)}%
                 </span>
               </div>
 
               <div className="mt-4 mb-5">
-                <span className="text-[36px] font-bold text-[#0F0F0F] tracking-[-0.04em] leading-none">₹{stock.price.toLocaleString("en-IN")}</span>
+                <span className="text-[36px] font-bold text-[#0F0F0F] dark:text-white tracking-[-0.04em] leading-none">₹{stock.price.toLocaleString("en-IN")}</span>
                 <span className={`ml-3 text-[14px] font-medium ${positive ? "text-green-600" : "text-red-500"}`}>
                   {positive ? "+" : ""}₹{(stock.price * Math.abs(stock.change) / 100).toFixed(2)} today
                 </span>
@@ -121,7 +134,7 @@ export default function StockMarketTool() {
 
               <MiniChart positive={positive} />
 
-              <div className="grid grid-cols-3 gap-3 mt-5 pt-5 border-t border-[#F0F0F0]">
+              <div className="grid grid-cols-3 gap-3 mt-5 pt-5 border-t border-[#F0F0F0] dark:border-[#262626]">
                 {[
                   { label: "Day High", value: `₹${stock.high}` },
                   { label: "Day Low", value: `₹${stock.low}` },
@@ -131,8 +144,8 @@ export default function StockMarketTool() {
                   { label: "52W Low", value: `₹${Math.round(stock.price * 0.74)}` },
                 ].map(item => (
                   <div key={item.label}>
-                    <div className="text-[11px] text-[#888] mb-0.5">{item.label}</div>
-                    <div className="text-[13px] font-semibold text-[#0F0F0F]">{item.value}</div>
+                    <div className="text-[11px] text-[#888] dark:text-[#666] mb-0.5">{item.label}</div>
+                    <div className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white">{item.value}</div>
                   </div>
                 ))}
               </div>
@@ -141,26 +154,26 @@ export default function StockMarketTool() {
 
           {/* Right: description */}
           <div className="flex-1 max-w-md pt-2">
-            <p className="text-[16px] leading-relaxed text-[#555] dark:text-white tracking-[-0.01em] mb-6">
+            <p className="text-[16px] leading-relaxed text-[#555] dark:text-[#AAA] tracking-[-0.01em] mb-6">
               Search any NSE-listed stock to view its current price, day range, volume, and market cap in a clean, distraction-free interface.
             </p>
-            <div className="space-y-3 dark:text-white">
+            <div className="space-y-3">
               {["Real-time price & change", "Day high / low range", "Volume and market cap", "52-week performance"].map(f => (
-                <div key={f} className="flex items-center gap-2.5 text-[14px] text-[#444] dark:text-white">
+                <div key={f} className="flex items-center gap-2.5 text-[14px] text-[#444] dark:text-[#AAA]">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#F5F1E8"/><path d="M5 8L7 10L11 6" stroke="#C9A84C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {f}
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 p-5 rounded-2xl bg-[#FAFAF8] border border-[#EBEBEB]">
-              <div className="text-[12px] text-[#888] mb-3 font-medium uppercase tracking-wider ">Popular Stocks</div>
+            <div className="mt-8 p-5 rounded-2xl bg-[#FAFAF8] dark:bg-[#111111] border border-[#EBEBEB] dark:border-[#262626]">
+              <div className="text-[12px] text-[#888] dark:text-[#666] mb-3 font-medium uppercase tracking-wider">Popular Stocks</div>
               <div className="flex flex-wrap gap-2">
                 {SUGGESTIONS.map(sym => (
                   <button
                     key={sym}
                     onClick={() => { setSelected(sym); setQuery(""); }}
-                    className={`text-[12.5px] font-medium px-3 py-1.5 rounded-lg border transition-all duration-150 ${selected === sym ? "bg-[#0F0F0F] text-white border-[#0F0F0F]" : "bg-white text-[#555] border-[#E0E0E0] hover:border-[#0F0F0F]"}`}
+                    className={`text-[12.5px] font-medium px-3 py-1.5 rounded-lg border transition-all duration-150 ${selected === sym ? "bg-[#0F0F0F] dark:bg-white text-white dark:text-[#0F0F0F] border-[#0F0F0F] dark:border-white" : "bg-white dark:bg-[#1A1A1A] text-[#555] dark:text-[#AAA] border-[#E0E0E0] dark:border-[#333] hover:border-[#0F0F0F] dark:hover:border-white"}`}
                   >
                     {sym}
                   </button>
@@ -170,16 +183,26 @@ export default function StockMarketTool() {
           </div>
         </div>
       </div>
+      <div className="mt-4 flex justify-center">
+  <button
+    onClick={handleCopy}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+  >
+    {copied ? "Copied!" : "Copy Result"}
+  </button>
+</div>
     </section>
-  );
-}
+            );
+
 
 function SectionLabel({ number, label }) {
   return (
     <div className="flex items-center gap-4">
       <span className="text-[11px] font-semibold text-[#C9A84C] tracking-[0.14em] uppercase">{number}</span>
-      <div className="h-px flex-1 bg-[#F0F0F0] max-w-[40px]" />
-      <span className="text-[13px] font-semibold text-[#0F0F0F] tracking-[-0.01em]">{label}</span>
+      <div className="h-px flex-1 bg-[#F0F0F0] dark:bg-[#262626] max-w-[40px]" />
+      <span className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{label}</span>
     </div>
+  
   );
+}
 }

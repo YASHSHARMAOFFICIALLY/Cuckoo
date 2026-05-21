@@ -1,6 +1,7 @@
 "use client"
 import { useScrollReveal } from "@/hooks/useScrollRevel";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 
 const CONCEPTS = [
   {
@@ -71,7 +72,7 @@ const CONCEPTS = [
   },
 ];
 
-function ConceptCard({ concept, delay }) {
+function ConceptCard({ concept, delay, onClick }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -99,6 +100,7 @@ function ConceptCard({ concept, delay }) {
   return (
     <div
       ref={ref}
+      onClick={onClick}
       className="group p-5 rounded-2xl border hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(0,0,0,0.07)] transition-all duration-200 cursor-pointer"
       style={{
         background: concept.color,
@@ -129,9 +131,10 @@ function ConceptCard({ concept, delay }) {
 
 export default function FinanceConcepts() {
   const headerRef = useScrollReveal();
+  const [selectedConcept, setSelectedConcept] = useState(null);
 
   return (
-    <section className="py-20 px-6 bg-white dark:bg-black">
+    <section id="gloassary" className="py-20 px-6 bg-white dark:bg-black">
       <div className="max-w-6xl mx-auto">
         <div ref={headerRef} className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5F5F3] border border-[#E8E8E8] mb-5">
@@ -150,9 +153,60 @@ export default function FinanceConcepts() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {CONCEPTS.map((concept, i) => (
-            <ConceptCard key={concept.id} concept={concept} delay={i * 60} />
+            <ConceptCard
+              key={concept.id}
+              concept={concept}
+              delay={i * 60}
+              onClick={() => setSelectedConcept(concept)}
+            />
           ))}
         </div>
+        {selectedConcept && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6">
+            <div className="bg-white dark:bg-[#141414] rounded-3xl max-w-2xl w-full p-8 relative">
+
+              <button
+                onClick={() => setSelectedConcept(null)}
+                className="absolute top-4 right-4 text-[#777] hover:text-black dark:hover:text-white"
+              >
+                ✕
+              </button>
+
+              <div className="text-5xl mb-5">
+                {selectedConcept.emoji}
+              </div>
+
+              <h2 className="text-3xl font-bold dark:text-white mb-3">
+                {selectedConcept.name}
+              </h2>
+
+              <p
+                className="text-sm font-medium mb-5"
+                style={{ color: selectedConcept.accent }}
+              >
+                {selectedConcept.tagline}
+              </p>
+
+              <p className="text-[15px] leading-8 text-[#555] dark:text-[#aaa]">
+                {selectedConcept.explanation}
+              </p>
+
+              <div className="mt-8 flex gap-4">
+                <Link 
+                  href={`learn/concepts/${selectedConcept.id}`}
+                  className="px-5 py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black">
+                  Learn More
+                </Link>
+
+                <Link 
+                  href="/tools#tools-grid"
+                  className="px-5 py-3 rounded-xl border border-[#DDD] dark:border-[#333]">
+                  Try Calculator
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

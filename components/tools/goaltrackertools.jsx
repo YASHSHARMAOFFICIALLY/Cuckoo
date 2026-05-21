@@ -39,6 +39,7 @@ const PRESETS = [
 ];
 
 export default function GoalTracker() {
+  const [copied, setCopied] = useState(false);
   const [target, setTarget] = useState(1000000);
   const [saved, setSaved] = useState(100000);
   const [goalName, setGoalName] = useState("Dream Home");
@@ -48,9 +49,30 @@ export default function GoalTracker() {
   const monthlySuggested = remaining > 0 ? Math.ceil(remaining / 36) : 0;
 
   const milestones = [25, 50, 75, 100];
+const handleCopy = async () => {
+  const resultText = `
+Goal Name: ${goalName}
+Target Goal Amount: ₹${target}
+Current Savings: ₹${saved}
+Remaining Amount: ₹${remaining}
+Monthly Savings Needed: ₹${monthlySuggested} / month
+  `;
 
+  try {
+    await navigator.clipboard.writeText(resultText);
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+
+  } catch (error) {
+    console.error("Copy failed", error);
+  }
+};
   return (
-    <section id = "goal-tracker"className="py-20 px-6 bg-[#FAFAF8] dark:bg-black">
+    <section id="goal-tracker" className="py-20 px-6 bg-[#FAFAF8] dark:bg-black">
       <div className="max-w-6xl mx-auto">
 
         <SectionLabel number="04" label="Financial Goal Tracker" />
@@ -176,6 +198,14 @@ export default function GoalTracker() {
           </div>
         </div>
       </div>
+      <div className="mt-4 flex justify-center">
+  <button
+    onClick={handleCopy}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
+  >
+    {copied ? "Copied!" : "Copy Result"}
+  </button>
+</div>
     </section>
   );
 }

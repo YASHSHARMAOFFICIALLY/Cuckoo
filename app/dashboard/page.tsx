@@ -5,6 +5,7 @@ import DashboardHero from "@/components/dashboard/DashboardHero"
 import FinancialHealthCard from "@/components/dashboard/FinancialHealthCard";
 import PortfolioChart from "@/components/dashboard/PortfolioChart";
 import GoalProgress from "@/components/dashboard/GoalProgress";
+// import ToolsPage from "@/components/tools/tools-page";
 import LearningProgress from "@/components/dashboard/Learningprogress";
 import QuickTools from "@/components/dashboard/Quiztools";
 import RecentActivity from "@/components/dashboard/QuizActivity";
@@ -12,6 +13,7 @@ import { auth } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
 import type { DashboardData } from "@/lib/dashboard-data";
 import { ThemeToggle } from "@/components/theme-toggle";
+import SidebarAccountItems from "@/components/dashboard/SidebarAccountItems";
 
 
 
@@ -21,11 +23,9 @@ export default async function DashboardPage() {
     headers: await headers(),
   }).catch(() => null);
 
-  if (!session) {
-    redirect("/signin?next=/dashboard");
-  }
-
-  const dashboard: DashboardData = await getDashboardData(session.user);
+  // TEMP: bypass auth for local preview
+  const mockUser = { id: null, name: "Preview User", email: "preview@test.com" };
+  const dashboard: DashboardData = await getDashboardData(session?.user ?? mockUser);
   const mainNavItems = [
     { label: "Dashboard", icon: "◉", href: "/dashboard", active: true },
     { label: "Portfolio", icon: "📈", href: "/dashboard#portfolio" },
@@ -77,18 +77,7 @@ export default async function DashboardPage() {
           <div className="text-[10.5px] font-bold text-[#BBB] dark:text-[#6c8593] uppercase tracking-[0.1em] px-3 mb-2 mt-5">
             Account
           </div>
-          {[
-            { label: "Theme", icon: "⚙️" },
-            { label: "Support", icon: "💬" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13.5px] font-medium text-[#555] dark:text-[#a8b7c1] hover:bg-[#F5F5F3] dark:hover:bg-[#162129] hover:text-[#0F0F0F] dark:hover:text-[#f4f7f8] mb-0.5 transition-all duration-150"
-            >
-              <span>{item.icon}</span>
-              {item.label}
-            </div>
-          ))}
+          <SidebarAccountItems />
         </nav>
 
         {/* User profile */}

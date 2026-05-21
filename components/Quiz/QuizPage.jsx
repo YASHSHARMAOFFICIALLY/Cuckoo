@@ -110,7 +110,6 @@ export default function QuizPage() {
         topic: "Finance Fundamentals",
         score,
         total: QUESTIONS.length,
-        xpEarned: score * 10,
       }),
     }).catch(() => null);
   }, [phase, score]);

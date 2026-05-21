@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { buildDashboardActivity } from "@/lib/dashboard-activity";
 import { db } from "@/lib/db";
+import { calculateQuizXP } from "@/lib/quiz-utils";
 import { getServerSession } from "@/lib/session";
 import { quizAttemptSchema } from "@/lib/validators";
 
@@ -28,8 +29,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const xpEarned =
-    parsed.data.xpEarned ?? Math.max(10, parsed.data.score * 10);
+  const xpEarned = calculateQuizXP(parsed.data.score);
 
   const attempt = await db.$transaction(async (tx) => {
     const createdAttempt = await tx.quizAttempt.create({

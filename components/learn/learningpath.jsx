@@ -1,10 +1,13 @@
 "use client"
 import { useScrollReveal } from "@/hooks/useScrollRevel";
 import { useRef, useEffect } from "react";
+// CHANGED: Use next/link for client-side routing to roadmap topic pages
+import Link from "next/link";
 
 const STEPS = [
   {
     step: "01",
+    slug: "budgeting-basics", // CHANGED: Added slug for routing
     title: "Budgeting Basics",
     description:
       "Understand where your money goes. Learn the 50/30/20 rule and build a simple monthly budget that sticks.",
@@ -20,6 +23,7 @@ const STEPS = [
   },
   {
     step: "02",
+    slug: "emergency-fund", // CHANGED: Added slug for routing
     title: "Emergency Fund",
     description:
       "Before investing a single rupee, build 3–6 months of expenses in a liquid account. This is your financial foundation.",
@@ -35,6 +39,7 @@ const STEPS = [
   },
   {
     step: "03",
+    slug: "mutual-funds-sips", // CHANGED: Added slug for routing
     title: "Mutual Funds & SIPs",
     description:
       "Start your investment journey with ₹500/month. Learn how to pick mutual funds based on your risk profile and goals.",
@@ -50,6 +55,7 @@ const STEPS = [
   },
   {
     step: "04",
+    slug: "stock-market-basics", // CHANGED: Added slug for routing
     title: "Stock Market Basics",
     description:
       "Understand how equity markets work. Learn about Nifty 50, how to read a balance sheet, and what makes a good stock.",
@@ -66,6 +72,7 @@ const STEPS = [
   },
   {
     step: "05",
+    slug: "long-term-wealth-building", // CHANGED: Added slug for routing
     title: "Long-term Wealth Building",
     description:
       "Master asset allocation, portfolio rebalancing, tax-efficient investing (ELSS, PPF), and the psychology of staying the course.",
@@ -148,15 +155,16 @@ function StepCard({ step, index, total, delay }) {
           {step.description}
         </p>
 
-        <a
-          href="#"
+        {/* CHANGED: Use next/link to navigate to dedicated roadmap step page */}
+        <Link
+          href={`/learn/roadmap/${step.slug}`}
           className="inline-flex items-center gap-1.5 mt-3 text-[12.5px] font-medium text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors duration-150"
         >
           Start this step
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
             <path d="M2 6H10M10 6L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -1,5 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "@/lib/session";
+
+const MAX_MESSAGE_LENGTH = 2000;
+const MAX_HISTORY_MESSAGES = 20;
+const MAX_HISTORY_TEXT_LENGTH = 4000;
 
 const SYSTEM_PROMPT = `You are ArthSathi, a focused AI finance assistant built into FinanceFlow.
 
@@ -27,14 +32,68 @@ RESPONSE RULES:
 - Never answer the same question with unrelated information
 - Stay strictly on the topic asked`;
 
+function sanitizeHistory(history: unknown) {
+  if (!Array.isArray(history)) {
+    return [];
+  }
+
+  return history
+    .slice(-MAX_HISTORY_MESSAGES)
+    .filter(
+      (item): item is { role: string; text: string } =>
+        typeof item === "object" &&
+        item !== null &&
+        typeof (item as { role?: unknown }).role === "string" &&
+        typeof (item as { text?: unknown }).text === "string"
+    )
+    .map((item) => ({
+      role: item.role === "assistant" ? "model" : "user",
+      parts: [
+        {
+          text: item.text.slice(0, MAX_HISTORY_TEXT_LENGTH),
+        },
+      ],
+    }));
+}
 
 export async function POST(req: NextRequest) {
   try {
+    let session;
+    try {
+      session = await getServerSession();
+    } catch (sessionError) {
+      console.error("Session lookup failed:", sessionError);
+      return NextResponse.json(
+        { error: "Unable to validate session right now" },
+        { status: 500 }
+      );
+    }
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { message, history } = await req.json();
 
     if (!message || typeof message !== "string") {
       return NextResponse.json(
         { error: "Invalid request: message is required" },
+        { status: 400 }
+      );
+    }
+
+    const trimmedMessage = message.trim();
+
+    if (!trimmedMessage) {
+      return NextResponse.json(
+        { error: "Invalid request: message cannot be empty" },
+        { status: 400 }
+      );
+    }
+
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json(
+        { error: `Message must be at most ${MAX_MESSAGE_LENGTH} characters` },
         { status: 400 }
       );
     }
@@ -55,22 +114,13 @@ export async function POST(req: NextRequest) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-
       model: "gemini-2.5-flash",
-
       systemInstruction: SYSTEM_PROMPT,
     });
 
-    // Build conversation history for multi-turn context
-    const formattedHistory = Array.isArray(history)
-      ? history.map((item: { role: string; text: string }) => ({
-          role: item.role === "assistant" ? "model" : "user",
-          parts: [{ text: item.text }],
-        }))
-      : [];
-
+    const formattedHistory = sanitizeHistory(history);
     const chat = model.startChat({ history: formattedHistory });
-    const result = await chat.sendMessage(message);
+    const result = await chat.sendMessage(trimmedMessage);
     const responseText = result.response.text();
 
     return NextResponse.json({
@@ -79,15 +129,24 @@ export async function POST(req: NextRequest) {
   } catch (error: unknown) {
     console.error("Gemini API error:", error);
 
-    let errorMessage = "Something went wrong while connecting to the AI. Please try again in a moment.";
+    let errorMessage =
+      "Something went wrong while connecting to the AI. Please try again in a moment.";
 
     if (error instanceof Error) {
-      if (error.message.includes("API_KEY") || error.message.includes("API key")) {
-        errorMessage = "Invalid API key. Please check your GEMINI_API_KEY configuration.";
-      } else if (error.message.includes("429") || error.message.includes("quota") || error.message.includes("Too Many Requests")) {
-        errorMessage = "The AI is receiving too many requests right now. Please wait a few seconds and try again.";
-      } else if (error.message.includes("404") || error.message.includes("not found")) {
-        errorMessage = "The AI model is currently unavailable. Please try again shortly.";
+      const msg = error.message.toLowerCase();
+      if (msg.includes("api_key") || msg.includes("api key")) {
+        errorMessage =
+          "Invalid API key. Please check your GEMINI_API_KEY configuration.";
+      } else if (
+        msg.includes("429") ||
+        msg.includes("quota") ||
+        msg.includes("too many requests")
+      ) {
+        errorMessage =
+          "The AI is receiving too many requests right now. Please wait a few seconds and try again.";
+      } else if (msg.includes("404") || msg.includes("not found")) {
+        errorMessage =
+          "The AI model is currently unavailable. Please try again shortly.";
       }
     }
 
