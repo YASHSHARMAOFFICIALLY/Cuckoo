@@ -15,7 +15,7 @@ export default function Footer() {
         { name: "Stock Market Tool", href: "/tools#stock-tool" },
         { name: "SIP Calculator", href: "/tools#sip-calc" },
         { name: "EMI Calculator", href: "/tools#emi-calc" },
-        { name: "Financial Goal Tracker", href: "/tools#goal-tracker-tool" },
+        { name: "Financial Goal Tracker", href: "/tools#goal-tracker" },
       ],
     },
     {
