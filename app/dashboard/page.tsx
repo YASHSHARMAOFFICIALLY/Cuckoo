@@ -5,6 +5,7 @@ import DashboardHero from "@/components/dashboard/DashboardHero"
 import FinancialHealthCard from "@/components/dashboard/FinancialHealthCard";
 import PortfolioChart from "@/components/dashboard/PortfolioChart";
 import GoalProgress from "@/components/dashboard/GoalProgress";
+// import ToolsPage from "@/components/tools/tools-page";
 import LearningProgress from "@/components/dashboard/Learningprogress";
 import QuickTools from "@/components/dashboard/Quiztools";
 import RecentActivity from "@/components/dashboard/QuizActivity";

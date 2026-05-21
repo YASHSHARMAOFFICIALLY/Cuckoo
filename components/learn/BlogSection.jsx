@@ -166,6 +166,8 @@
 "use client"
 import { useRef, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollRevel";
+import Link from "next/link";
+import { Boldonse } from "next/font/google";
 
 const BLOGS = [
   {
@@ -248,9 +250,11 @@ function BlogCard({ blog, delay }) {
             <span>{blog.readTime}</span>
           </div>
 
-          <span className="text-[12.5px] font-medium text-[#0F0F0F] dark:text-white group-hover:text-[#C9A84C] transition-colors flex items-center gap-1">
+          <Link
+            href={`/learn/articles/${blog.id}`} 
+            className="text-[12.5px] font-medium text-[#0F0F0F] dark:text-white group-hover:text-[#C9A84C] transition-colors flex items-center gap-1">
             Read →
-          </span>
+          </Link>
         </div>
       </div>
     </div>
@@ -278,12 +282,12 @@ export default function BlogSection() {
             </h2>
           </div>
 
-          <a
-            href="#"
+          <Link
+            href="/learn/articles"
             className="text-[13.5px] text-[#555] dark:text-[#aaa] hover:text-black dark:hover:text-white flex items-center gap-1"
           >
-            View all →
-          </a>
+            View all articles→
+          </Link>
         </div>
 
         {/* Grid */}

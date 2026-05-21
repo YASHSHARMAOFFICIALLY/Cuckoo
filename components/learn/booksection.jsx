@@ -1,5 +1,6 @@
 "use client"
 import { useScrollReveal } from "@/hooks/useScrollRevel";
+import Link from "next/link";
 
 const BOOKS = [
   {
@@ -125,15 +126,15 @@ function BookCard({ book, delay }) {
           {book.description}
         </p>
 
-        <a
-          href="#"
+        <Link
+          href={`/learn/books/${book.id}`}
           className="inline-flex items-center gap-1 text-[12.5px] font-medium text-[#0F0F0F] group-hover:text-[#C9A84C] transition-colors duration-150"
         >
           Read summary
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
             <path d="M2 6H10M10 6L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -143,7 +144,7 @@ export default function BooksSection() {
   const headerRef = useScrollReveal();
 
   return (
-    <section className="py-20 px-6 bg-[#FAFAF8] dark:bg-[#0A0A0A]">
+    <section id="books" className="py-20 px-6 bg-[#FAFAF8] dark:bg-[#0A0A0A]">
       <div className="max-w-6xl mx-auto">
         <div ref={headerRef} className="flex items-end justify-between mb-10 flex-wrap gap-5">
           <div>
@@ -157,15 +158,15 @@ export default function BooksSection() {
               Books every investor should read
             </h2>
           </div>
-          <a
-            href="#"
+          <Link
+            href="/learn/books"
             className="text-[13.5px] font-medium text-[#555] hover:text-[#0F0F0F] transition-colors duration-200 flex items-center gap-1.5 dark:text-white"
           >
             Full reading list
             <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
               <path d="M2.5 6.5H10.5M10.5 6.5L7 3M10.5 6.5L7 10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
             </svg>
-          </a>
+          </Link>
         </div>
 
         <div className="flex flex-col gap-4">

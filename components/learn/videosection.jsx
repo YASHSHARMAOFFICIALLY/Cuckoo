@@ -169,6 +169,7 @@
 import { useState } from "react";
 // import { useScrollReveal } from "@/hooks/useScrollReveal";
  import { useScrollReveal } from "@/hooks/useScrollRevel" // ✅ fixed typo
+ import Link from "next/link";
 
 const VIDEOS = [
   {
@@ -282,9 +283,11 @@ function VideoCard({ video, delay }) {
 
         <div className="mt-4 pt-4 border-t border-[#F0F0F0] dark:border-[#222] flex justify-between">
           <span className="text-[12px] text-[#AAA]">Free to watch</span>
-          <span className="text-[12.5px] font-medium text-[#0F0F0F] dark:text-white">
+          <Link
+            href={`/learn/videos/${video.id}`} 
+            className="text-[12.5px] font-medium text-[#0F0F0F] dark:text-white">
             Watch now →
-          </span>
+          </Link>
         </div>
       </div>
     </div>
@@ -295,7 +298,7 @@ export default function VideoSection() {
   const headerRef = useScrollReveal();
 
   return (
-    <section className="py-20 px-6 bg-white dark:bg-black">
+    <section id="watch" className="py-20 px-6 bg-white dark:bg-black">
       <div className="max-w-6xl mx-auto">
         <div
           ref={headerRef}
@@ -304,6 +307,13 @@ export default function VideoSection() {
           <h2 className="text-3xl font-semibold dark:text-white">
             Watch & learn at your pace
           </h2>
+
+          <Link
+            href="/learn/videos"
+            className="text-[13.5px] text-[#555] dark:text-[#aaa] hover:text-black dark:hover:text-white flex items-center gap-1"
+          >
+            View all videos →
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
