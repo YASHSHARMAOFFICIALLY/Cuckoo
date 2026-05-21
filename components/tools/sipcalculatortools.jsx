@@ -243,7 +243,7 @@ export default function SipCalculator() {
     return { invested, estReturns: Math.round(fv - invested), total: Math.round(fv) };
   }, [monthly, rate, years]);
 
-  const growth = ((estReturns / invested) * 100).toFixed(1);
+  const growth = invested > 0 ? ((estReturns / invested) * 100).toFixed(1) : "0.0";
 
   return (
     <section id="sip-calc" className="py-20 px-6 bg-[#FAFAF8] dark:bg-black">

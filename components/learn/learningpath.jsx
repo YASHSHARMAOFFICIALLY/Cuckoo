@@ -1,10 +1,13 @@
 "use client"
 import { useScrollReveal } from "@/hooks/useScrollRevel";
 import { useRef, useEffect } from "react";
+// CHANGED: Use next/link for client-side routing to roadmap topic pages
+import Link from "next/link";
 
 const STEPS = [
   {
     step: "01",
+    slug: "budgeting-basics", // CHANGED: Added slug for routing
     title: "Budgeting Basics",
     description:
       "Understand where your money goes. Learn the 50/30/20 rule and build a simple monthly budget that sticks.",
@@ -20,6 +23,7 @@ const STEPS = [
   },
   {
     step: "02",
+    slug: "emergency-fund", // CHANGED: Added slug for routing
     title: "Emergency Fund",
     description:
       "Before investing a single rupee, build 3–6 months of expenses in a liquid account. This is your financial foundation.",
@@ -35,6 +39,7 @@ const STEPS = [
   },
   {
     step: "03",
+    slug: "mutual-funds-sips", // CHANGED: Added slug for routing
     title: "Mutual Funds & SIPs",
     description:
       "Start your investment journey with ₹500/month. Learn how to pick mutual funds based on your risk profile and goals.",
@@ -50,6 +55,7 @@ const STEPS = [
   },
   {
     step: "04",
+    slug: "stock-market-basics", // CHANGED: Added slug for routing
     title: "Stock Market Basics",
     description:
       "Understand how equity markets work. Learn about Nifty 50, how to read a balance sheet, and what makes a good stock.",
@@ -66,6 +72,7 @@ const STEPS = [
   },
   {
     step: "05",
+    slug: "long-term-wealth-building", // CHANGED: Added slug for routing
     title: "Long-term Wealth Building",
     description:
       "Master asset allocation, portfolio rebalancing, tax-efficient investing (ELSS, PPF), and the psychology of staying the course.",
@@ -114,22 +121,22 @@ function StepCard({ step, index, total, delay }) {
     <div ref={ref} className="flex gap-5 " >
       {/* Left: step indicator + connector line */}
       <div className="flex flex-col items-center">
-        <div className="w-10 h-10 rounded-xl bg-[#0F0F0F]  dark:bg-white flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+        <div className="w-10 h-10 rounded-xl bg-[#0F0F0F]  dark:text-white flex items-center justify-center flex-shrink-0 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
           {step.icon}
         </div>
         {!isLast && (
-          <div className="w-px flex-1 mt-2 mb-0 dark:bg-white" style={{ background: "linear-gradient(to bottom, #E0E0E0, transparent)", minHeight: 32 }} />
+          <div className="w-px flex-1 mt-2 mb-0 dark:text-white w-px bg-gradient-to-b from-gray-400 to-transparent dark:from-gray-300 dark:to-transparent" style={{ minHeight: 32 }} />
         )}
       </div>
 
       {/* Right: content */}
       <div className={`flex-1 ${!isLast ? "pb-8" : "pb-0"}`}>
         <div className="flex items-center gap-3 mb-2 ">
-          <span className="text-[11px] font-bold text-[#C9A84C] tracking-[0.1em] uppercase dark:bg-white">
+          <span className="text-[11px] font-bold text-[#C9A84C] tracking-[0.1em] uppercase ">
             Step {step.step}
           </span>
           <span
-            className="text-[11px] font-medium px-2.5 py-0.5 rounded-full dark:bg-white"
+            className="text-[11px] font-medium px-2.5 py-0.5 rounded-full dark:text-white"
             style={{
               background: step.tagStyle.bg,
               color: step.tagStyle.text,
@@ -138,25 +145,26 @@ function StepCard({ step, index, total, delay }) {
           >
             {step.tag}
           </span>
-          <span className="text-[11.5px] text-[#AAA] ml-auto dark:bg-white">{step.duration}</span>
+          <span className="text-[11.5px] text-[#AAA] ml-auto dark:text-white">{step.duration}</span>
         </div>
 
-        <h3 className="text-[16px] font-semibold text-[#0F0F0F] tracking-[-0.02em] mb-2 dark:bg-white">
+        <h3 className="text-[16px] font-semibold text-[#0F0F0F] tracking-[-0.02em] mb-2 dark:text-white">
           {step.title}
         </h3>
-        <p className="text-[13.5px] text-[#666] leading-relaxed tracking-[-0.01em] dark:bg-white">
+        <p className="text-[13.5px] text-[#666] leading-relaxed tracking-[-0.01em] dark:text-white">
           {step.description}
         </p>
 
-        <a
-          href="#"
-          className="inline-flex items-center gap-1.5 mt-3 text-[12.5px] font-medium text-[#888] hover:text-[#0F0F0F] transition-colors duration-150"
+        {/* CHANGED: Use next/link to navigate to dedicated roadmap step page */}
+        <Link
+          href={`/learn/roadmap/${step.slug}`}
+          className="inline-flex items-center gap-1.5 mt-3 text-[12.5px] font-medium text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors duration-150"
         >
           Start this step
           <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
             <path d="M2 6H10M10 6L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -175,12 +183,12 @@ export default function LearningPath() {
               <span className="text-[12px] text-[#666] font-medium tracking-wide">Learning Roadmap</span>
             </div>
             <h2
-              className="text-[34px] font-semibold tracking-[-0.03em] text-[#0F0F0F] leading-tight mb-5 dark:bg-white"
+              className="text-[34px] font-semibold tracking-[-0.03em] text-[#0F0F0F] dark:text-white leading-tight mb-5"
               style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
             >
               Your path to financial mastery
             </h2>
-            <p className="text-[15px] text-[#666] leading-relaxed tracking-[-0.01em] mb-6 dark:bg-white">
+            <p className="text-[15px] text-[#666] leading-relaxed tracking-[-0.01em] mb-6 dark:text-white">
               A structured roadmap designed for beginners. Follow these five steps in order and you&apos;ll go from confused to confident in your money decisions.
             </p>
 

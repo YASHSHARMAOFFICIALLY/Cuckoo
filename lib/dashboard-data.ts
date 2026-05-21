@@ -366,32 +366,33 @@ async function ensureDashboardSeed(user: SessionUser) {
   if (seededUserCache.has(user.id)) {
     return null;
   }
+  seededUserCache.add(user.id);
 
-  const existingData = await db.user.findUnique({
-    where: { id: user.id },
-    select: {
-      portfolioPoints: { select: { id: true }, take: 1 },
-      dashboardGoals: { select: { id: true }, take: 1 },
-      learningModules: { select: { id: true }, take: 1 },
-      quizAttempts: { select: { id: true }, take: 1 },
-      activityFeed: { select: { id: true }, take: 1 },
-    },
-  });
+  try {
+    const existingData = await db.user.findUnique({
+      where: { id: user.id },
+      select: {
+        portfolioPoints: { select: { id: true }, take: 1 },
+        dashboardGoals: { select: { id: true }, take: 1 },
+        learningModules: { select: { id: true }, take: 1 },
+        quizAttempts: { select: { id: true }, take: 1 },
+        activityFeed: { select: { id: true }, take: 1 },
+      },
+    });
 
-  if (
-    existingData?.portfolioPoints.length &&
-    existingData.dashboardGoals.length &&
-    existingData.learningModules.length &&
-    existingData.quizAttempts.length &&
-    existingData.activityFeed.length
-  ) {
-    seededUserCache.add(user.id);
-    return null;
-  }
+    if (
+      existingData?.portfolioPoints.length &&
+      existingData.dashboardGoals.length &&
+      existingData.learningModules.length &&
+      existingData.quizAttempts.length &&
+      existingData.activityFeed.length
+    ) {
+      return null;
+    }
 
-  const seedData = buildSeedData(user);
+    const seedData = buildSeedData(user);
 
-  await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx) => {
     const counts = await tx.user.findUnique({
       where: { id: user.id! },
       select: {
@@ -453,11 +454,12 @@ async function ensureDashboardSeed(user: SessionUser) {
         })),
       });
     }
-  });
-
-  seededUserCache.add(user.id);
-
-  return seedData;
+    });
+    return seedData;
+  } catch (error) {
+    seededUserCache.delete(user.id);
+    throw error;
+  }
 }
 
 export async function getDashboardData(user: SessionUser) {
@@ -678,7 +680,10 @@ function mapDashboardData(input: {
   const currentValue = latestPortfolioPoint.value;
   const investedValue = latestPortfolioPoint.invested;
   const totalReturn = currentValue - investedValue;
-  const totalReturnPct = Number(((totalReturn / investedValue) * 100).toFixed(1));
+  const totalReturnPct =
+    investedValue > 0
+      ? Number(((totalReturn / investedValue) * 100).toFixed(1))
+      : 0;
 
   const goals = (input.goals ?? []).map((goal) => ({
     id: goal.id || goal.name.toLowerCase().replace(/\s+/g, "-"),

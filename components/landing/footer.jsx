@@ -65,12 +65,33 @@ export default function Footer() {
             © {new Date().getFullYear()} FinanceFlow. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
-            {["Twitter", "LinkedIn", "GitHub"].map((s) => (
-              <a key={s} href="#" className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200">
-                {s}
-              </a>
-            ))}
-          </div>
+          <a
+              href="https://x.com/buildwithyash"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
+              >
+              Twitter
+          </a>
+
+            <a
+              href="https://www.linkedin.com/in/buildwithyash/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
+            >
+            LinkedIn
+            </a>
+
+            <a
+              href="https://github.com/YASHSHARMAOFFICIALLY"
+               target="_blank"
+                rel="noopener noreferrer"
+                className="text-[12.5px] text-[#BBB] dark:text-[#555] hover:text-[#666] dark:hover:text-[#aaa] transition-colors duration-200"
+              >
+              GitHub
+            </a>
+</div>
         </div>
       </div>
     </footer>

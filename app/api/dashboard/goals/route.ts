@@ -2,21 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getServerSession } from "@/lib/session";
 import { buildDashboardActivity } from "@/lib/dashboard-activity";
+import { calculateMonthlyNeeded } from "@/lib/goal-utils";
 import { dashboardGoalSchema } from "@/lib/validators";
-
-function calculateMonthlyNeeded(targetAmount: number, currentAmount: number, targetDate?: Date | null) {
-  if (!targetDate || currentAmount >= targetAmount) {
-    return 0;
-  }
-
-  const today = new Date();
-  const monthsRemaining =
-    (targetDate.getFullYear() - today.getFullYear()) * 12 +
-    (targetDate.getMonth() - today.getMonth()) +
-    (targetDate.getDate() >= today.getDate() ? 0 : -1);
-
-  return Math.max(0, Math.ceil((targetAmount - currentAmount) / Math.max(1, monthsRemaining)));
-}
 
 export async function GET() {
   const session = await getServerSession().catch(() => null);

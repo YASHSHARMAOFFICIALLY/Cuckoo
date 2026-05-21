@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ function SignInForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     
     const nextPath = searchParams.get("next");
     const redirectTarget = nextPath?.startsWith("/") ? nextPath : "/dashboard";
@@ -104,11 +105,21 @@ function SignInForm() {
                                     Forgot password?
                                 </Link>
                             </div>
-                            <Input 
-                                className="h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                                id="password" type="password" 
-                                value={password} onChange={(e) => setPassword(e.target.value)} required 
-                            />
+                            <div className="relative">
+                                <Input 
+                                    className="h-11 rounded-lg bg-gray-100 dark:bg-[#1A1A1A] border-none focus-visible:ring-2 focus-visible:ring-blue-400 pr-10"
+                                    id="password" type={showPassword ? "text" : "password"} 
+                                    value={password} onChange={(e) => setPassword(e.target.value)} required 
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
+                            </div>
                         </div>
                         <Button type="submit" className="w-full h-11 rounded-lg bg-gray-900 text-white hover:opacity-90 cursor-pointer" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
