@@ -88,6 +88,7 @@ export default function RecentActivity({ activities = [] }) {
      <div className="mb-4 relative">
   <input
     type="text"
+    aria-label="Search transactions"
     placeholder="Search transactions..."
     value={searchTerm}
     onChange={(e) => setSearchTerm(e.target.value)}
@@ -123,7 +124,9 @@ export default function RecentActivity({ activities = [] }) {
 
       {filteredActivities.length === 0 ? (
         <div className="rounded-xl border border-dashed border-[#E0E0E0] dark:border-[#2d434f] px-4 py-6 text-[12.5px] text-[#888] dark:text-[#89a0ad] bg-transparent dark:bg-[#10181d]/70">
-          No matching transactions found.
+          {searchTerm
+           ? "No matching transactions found."
+           : "No activity in this category yet."}
         </div>
       ) : (
         <div className="flex flex-col divide-y divide-[#F5F5F5] dark:divide-[#22343d]">
