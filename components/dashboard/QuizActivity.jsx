@@ -96,11 +96,12 @@ export default function RecentActivity({ activities = [] }) {
 
   {searchTerm && (
     <button
-      onClick={() => setSearchTerm("")}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888] hover:text-white transition-colors"
-    >
-      ✕
-    </button>
+  onClick={() => setSearchTerm("")}
+  aria-label="Clear search"
+  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#888] hover:text-[#0F0F0F] dark:hover:text-white transition-colors"
+>
+  ✕
+</button>
   )}
 </div>
       {/* Filter tabs */}
