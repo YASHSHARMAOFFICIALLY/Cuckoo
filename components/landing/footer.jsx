@@ -33,7 +33,7 @@ export default function Footer() {
         { label: "About", href: "#" },
         { label: "Careers", href: "#" },
         { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms of Service", href: "/terms" }, // linked
+        { label: "Terms of Service", href: "/terms" },
       ],
     },
   ];
