@@ -133,9 +133,13 @@ Market Cap: ${stock.cap}
                   <div className="text-[11px] font-semibold text-[#888] dark:text-[#666] tracking-wide uppercase mb-1">{selected ? `${selected} · NSE` : "Search"}</div>
                   <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{stock ? stock.name : (query ? `No results for "${query}"` : "No stock selected")}</div>
                 </div>
-                {stock && (
+                {stock ? (
                   <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${positive ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400" : "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"}`}>
                     {positive ? "▲" : "▼"} {Math.abs(stock.change)}%
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400">
+                    — %
                   </span>
                 )}
               </div>
@@ -147,7 +151,11 @@ Market Cap: ${stock.cap}
                 </span>
               </div>
 
-              {stock && <MiniChart positive={positive} />}
+              {stock ? (
+                <MiniChart positive={positive} />
+              ) : (
+                <div className="h-10 w-full rounded bg-gray-100 dark:bg-gray-800 animate-pulse" />
+              )}
 
               <div className="grid grid-cols-3 gap-3 mt-5 pt-5 border-t border-[#F0F0F0] dark:border-[#262626]">
                 {[
