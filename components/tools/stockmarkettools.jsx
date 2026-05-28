@@ -11,7 +11,7 @@ const STOCKS = {
 };
 
 const SUGGESTIONS = ["TCS", "RELIANCE", "INFY", "HDFC", "WIPRO", "BAJAJ"];
- 
+
 function MiniChart({ positive }) {
   const points = positive
     ? [60, 55, 58, 52, 54, 48, 46, 42, 38, 35, 30, 28]
@@ -29,12 +29,12 @@ function MiniChart({ positive }) {
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="w-full">
       <defs>
         <linearGradient id={`g${positive}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.15"/>
-          <stop offset="100%" stopColor={color} stopOpacity="0"/>
+          <stop offset="0%" stopColor={color} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
-      <polygon points={fillPts} fill={`url(#g${positive})`}/>
-      <polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <polygon points={fillPts} fill={`url(#g${positive})`} />
+      <polyline points={pts} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -89,12 +89,12 @@ Market Cap: ${stock.cap}
           <div className="flex-1 max-w-lg">
             {/* Search */}
             <div className="relative mb-6">
-             <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E0E0E0] dark:border-[#262626] bg-white dark:bg-[#111111] transition-all duration-200">
-              
-    
+              <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E0E0E0] dark:border-[#262626] bg-white dark:bg-[#111111] transition-all duration-200">
+
+
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <circle cx="7" cy="7" r="5" stroke="#999" strokeWidth="1.4"/>
-                  <path d="M11 11L14 14" stroke="#999" strokeWidth="1.4" strokeLinecap="round"/>
+                  <circle cx="7" cy="7" r="5" stroke="#999" strokeWidth="1.4" />
+                  <path d="M11 11L14 14" stroke="#999" strokeWidth="1.4" strokeLinecap="round" />
                 </svg>
                 <input
                   className="flex-1 text-[14px] text-[#0F0F0F] dark:text-white placeholder-[#BBB] dark:placeholder-[#555] outline-none tracking-[-0.01em] bg-transparent"
@@ -112,18 +112,18 @@ Market Cap: ${stock.cap}
                       }
                     }
                   }}
-              
+
                 />
                 {query && (
                   <button onClick={() => setQuery("")} className="text-[#BBB] hover:text-[#666] dark:hover:text-[#AAA] transition-colors">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3L11 11M11 3L3 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
                   </button>
                 )}
               </div>
-            
- 
-              
-           
+
+
+
+
             </div>
 
             {/* Stock card */}
@@ -131,21 +131,23 @@ Market Cap: ${stock.cap}
               <div className="flex items-start justify-between mb-1">
                 <div>
                   <div className="text-[11px] font-semibold text-[#888] dark:text-[#666] tracking-wide uppercase mb-1">{selected ? `${selected} · NSE` : "Search"}</div>
-                    <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{stock ? stock.name : (query ? `No results for "${query}"` : "No stock selected")}</div>
+                  <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{stock ? stock.name : (query ? `No results for "${query}"` : "No stock selected")}</div>
                 </div>
+                {stock && (
                   <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${positive ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400" : "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"}`}>
-                    {stock ? (positive ? "▲" : "▼") : ""} {stock ? Math.abs(stock.change) : ""}%
-                </span>
+                    {positive ? "▲" : "▼"} {Math.abs(stock.change)}%
+                  </span>
+                )}
               </div>
 
               <div className="mt-4 mb-5">
-                  <span className="text-[36px] font-bold text-[#0F0F0F] dark:text-white tracking-[-0.04em] leading-none">{stock ? `₹${stock.price.toLocaleString("en-IN")}` : "—"}</span>
-                  <span className={`ml-3 text-[14px] font-medium ${positive ? "text-green-600" : "text-red-500"}`}>
-                    {stock ? `${positive ? "+" : ""}₹${(stock.price * Math.abs(stock.change) / 100).toFixed(2)} today` : ""}
-                  </span>
+                <span className="text-[36px] font-bold text-[#0F0F0F] dark:text-white tracking-[-0.04em] leading-none">{stock ? `₹${stock.price.toLocaleString("en-IN")}` : "—"}</span>
+                <span className={`ml-3 text-[14px] font-medium ${positive ? "text-green-600" : "text-red-500"}`}>
+                  {stock ? `${positive ? "+" : ""}₹${(stock.price * Math.abs(stock.change) / 100).toFixed(2)} today` : ""}
+                </span>
               </div>
 
-                <MiniChart positive={positive} />
+              {stock && <MiniChart positive={positive} />}
 
               <div className="grid grid-cols-3 gap-3 mt-5 pt-5 border-t border-[#F0F0F0] dark:border-[#262626]">
                 {[
@@ -173,7 +175,7 @@ Market Cap: ${stock.cap}
             <div className="space-y-3">
               {["Real-time price & change", "Day high / low range", "Volume and market cap", "52-week performance"].map(f => (
                 <div key={f} className="flex items-center gap-2.5 text-[14px] text-[#444] dark:text-[#AAA]">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#F5F1E8"/><path d="M5 8L7 10L11 6" stroke="#C9A84C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#F5F1E8" /><path d="M5 8L7 10L11 6" stroke="#C9A84C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   {f}
                 </div>
               ))}
@@ -197,25 +199,25 @@ Market Cap: ${stock.cap}
         </div>
       </div>
       <div className="mt-4 flex justify-center">
-  <button
-    onClick={handleCopy}
-    className="rounded-lg bg-blue-600 px-4 py-2 text-white"
-  >
-    {copied ? "Copied!" : "Copy Result"}
-  </button>
-</div>
+        <button
+          onClick={handleCopy}
+          className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+        >
+          {copied ? "Copied!" : "Copy Result"}
+        </button>
+      </div>
     </section>
-            );
-
-
-function SectionLabel({ number, label }) {
-  return (
-    <div className="flex items-center gap-4">
-      <span className="text-[11px] font-semibold text-[#C9A84C] tracking-[0.14em] uppercase">{number}</span>
-      <div className="h-px flex-1 bg-[#F0F0F0] dark:bg-[#262626] max-w-[40px]" />
-      <span className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{label}</span>
-    </div>
-  
   );
-}
+
+
+  function SectionLabel({ number, label }) {
+    return (
+      <div className="flex items-center gap-4">
+        <span className="text-[11px] font-semibold text-[#C9A84C] tracking-[0.14em] uppercase">{number}</span>
+        <div className="h-px flex-1 bg-[#F0F0F0] dark:bg-[#262626] max-w-[40px]" />
+        <span className="text-[13px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{label}</span>
+      </div>
+
+    );
+  }
 }
