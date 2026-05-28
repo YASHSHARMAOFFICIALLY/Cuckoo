@@ -11,7 +11,7 @@ const STOCKS = {
 };
 
 const SUGGESTIONS = ["TCS", "RELIANCE", "INFY", "HDFC", "WIPRO", "BAJAJ"];
-
+ 
 function MiniChart({ positive }) {
   const points = positive
     ? [60, 55, 58, 52, 54, 48, 46, 42, 38, 35, 30, 28]
@@ -51,11 +51,13 @@ export default function StockMarketTool() {
     STOCKS[s].name.toLowerCase().includes(query.toLowerCase())
   );
 
-  const stock = STOCKS[selected];
+  const stock = selected ? STOCKS[selected] ?? null : null;
 
-  const positive = stock.change >= 0;
+  const positive = stock ? stock.change >= 0 : true;
 
   const handleCopy = async () => {
+    if (!stock) return;
+
     const resultText = `
 Day High: ₹${stock.high}
 Day Low: ₹${stock.low}
@@ -99,6 +101,17 @@ Market Cap: ${stock.cap}
                   placeholder="Search stock (e.g. TCS, Reliance)"
                   value={query}
                   onChange={e => setQuery(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === "Enter") {
+                      const sym = query.trim().toUpperCase();
+                      if (STOCKS[sym]) {
+                        setSelected(sym);
+                        setQuery("");
+                      } else {
+                        setSelected(null);
+                      }
+                    }
+                  }}
               
                 />
                 {query && (
@@ -117,31 +130,31 @@ Market Cap: ${stock.cap}
             <div className="rounded-2xl border border-[#E8E8E8] dark:border-[#262626] bg-white dark:bg-[#111111] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]">
               <div className="flex items-start justify-between mb-1">
                 <div>
-                  <div className="text-[11px] font-semibold text-[#888] dark:text-[#666] tracking-wide uppercase mb-1">{selected} · NSE</div>
-                  <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{stock.name}</div>
+                  <div className="text-[11px] font-semibold text-[#888] dark:text-[#666] tracking-wide uppercase mb-1">{selected ? `${selected} · NSE` : "Search"}</div>
+                    <div className="text-[15px] font-semibold text-[#0F0F0F] dark:text-white tracking-[-0.01em]">{stock ? stock.name : (query ? `No results for "${query}"` : "No stock selected")}</div>
                 </div>
-                <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${positive ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400" : "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"}`}>
-                  {positive ? "▲" : "▼"} {Math.abs(stock.change)}%
+                  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${positive ? "bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400" : "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400"}`}>
+                    {stock ? (positive ? "▲" : "▼") : ""} {stock ? Math.abs(stock.change) : ""}%
                 </span>
               </div>
 
               <div className="mt-4 mb-5">
-                <span className="text-[36px] font-bold text-[#0F0F0F] dark:text-white tracking-[-0.04em] leading-none">₹{stock.price.toLocaleString("en-IN")}</span>
-                <span className={`ml-3 text-[14px] font-medium ${positive ? "text-green-600" : "text-red-500"}`}>
-                  {positive ? "+" : ""}₹{(stock.price * Math.abs(stock.change) / 100).toFixed(2)} today
-                </span>
+                  <span className="text-[36px] font-bold text-[#0F0F0F] dark:text-white tracking-[-0.04em] leading-none">{stock ? `₹${stock.price.toLocaleString("en-IN")}` : "—"}</span>
+                  <span className={`ml-3 text-[14px] font-medium ${positive ? "text-green-600" : "text-red-500"}`}>
+                    {stock ? `${positive ? "+" : ""}₹${(stock.price * Math.abs(stock.change) / 100).toFixed(2)} today` : ""}
+                  </span>
               </div>
 
-              <MiniChart positive={positive} />
+                <MiniChart positive={positive} />
 
               <div className="grid grid-cols-3 gap-3 mt-5 pt-5 border-t border-[#F0F0F0] dark:border-[#262626]">
                 {[
-                  { label: "Day High", value: `₹${stock.high}` },
-                  { label: "Day Low", value: `₹${stock.low}` },
-                  { label: "Volume", value: stock.vol },
-                  { label: "Market Cap", value: stock.cap },
-                  { label: "52W High", value: `₹${Math.round(stock.price * 1.18)}` },
-                  { label: "52W Low", value: `₹${Math.round(stock.price * 0.74)}` },
+                  { label: "Day High", value: stock ? `₹${stock.high}` : "—" },
+                  { label: "Day Low", value: stock ? `₹${stock.low}` : "—" },
+                  { label: "Volume", value: stock ? stock.vol : "—" },
+                  { label: "Market Cap", value: stock ? stock.cap : "—" },
+                  { label: "52W High", value: stock ? `₹${Math.round(stock.price * 1.18)}` : "—" },
+                  { label: "52W Low", value: stock ? `₹${Math.round(stock.price * 0.74)}` : "—" },
                 ].map(item => (
                   <div key={item.label}>
                     <div className="text-[11px] text-[#888] dark:text-[#666] mb-0.5">{item.label}</div>
