@@ -19,10 +19,10 @@ export default function SignUpPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState(""); // 👈 Added state for confirm password
+    const [confirmPassword, setConfirmPassword] = useState(""); 
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 👈 Independent show/hide toggle state
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
     
     // Check if user is already logged in
@@ -39,20 +39,14 @@ export default function SignUpPage() {
         e.preventDefault();
         setLoading(true);
 
-        // 1. Pre-validation: Confirm Password check
-        if (password !== confirmPassword) {
-            setLoading(false);
-            return toast.error("Passwords do not match");
-        }
-
-        // 2. Zod Schema Validate
-        const result = signupSchema.safeParse({ name, email, password });
+        // Zod Schema Validate (Optimized per CodeRabbitAI to check fields & refine rules natively)
+        const result = signupSchema.safeParse({ name, email, password, confirmPassword });
         if (!result.success) {
             setLoading(false);
             return toast.error(result.error.issues[0].message);
         }
 
-        // 3. Execute
+        // Execute
         try {
             const { data, error } = await authClient.signUp.email({
                 email,
@@ -171,7 +165,6 @@ export default function SignUpPage() {
                             </p>
                         </div>
 
-                        {/* ================= NEW CONFIRM PASSWORD FIELD ================= */}
                         <div className="space-y-2">
                             <Label htmlFor="confirmPassword">Confirm Password</Label>
                             <div className="relative">
@@ -261,3 +254,4 @@ export default function SignUpPage() {
         </div>
     );
 }
+
