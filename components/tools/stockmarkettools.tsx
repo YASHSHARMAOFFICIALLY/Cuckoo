@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface StockData {
   symbol: string;
@@ -12,15 +12,17 @@ interface StockData {
   volume: string;
   marketCap: string;
   isRealTime: boolean;
+  week52High: number;
+  week52Low: number;
 }
 
 const FALLBACK_STOCKS: Record<string, StockData> = {
-  TCS:      { symbol: "TCS",      name: "Tata Consultancy Services", price: 3842, change: 47.2,  changePercent: 1.24,  high: 3901, low: 3810, volume: "18.4L", marketCap: "13.94L Cr", isRealTime: false },
-  RELIANCE: { symbol: "RELIANCE", name: "Reliance Industries",       price: 2745, change: 48.6,  changePercent: 1.80,  high: 2789, low: 2718, volume: "22.1L", marketCap: "18.58L Cr", isRealTime: false },
-  INFY:     { symbol: "INFY",     name: "Infosys Ltd",               price: 1498, change: -9.5,  changePercent: -0.63, high: 1519, low: 1487, volume: "14.7L", marketCap: "6.21L Cr",  isRealTime: false },
-  HDFC:     { symbol: "HDFC",     name: "HDFC Bank",                 price: 1652, change: 6.9,   changePercent: 0.42,  high: 1671, low: 1638, volume: "9.8L",  marketCap: "12.52L Cr", isRealTime: false },
-  WIPRO:    { symbol: "WIPRO",    name: "Wipro Ltd",                  price: 487,  change: -5.6,  changePercent: -1.15, high: 502,  low: 484,  volume: "11.2L", marketCap: "2.53L Cr",  isRealTime: false },
-  BAJAJ:    { symbol: "BAJAJ",    name: "Bajaj Finance",             price: 6934, change: 156.8, changePercent: 2.31,  high: 7012, low: 6870, volume: "6.4L",  marketCap: "4.18L Cr",  isRealTime: false },
+  TCS:      { symbol: "TCS",      name: "Tata Consultancy Services", price: 3842, change: 47.2,  changePercent: 1.24,  high: 3901, low: 3810, volume: "18.4L", marketCap: "13.94L Cr", week52High: 0, week52Low: 0, isRealTime: false },
+  RELIANCE: { symbol: "RELIANCE", name: "Reliance Industries",       price: 2745, change: 48.6,  changePercent: 1.80,  high: 2789, low: 2718, volume: "22.1L", marketCap: "18.58L Cr", week52High: 0, week52Low: 0, isRealTime: false },
+  INFY:     { symbol: "INFY",     name: "Infosys Ltd",               price: 1498, change: -9.5,  changePercent: -0.63, high: 1519, low: 1487, volume: "14.7L", marketCap: "6.21L Cr",  week52High: 0, week52Low: 0, isRealTime: false },
+  HDFC:     { symbol: "HDFC",     name: "HDFC Bank",                 price: 1652, change: 6.9,   changePercent: 0.42,  high: 1671, low: 1638, volume: "9.8L",  marketCap: "12.52L Cr", week52High: 0, week52Low: 0, isRealTime: false },
+  WIPRO:    { symbol: "WIPRO",    name: "Wipro Ltd",                  price: 487,  change: -5.6,  changePercent: -1.15, high: 502,  low: 484,  volume: "11.2L", marketCap: "2.53L Cr", week52High: 0, week52Low: 0, isRealTime: false },
+  BAJAJ:    { symbol: "BAJAJ",    name: "Bajaj Finance",             price: 6934, change: 156.8, changePercent: 2.31,  high: 7012, low: 6870, volume: "6.4L",  marketCap: "4.18L Cr",  week52High: 0, week52Low: 0,isRealTime: false },
 };
 
 const SUGGESTIONS = ["TCS", "RELIANCE", "INFY", "HDFC", "WIPRO", "BAJAJ"];
@@ -48,9 +50,10 @@ async function fetchRealTimeStock(symbol: string): Promise<StockData | null> {
 
     const meta = result.meta;
     const price     = meta.regularMarketPrice;
-    const prevClose = meta.previousClose || meta.chartPreviousClose;
+    const prevClose = meta.previousClose || meta.chartPreviousClose || price;
     const change    = price - prevClose;
-    const changePct = (change / prevClose) * 100;
+    const changePct = prevClose !== 0 ? (change / prevClose) * 100 : 0;
+
 
     return {
       symbol,
@@ -103,10 +106,12 @@ export default function StockMarketTool() {
   const [loading,     setLoading]     = useState(false);
   const [copied,      setCopied]      = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string>("");
-
+  const fetchVersion = useRef(0);
   const loadStock = useCallback(async (symbol: string) => {
     setLoading(true);
+    const version = ++fetchVersion.current;
     const realData = await fetchRealTimeStock(symbol);
+    if (version !== fetchVersion.current) return;
     if (realData) {
       setStock(realData);
       setLastUpdated(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }));
@@ -237,8 +242,8 @@ ${stock.isRealTime ? `Updated: ${lastUpdated}` : "Showing estimated data"}`;
                   { label: "Day Low",    value: `₹${stock.low.toLocaleString("en-IN")}` },
                   { label: "Volume",     value: stock.volume },
                   { label: "Market Cap", value: stock.marketCap },
-                  { label: "52W High",   value: `₹${Math.round(stock.price * 1.18).toLocaleString("en-IN")}` },
-                  { label: "52W Low",    value: `₹${Math.round(stock.price * 0.74).toLocaleString("en-IN")}` },
+                  { label: "52W High",   value: stock.week52High ? `₹${stock.week52High.toLocaleString("en-IN")}` : "N/A",
+                  { label: "52W Low",    value: stock.week52Low ? `₹${stock.week52Low.toLocaleString("en-IN")}` : "N/A"} ,
                 ].map(item => (
                   <div key={item.label}>
                     <div className="text-[11px] text-[#888] dark:text-[#666] mb-0.5">{item.label}</div>
