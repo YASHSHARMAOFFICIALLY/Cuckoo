@@ -61,17 +61,17 @@ export default function Hero() {
       {/* mobile: one static screenshot */}
       <div className="fade-up sm:hidden">
         <div className="card relative aspect-[1600/756] overflow-hidden">
-          <Image src={projects[0].src} alt={`${projects[0].name} website`} fill priority sizes="100vw" className="object-cover object-top" />
+          <Image src={projects[0].src} alt={`${projects[0].name} website`} fill sizes="100vw" className="object-cover object-top" />
         </div>
       </div>
 
       {/* sm+: two columns scrolling in opposite directions, decorative (real links live in Work) */}
       <div
-        className="marquee fade-up relative hidden h-[480px] overflow-hidden rounded-2xl [animation-delay:120ms] sm:block lg:-mt-8 lg:-mb-16 lg:h-auto lg:self-stretch lg:rounded-none"
+        className="marquee fade-up relative hidden overflow-hidden rounded-2xl [animation-delay:120ms] sm:block lg:rounded-none aspect-video sm:aspect-[1600/900] lg:aspect-auto lg:-mt-8 lg:-mb-16 lg:self-stretch"
         aria-hidden
       >
         {/* absolute so the tall tracks never set the hero height */}
-        <div className="absolute inset-0 grid grid-cols-2 gap-4">
+        <div className="absolute inset-0 grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
           <Column items={projects} />
           <Column items={reversed} reverse />
         </div>

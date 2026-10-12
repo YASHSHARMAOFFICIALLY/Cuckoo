@@ -37,7 +37,7 @@ export default function Faq() {
                 {f.q}
                 <span className="relative size-4 shrink-0 text-muted" aria-hidden>
                   <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-current" />
-                  <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-current transition-transform duration-250 group-open:rotate-90" />
+                  <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-current transition-transform duration-200 group-open:rotate-90" />
                 </span>
               </summary>
               <p className="max-w-xl pb-6 text-muted">{f.a}</p>
