@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { ClarityInit } from "@/components/ClarityInit";
 import "./globals.css";
 
 const geist = Geist({
@@ -16,7 +18,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geist.variable} antialiased`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <ClarityInit />
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
