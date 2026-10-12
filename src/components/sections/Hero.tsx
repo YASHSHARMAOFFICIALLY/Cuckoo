@@ -27,7 +27,7 @@ function Column({ items, reverse }: { items: typeof projects; reverse?: boolean 
 export default function Hero() {
   const reversed = [...projects].reverse();
   return (
-    <section id="top" className="wrap grid items-center gap-16 pt-28 pb-16 sm:pt-32 lg:grid-cols-[1fr_1fr] lg:pt-24 lg:pb-16">
+    <section id="top" className="wrap grid items-center gap-16 pt-20 pb-16 sm:pt-24 lg:grid-cols-[1fr_1fr] lg:pt-20 lg:pb-16">
       <div className="fade-up">
         <p className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-sm font-medium text-zinc-600">
           <span className="size-2 rounded-full bg-accent ring-4 ring-accent/15" aria-hidden />
@@ -48,14 +48,6 @@ export default function Hero() {
             See our work
           </a>
         </div>
-        <p className="mt-12 flex items-center gap-3 border-t border-line pt-6 text-base text-zinc-600">
-          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-ink text-sm font-semibold text-white" aria-hidden>
-            Y
-          </span>
-          <span>
-            You work directly with <span className="font-semibold text-ink">Yash</span>, who designs and builds every project. No account managers, no handoffs.
-          </span>
-        </p>
       </div>
 
       {/* mobile: one static screenshot */}
