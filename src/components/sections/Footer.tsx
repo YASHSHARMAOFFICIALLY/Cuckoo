@@ -19,6 +19,18 @@ export default function Footer() {
         <a href="#top" className="text-lg font-semibold tracking-[-0.03em]">
           cuckoo<span className="text-accent">.</span>
         </a>
+        <a
+          href="https://usefulshelf.co/?utm_source=cuckoo.agency&amp;utm_medium=referral&amp;utm_campaign=badge&amp;utm_content=lime"
+          target="_blank"
+          rel="noopener"
+        >
+          <img
+            src="https://usefulshelf.co/badge/usefulshelf.svg?theme=lime"
+            alt="Featured on UsefulShelf"
+            width={248}
+            height={66}
+          />
+        </a>
         <div className="flex items-center gap-2">
           <a href={`mailto:${EMAIL}`} className="mr-2 text-base text-muted transition-colors hover:text-ink">
             {EMAIL}
