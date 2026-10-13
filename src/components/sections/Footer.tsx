@@ -21,18 +21,35 @@ export default function Footer() {
         <Link href="/" className="text-lg font-semibold tracking-[-0.03em]">
           cuckoo<span className="text-accent">.</span>
         </Link>
-        <a
-          href="https://usefulshelf.co/?utm_source=cuckoo.agency&amp;utm_medium=referral&amp;utm_campaign=badge&amp;utm_content=lime"
-          target="_blank"
-          rel="noopener"
-        >
-          <img
-            src="https://usefulshelf.co/badge/usefulshelf.svg?theme=lime"
-            alt="Featured on UsefulShelf"
-            width={248}
-            height={66}
-          />
-        </a>
+        <div className="flex flex-wrap items-center gap-3">
+          <a
+            href="https://usefulshelf.co/?utm_source=cuckoo.agency&amp;utm_medium=referral&amp;utm_campaign=badge&amp;utm_content=lime"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="https://usefulshelf.co/badge/usefulshelf.svg?theme=lime"
+              alt="Featured on UsefulShelf"
+              width={248}
+              height={66}
+            />
+          </a>
+          <a
+            href="https://www.codehype.ai/product/cuckoo?utm_source=codehype_badge"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://www.codehype.ai/badges/cuckoo.svg?variant=find-us&v=20"
+              alt="Featured on CodeHype"
+              width={180}
+              height={65}
+              loading="lazy"
+              decoding="async"
+              className="inline-block h-auto max-h-[65px] w-full max-w-[180px] border-0"
+            />
+          </a>
+        </div>
         <div className="flex items-center gap-2">
           <a href={`mailto:${EMAIL}`} className="mr-2 text-base text-muted transition-colors hover:text-ink">
             {EMAIL}
