@@ -1,8 +1,8 @@
 export const CALENDLY_URL = "https://calendly.com/buildwithyashx";
 
-type Props = { children: React.ReactNode; size?: "sm" | "lg" };
+type Props = { children: React.ReactNode; size?: "sm" | "lg"; className?: string };
 
-export default function CallButton({ children, size = "lg" }: Props) {
+export default function CallButton({ children, size = "lg", className = "" }: Props) {
   const sm = size === "sm";
   return (
     <a
@@ -11,7 +11,7 @@ export default function CallButton({ children, size = "lg" }: Props) {
       rel="noopener noreferrer"
       className={`group/btn inline-flex items-center rounded-full bg-accent font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_1px_2px_rgb(24_24_27/0.12)] transition-[background-color,transform] duration-200 hover:bg-accent-hover active:scale-[0.98] ${
         sm ? "h-10 gap-2.5 pr-1.5 pl-4 text-sm" : "h-12 gap-3 pr-1.5 pl-5 text-base"
-      }`}
+      } ${className}`}
     >
       {children}
       <span className={`grid place-items-center rounded-full bg-white/20 text-white ${sm ? "size-7" : "size-9"}`} aria-hidden>

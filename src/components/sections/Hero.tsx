@@ -39,21 +39,15 @@ export default function Hero() {
         <p className="mt-6 max-w-[38rem] text-lg leading-relaxed text-pretty text-zinc-600 sm:text-xl">
           We design and build landing pages and MVPs for founders, from first sketch to production. You keep every file.
         </p>
-        <div className="mt-10 flex flex-wrap items-center gap-3">
-          <CallButton>Book a free 15-min call</CallButton>
+        {/* mobile: equal-width stacked buttons on one edge; sm+: side by side */}
+        <div className="mt-10 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap sm:items-center">
+          <CallButton className="justify-center sm:justify-start">Book a free 15-min call</CallButton>
           <a
             href="#work"
-            className="inline-flex h-12 items-center rounded-full border border-line px-6 text-base font-semibold transition-colors hover:border-zinc-300 hover:bg-zinc-50"
+            className="inline-flex h-12 items-center justify-center rounded-full bg-zinc-800 px-6 text-base font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.12),0_1px_2px_rgb(24_24_27/0.2)] transition-colors hover:bg-zinc-700"
           >
             See our work
           </a>
-        </div>
-      </div>
-
-      {/* mobile: one static screenshot */}
-      <div className="fade-up sm:hidden">
-        <div className="card relative aspect-[1600/756] overflow-hidden">
-          <Image src={projects[0].src} alt={`${projects[0].name} website`} fill sizes="100vw" className="object-cover object-top" />
         </div>
       </div>
 
