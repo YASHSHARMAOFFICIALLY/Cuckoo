@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const EMAIL = "yashsharmaofficially@gmail.com";
 const socials = [
   {
@@ -15,10 +17,16 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="border-t border-line">
-      <div className="wrap flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
-        <a href="#top" className="text-lg font-semibold tracking-[-0.03em]">
+      <div className="wrap flex flex-col gap-6 py-10 lg:flex-row lg:items-center lg:justify-between">
+        <Link href="/" className="text-lg font-semibold tracking-[-0.03em]">
           cuckoo<span className="text-accent">.</span>
-        </a>
+        </Link>
+        <Link
+          href="/tools/mvp-cost-calculator"
+          className="text-sm font-medium text-muted underline decoration-zinc-300 underline-offset-4 transition-colors hover:text-ink"
+        >
+          Free MVP cost calculator
+        </Link>
         <a
           href="https://usefulshelf.co/?utm_source=cuckoo.agency&amp;utm_medium=referral&amp;utm_campaign=badge&amp;utm_content=lime"
           target="_blank"

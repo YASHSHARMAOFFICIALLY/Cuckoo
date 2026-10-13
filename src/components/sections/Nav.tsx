@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import CallButton from "@/components/ui/CallButton";
 
 const links = ["work", "services", "process", "faq"];
@@ -26,15 +27,15 @@ export default function Nav() {
           aria-label="Main"
           className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-6 rounded-full border border-transparent px-5 lg:px-12 transition-[max-width,height,transform,background-color,border-color,box-shadow,padding] duration-300 ease-out sm:px-8 motion-reduce:transition-none group-data-scrolled:h-14 group-data-scrolled:max-w-[760px] group-data-scrolled:translate-y-3 group-data-scrolled:border-line group-data-scrolled:bg-white/70 group-data-scrolled:pr-2 group-data-scrolled:pl-6 group-data-scrolled:shadow-[0_8px_30px_-12px_rgb(24_24_27/0.18)] group-data-scrolled:backdrop-blur-xl sm:group-data-scrolled:pr-2 lg:group-data-scrolled:pl-6"
         >
-          <a href="#top" className="text-2xl font-semibold tracking-[-0.03em]">
+          <Link href="/" className="text-2xl font-semibold tracking-[-0.03em]">
             cuckoo<span className="text-accent">.</span>
-          </a>
+          </Link>
           <ul className="hidden items-center gap-7 md:flex">
             {links.map((l) => (
               <li key={l}>
-                <a href={`#${l}`} className="text-base font-medium text-muted capitalize transition-colors hover:text-ink">
+                <Link href={`/#${l}`} className="text-base font-medium text-muted capitalize transition-colors hover:text-ink">
                   {label(l)}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -67,9 +68,9 @@ export default function Nav() {
           className="fixed inset-0 z-[60] flex flex-col bg-paper md:hidden"
         >
           <div className="flex h-16 items-center justify-between px-5 sm:px-8">
-            <a href="#top" onClick={close} className="text-2xl font-semibold tracking-[-0.03em]">
+            <Link href="/" onClick={close} className="text-2xl font-semibold tracking-[-0.03em]">
               cuckoo<span className="text-accent">.</span>
-            </a>
+            </Link>
             <button
               type="button"
               aria-label="Close menu"
@@ -86,9 +87,9 @@ export default function Nav() {
             <ul className="flex flex-col items-center gap-6">
               {links.map((l) => (
                 <li key={l}>
-                  <a href={`#${l}`} onClick={close} className="text-4xl font-semibold tracking-[-0.03em] capitalize">
+                  <Link href={`/#${l}`} onClick={close} className="text-4xl font-semibold tracking-[-0.03em] capitalize">
                     {label(l)}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

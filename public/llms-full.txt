@@ -1,0 +1,118 @@
+# cuckoo
+
+> cuckoo is an agency that designs and builds landing pages, MVPs, web apps and AI integrations for founders and startups. Clients are mainly US founders and startups. The client owns the design and code. A timeline is agreed before work starts.
+
+## About
+
+cuckoo provides design and software development for founders and startups. Work can run from the first sketch through production.
+
+Clients own the source code, Figma files and project assets. Work is deployed in the client's accounts. Hosting, domain and analytics are set up under the client's name.
+
+## Services
+
+### Landing pages and websites
+
+This service is for founders and startups that need a website explaining the product and supporting signups. Delivery includes copy structure, Figma design and a Next.js build. Most landing pages take two to three weeks.
+
+### MVP development
+
+This service is for founders who need a focused first product release. Delivery can include core flows, authentication and payments. The code is prepared so the client's next hire can continue it. Most MVPs take three to four weeks.
+
+### Web app development
+
+This service is for founders and startups that need a web application. cuckoo designs and builds the web app.
+
+### AI integrations
+
+This service is for founders and startups adding AI to a product or workflow. cuckoo designs and builds the integration.
+
+### Ongoing development retainers
+
+This service is for teams that continue shipping after launch. Delivery includes ongoing design and development. Updates are delivered in 24 to 48 hours. Scope is flexible and month to month. The retainer can be paused or stopped.
+
+### Product design
+
+This service is for founders who need product flows and screens defined before development. Delivery includes mapped pages and flows, Figma design and revisions within the agreed scope.
+
+## How we work
+
+### 1. Discovery call
+
+The first call lasts 15 minutes. The founder explains what they are building. cuckoo explains whether the project is a fit and what the work requires.
+
+### 2. Design
+
+cuckoo maps the pages and flows. The screens and components are designed in Figma. The client reviews the design. cuckoo refines it until it is approved.
+
+### 3. Build
+
+cuckoo turns the approved design into code. Preview links are shared every few days so the client can follow progress.
+
+### 4. Launch
+
+cuckoo deploys the product to the client's accounts. cuckoo connects the domain and remains available for fixes after launch.
+
+## Who we work with
+
+Clients are mainly US founders and startups. Projects include landing pages, MVPs, web apps and AI integrations.
+
+## Example use cases
+
+### Elevate With Ana
+
+Elevate With Ana is a client membership and course platform for a Kriya Yoga teacher. It includes courses, live sessions and a seven-day initiation flow.
+
+Website: https://elevatewithana.com
+
+### CivicTrack
+
+CivicTrack is a public issue tracker built during a weekend hackathon. Citizens report problems. Departments resolve them in public.
+
+Website: https://tu-hackathon.vercel.app
+
+## FAQ
+
+### How long does a project take?
+
+Most landing pages take two to three weeks. Most MVPs take three to four weeks. A firm timeline is agreed after the discovery call and before work starts.
+
+### How do revisions work?
+
+Revisions are unlimited within the agreed scope. If the client requests something new during the project, cuckoo scopes it separately and explains what changes before work continues.
+
+### Who owns the work?
+
+The client owns all code, design files and assets. cuckoo builds in the client's accounts. The full source code is kept in the client's GitHub repository from the first commit.
+
+### How does payment work?
+
+Project work is 50 percent upfront to book the project and 50 percent at launch. Retainers are billed monthly. Retainers can be paused or cancelled.
+
+### What happens if the client is not happy?
+
+The client should raise concerns early so cuckoo can fix them. Design is approved before development. If the work still cannot be resolved, cuckoo will work out a fair refund.
+
+### What happens during the first call?
+
+The 15-minute discovery call covers the idea, project fit and what the work requires.
+
+### Where is the finished product deployed?
+
+The product is deployed in the client's accounts. Hosting, domain and analytics are set up under the client's name.
+
+## Contact and booking
+
+Book a free 15-minute call: https://calendly.com/buildwithyashx
+
+Email: yashsharmaofficially@gmail.com
+
+X: https://x.com/buildwithyash
+
+LinkedIn: https://www.linkedin.com/in/buildwithyash/
+
+## Pages
+
+- [Homepage](https://cuckoo.agency/): Agency overview, selected work, services, process, ownership, FAQ and contact.
+- [MVP Cost Calculator](https://cuckoo.agency/tools/mvp-cost-calculator): A free tool that gives an instant planning estimate for project budget and timeline. It requires no signup.
+- [llms.txt](https://cuckoo.agency/llms.txt): Structured index of site information and links.
+- [llms-full.txt](https://cuckoo.agency/llms-full.txt): This full text file.

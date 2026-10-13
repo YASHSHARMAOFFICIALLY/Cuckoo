@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import CallButton from "@/components/ui/CallButton";
 import { projects } from "@/content/projects";
 
@@ -42,12 +43,12 @@ export default function Hero() {
         {/* mobile: equal-width stacked buttons on one edge; sm+: side by side */}
         <div className="mt-10 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap sm:items-center">
           <CallButton className="justify-center sm:justify-start">Book a free 15-min call</CallButton>
-          <a
-            href="#work"
+          <Link
+            href="/#work"
             className="inline-flex h-12 items-center justify-center rounded-full bg-zinc-800 px-6 text-base font-semibold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.12),0_1px_2px_rgb(24_24_27/0.2)] transition-colors hover:bg-zinc-700"
           >
             See our work
-          </a>
+          </Link>
         </div>
       </div>
 
