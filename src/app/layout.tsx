@@ -10,9 +10,20 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "cuckoo | Design, build and launch for founders",
+  title: "cuckoo | Landing Pages, MVPs, Web Apps & AI Integration",
   description:
-    "Cuckoo designs, builds and launches websites and MVPs for startups and founders. 2–4 week delivery, and you own 100% of the code and design.",
+    "We build landing pages, MVPs, web apps and AI integrations for founders. From first sketch to production, with a timeline agreed before we start.",
+  alternates: {
+    canonical: "https://cuckoo.agency/",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "cuckoo",
+    url: "https://cuckoo.agency/",
+    title: "cuckoo | Landing Pages, MVPs, Web Apps & AI Integration",
+    description:
+      "We build landing pages, MVPs, web apps and AI integrations for founders. From first sketch to production, with a timeline agreed before we start.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
