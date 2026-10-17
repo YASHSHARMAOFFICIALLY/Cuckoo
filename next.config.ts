@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     agentFeedback: true,
   },
   cacheComponents: true,
+  async redirects() {
+    return [
+      { source: "/calculator", destination: "/tools/mvp-cost-calculator", permanent: true },
+    ];
+  },
   partialPrefetching: true,
   turbopack: {
     rules: {
